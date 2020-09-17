@@ -19,4 +19,9 @@ class StringHelper
 
         return $result;
     }
+
+    public static function removeExtension($string)
+    {
+        return substr($string, 0, strrpos($string, "."));
+    }
 }

@@ -1,0 +1,32 @@
+<?php
+
+use App\Commands\Hello;
+use App\Helpers\StringHelper;
+
+spl_autoload_register(function ($class) {
+    include __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', '/', $class) . '.php';
+});
+
+if (php_sapi_name() !== "cli") {
+    exit;
+}
+
+$cli = new App\Core\CLI\CLI();
+
+$cli->registerController('hello', new Hello($cli));
+
+$cli->registerCommand('help', function () use($cli) {
+    $cli->getPrinter()->display("Available commands:", "blue");
+    $cli->getPrinter()->newline(2);
+
+    $commands = scandir("App/Commands");
+
+    for ($counter = 2; $counter < count($commands); $counter++) {
+        $cli->getPrinter()->display("• ", "yellow");
+        $cli->getPrinter()->display(StringHelper::removeExtension($commands[$counter]), "yellow");
+        $cli->getPrinter()->newline();
+    }
+});
+
+$cli->runCommand($argv);
+
