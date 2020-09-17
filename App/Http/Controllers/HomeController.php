@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Core\Controller;
 use App\Http\Model\Post;
 
-class home extends Controller
+class HomeController extends Controller
 {
     public function index() {
         $this->buildView([
-            VIEW . "home" . DIRECTORY_SEPARATOR . "index.php"
+            VIEW . "homeController" . DIRECTORY_SEPARATOR . "index.php"
         ]);
     }
 

@@ -4,7 +4,7 @@ namespace App\Routes;
 
 use App\Core\Router\Request;
 use App\Core\Router\Router;
-use App\Http\Controllers\home;
+use App\Http\Controllers\HomeController;
 
 class routes
 {
@@ -12,18 +12,18 @@ class routes
     {
         $router = new Router(new Request());
 
-        $router->get('/home/', function () {
-            $home = new home();
+        $router->get('/home', function () {
+            $home = new HomeController();
             return $home->index();
         });
 
         $router->get('/example_one', function () {
-            $home = new home();
+            $home = new HomeController();
             return $home->exampleOne();
         });
 
         $router->get('/books/', function () {
-            $home = new home();
+            $home = new HomeController();
             return $home->post();
         });
     }
