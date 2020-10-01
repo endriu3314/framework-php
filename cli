@@ -1,6 +1,7 @@
 <?php
 
 use App\Commands\Hello;
+use App\Commands\Migrate;
 use App\Helpers\StringHelper;
 
 spl_autoload_register(function ($class) {
@@ -14,6 +15,7 @@ if (php_sapi_name() !== "cli") {
 $cli = new App\Core\CLI\CLI();
 
 $cli->registerController('hello', new Hello($cli));
+$cli->registerController('migrate', new Migrate($cli));
 
 $cli->registerCommand('help', function () use($cli) {
     $cli->getPrinter()->display("Available commands:", "blue");

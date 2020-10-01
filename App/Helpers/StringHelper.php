@@ -24,4 +24,9 @@ class StringHelper
     {
         return substr($string, 0, strrpos($string, "."));
     }
+
+    public static function removeLastOccurrence($string, $toRemove)
+    {
+        return substr_replace($string, "", strrpos($string, $toRemove), strlen($toRemove));
+    }
 }
