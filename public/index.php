@@ -1,5 +1,9 @@
 <?php
 
+use App\Core\Application;
+use App\Core\Config;
+use App\Core\Router\Router;
+
 define("ROOT", dirname(__DIR__) . DIRECTORY_SEPARATOR);
 define("APP", ROOT . "App" . DIRECTORY_SEPARATOR);
 
@@ -18,4 +22,7 @@ spl_autoload_register(function ($class) {
     include ROOT . str_replace('\\', '/', $class) . '.php';
 });
 
-$app = new \App\Core\Application();
+$router = new Router(new Config("../routes.yml"));
+
+$app = new Application($router);
+$app->run();
