@@ -1,0 +1,6 @@
+routes:
+    home:
+        url: /
+        method: GET
+        controller: App\Http\Controllers\HomeController
+        action: test
