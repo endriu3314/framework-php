@@ -17,7 +17,6 @@ class Router
         foreach ($routesData["routes"] as $route) {
             $url = $route["url"];
             $method = $route["method"];
-            $view = $route["view"];
 
             $model = "";
             $controller = "";
@@ -35,7 +34,7 @@ class Router
                 }
             }
 
-            $this->routes[$method][$url] = new BaseRoute($view, $model, $controller, $action);
+            $this->routes[$method][$url] = new BaseRoute($model, $controller, $action);
         }
     }
 

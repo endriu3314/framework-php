@@ -50,8 +50,5 @@ class Application
                 $controller->$actionName();
             }
         }
-
-        $viewName = $route->getView();
-        $view = new $viewName($model);
     }
 }
