@@ -2,58 +2,40 @@
 
 namespace App\Core;
 
-use App\Helpers\DebugPDO;
-use PDO;
-
-abstract class Model
+abstract class Model extends Database
 {
-    private static $db = null;
+    private $stmt;
+    private $lastId;
 
     private static $tableName;
+    private static $primaryKey;
 
     public function __construct()
     {
+        parent::__construct();
+        self::$tableName = $this->getTableName(new \ReflectionClass($this));
+        self::$primaryKey = $this->getPrimaryKey(new \ReflectionClass($this));
+    }
+
+    private function getTableName(\ReflectionClass $param)
+    {
+        return $param->getStaticPropertyValue("tableName");
+    }
+
+    private function getPrimaryKey(\ReflectionClass $param)
+    {
         try {
-            self::$db = self::openDatabaseConnection();
-        } catch (\PDOException $e) {
-            exit('Database connection could not be established.');
+            return $param->getStaticPropertyValue("primaryKey");
+        } catch (\Exception $e) {
+            return "id";
         }
     }
 
-    static private function openDatabaseConnection()
-    {
-        $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
-
-        if (DB_TYPE == "pgsql") {
-            $databaseEncodingenc = " options='--client_encoding=" . DB_CHARSET . "'";
-        } else {
-            $databaseEncodingenc = "; charset=" . DB_CHARSET;
-        }
-
-        return new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . $databaseEncodingenc, DB_USER, DB_PASS, $options);
-    }
-
-    private static function getFieldNames(\ReflectionClass $class): array
+    private function getFieldsArray(\ReflectionClass $param)
     {
         $fields = [];
 
-        foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $field) {
-            $fields[] = $field->getName();
-        }
-
-        return $fields;
-    }
-
-    private static function getFieldNamesString(\ReflectionClass $class): string
-    {
-        return implode(",", self::getFieldNames($class));
-    }
-
-    private function getFields(\ReflectionClass $class): array
-    {
-        $fields = [];
-
-        foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $field) {
+        foreach ($param->getProperties(\ReflectionProperty::IS_PUBLIC) as $field) {
             $fieldName = $field->getName();
 
             if ($this->{$fieldName} != "")
@@ -63,161 +45,76 @@ abstract class Model
         return $fields;
     }
 
-    private static function getTableName(\ReflectionClass $class): string
+    private function generateFieldsString($data = [])
     {
-        return $class->getStaticPropertyValue('tableName');
+        $fields = [];
+
+        if (!empty($data)) {
+            foreach ($data as $key => $value) {
+                $fields[] = $key;
+            }
+
+            return implode(",", $fields);
+        }
+
+        return "*";
     }
 
-    public function insert()
+    private function generateValuesString($data = [])
+    {
+        $values = [];
+
+        foreach ($data as $key => $value) {
+            $values[] = ":{$key}";
+        }
+
+        return implode(",", $values);
+    }
+
+    private function generateInsertQueryString($data)
+    {
+        $fields = $this->generateFieldsString($data);
+        $values = $this->generateValuesString($data);
+
+        return "INSERT INTO " . self::$tableName . " " . "(" . $fields . ")" . " VALUES " . "(" . $values . ")";
+    }
+
+    private function bindParams($params)
+    {
+        foreach ($params as $key => $value) {
+            $type = (is_int($value)) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $this->stmt->bindValue(":{$key}", $value, $type);
+        }
+    }
+
+    private function setPrimaryKeyToReflectionClass($value)
+    {
+        $this->{self::$primaryKey} = $value;
+    }
+
+    private function updateLastId()
+    {
+        $id = $this->conn->lastInsertId();
+        $this->lastId = $id ?? $this->lastId;
+    }
+
+    public function lastId()
+    {
+        $this->updateLastId();
+        return $this->lastId;
+    }
+
+    public function create()
     {
         $class = new \ReflectionClass($this);
-        $tableName = $this->getTableName($class);
 
-        $propsToImplode = $this->getFields($class);
+        $dataToInsert = $this->getFieldsArray($class);
 
-        $tableFieldsString = implode(",", array_keys($propsToImplode));
-        $tableValuesString = implode(",", array_map(function ($value) {
-            return "'" . $value . "'";
-        }, $propsToImplode));
+        $this->stmt = $this->conn->prepare($this->generateInsertQueryString($dataToInsert));
+        $this->bindParams($dataToInsert);
 
-        $sqlQuery = "INSERT INTO " . $tableName . "(" . $tableFieldsString . ")" . " VALUES " . "(" . $tableValuesString . ")" . ";";
+        $this->stmt->execute();
 
-        echo $sqlQuery;
-        //$this->db->exec($sqlQuery);
-
-        //$this->id = (int)$this->db->lastInsertId();
-    }
-
-    public function update()
-    {
-        $class = new \ReflectionClass($this);
-        $tableName = $this->getTableName($class);
-
-        $propsToImplode = $this->getFields($class);
-
-        foreach ($propsToImplode as $key => $prop)
-            $propsToImplode[$key] = "'" . $prop . "'";
-
-        $str = '';
-        foreach ($propsToImplode as $key => $item) {
-            $str .= $key . '=' . $item . ',';
-        }
-        $str = rtrim($str, ',');
-
-        $sqlQuery = "UPDATE " . $tableName . " SET " . $str . " WHERE id = " . $this->id;
-
-        echo $sqlQuery;
-    }
-
-    public function save()
-    {
-        if ($this->id > 0) {
-            $this->update();
-        } else {
-            $this->insert();
-        }
-    }
-
-    public static function findd(int $id)
-    {
-        $class = new \ReflectionClass(get_called_class());
-
-        $tableName = self::getTableName($class);
-        $fields = self::getFieldNamesString($class);
-
-        $sql = "SELECT " . $fields . " FROM " . $tableName . " WHERE id = " . $id . ";";
-
-        echo $sql;
-    }
-
-    public static function first()
-    {
-        $class = new \ReflectionClass(get_called_class());
-
-        $tableName = self::getTableName($class);
-        $fields = self::getFieldNamesString($class);
-
-        $sql = "SELECT " . $fields . " FROM " . $tableName . " ORDER BY id ASC LIMIT 1";
-
-        echo $sql;
-    }
-
-    public static function last()
-    {
-        $class = new \ReflectionClass(get_called_class());
-
-        $tableName = self::getTableName($class);
-        $fields = self::getFieldNamesString($class);
-
-        $sql = "SELECT " . $fields . " FROM " . $tableName . " ORDER BY id DESC LIMIT 1";
-
-        echo $sql;
-    }
-
-    private static $sql = "";
-
-    public static function select()
-    {
-        $class = new \ReflectionClass(get_called_class());
-
-        $tableName = self::getTableName($class);
-        $fields = self::getFieldNamesString($class);
-
-        self::$sql = "SELECT " . $fields . " FROM " . $tableName . ";";
-    }
-
-    public static function get()
-    {
-        $class = new \ReflectionClass(get_called_class());
-        return self::$sql;
-    }
-
-    public function find($options = [])
-    {
-        $result = [];
-        $query = '';
-
-        if (is_array($options)) {
-            $whereConditions = [];
-            foreach ($options as $key => $value) {
-                $whereConditions[] = '`' . $key . '` = "' . $value . '"';
-            }
-            $query = " WHERE " . implode(' AND ', $whereConditions);
-        } elseif (is_string($options)) {
-            $query = 'WHERE ' . $options;
-        } else {
-            throw new \Exception('Wrong parameter type of options');
-        }
-
-        echo $query;
-
-        $raw = self::$db->exec($query);
-        foreach ($raw as $rawRow) {
-            $result[] = self::morph($rawRow);
-        }
-
-        return $result;
-    }
-
-    public static function morph(array $object)
-    {
-        $class = new \ReflectionClass(get_called_class());
-
-        $entity = $class->newInstance();
-
-        foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
-            if (isset($object[$prop->getName()])) {
-                $prop->setValue($entity, $object[$prop->getName()]);
-            }
-        }
-
-        $entity->initialize(); // soft magic
-
-        return $entity;
-    }
-
-    protected function sanitize(string $input): string
-    {
-        return htmlspecialchars($input, ENT_QUOTES);
+        $this->setPrimaryKeyToReflectionClass($this->lastId());
     }
 }
