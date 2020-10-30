@@ -79,12 +79,37 @@ abstract class Model extends Database
         return "INSERT INTO " . self::$tableName . " " . "(" . $fields . ")" . " VALUES " . "(" . $values . ")";
     }
 
-    private function bindParams($params)
+    private function generateUpdateQueryString($data, $where)
+    {
+        $fields = $this->generateFieldsBindString($data, ',');
+
+        return "UPDATE " . self::$tableName . " SET " . $fields . " " . $where;
+    }
+
+    private function bindParamsToStmt($params)
     {
         foreach ($params as $key => $value) {
             $type = (is_int($value)) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
             $this->stmt->bindValue(":{$key}", $value, $type);
         }
+    }
+
+    private function generateFieldsBindString($array, $separator)
+    {
+        $param = [];
+
+        foreach ($array as $key => $value) {
+            $param[] = "${key} = :${key}";
+        }
+
+        return implode($separator, $param);
+    }
+
+    private function generateUpdateWhereStatement($data)
+    {
+        $condition = [self::$primaryKey => $data[self::$primaryKey]];
+
+        return "WHERE " . $this->generateFieldsBindString($condition, '');
     }
 
     private function setPrimaryKeyToReflectionClass($value)
@@ -111,10 +136,30 @@ abstract class Model extends Database
         $dataToInsert = $this->getFieldsArray($class);
 
         $this->stmt = $this->conn->prepare($this->generateInsertQueryString($dataToInsert));
-        $this->bindParams($dataToInsert);
+        $this->bindParamsToStmt($dataToInsert);
 
         $this->stmt->execute();
 
         $this->setPrimaryKeyToReflectionClass($this->lastId());
+    }
+
+    public function update()
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToInsert = $this->getFieldsArray($class);
+
+        if (!array_key_exists(self::$primaryKey, $dataToInsert))
+            return false;
+
+        $where = $this->generateUpdateWhereStatement($dataToInsert);
+        $this->stmt = $this->conn->prepare($this->generateUpdateQueryString($dataToInsert, $where));
+
+        var_dump($this->stmt);
+
+        $this->bindParamsToStmt($dataToInsert);
+        $this->stmt->execute();
+
+        return true;
     }
 }
