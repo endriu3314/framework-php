@@ -86,6 +86,11 @@ abstract class Model extends Database
         return "UPDATE " . self::$tableName . " SET " . $fields . " " . $where;
     }
 
+    private function generateDeleteQueryString($where)
+    {
+        return "DELETE FROM " . self::$tableName . " " . $where;
+    }
+
     private function bindParamsToStmt($params)
     {
         foreach ($params as $key => $value) {
@@ -105,11 +110,9 @@ abstract class Model extends Database
         return implode($separator, $param);
     }
 
-    private function generateUpdateWhereStatement($data)
+    private function generateWhereStatement($conditions)
     {
-        $condition = [self::$primaryKey => $data[self::$primaryKey]];
-
-        return "WHERE " . $this->generateFieldsBindString($condition, '');
+        return "WHERE " . $this->generateFieldsBindString($conditions, '');
     }
 
     private function setPrimaryKeyToReflectionClass($value)
@@ -152,14 +155,30 @@ abstract class Model extends Database
         if (!array_key_exists(self::$primaryKey, $dataToInsert))
             return false;
 
-        $where = $this->generateUpdateWhereStatement($dataToInsert);
+        $where = $this->generateWhereStatement([self::$primaryKey => $dataToInsert[self::$primaryKey]]);
         $this->stmt = $this->conn->prepare($this->generateUpdateQueryString($dataToInsert, $where));
-
-        var_dump($this->stmt);
 
         $this->bindParamsToStmt($dataToInsert);
         $this->stmt->execute();
 
+        return true;
+    }
+
+    public function delete()
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToDelete = $this->getFieldsArray($class);
+
+        if (!array_key_exists(self::$primaryKey, $dataToDelete))
+            return false;
+
+        $where = $this->generateWhereStatement([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
+        $this->stmt = $this->conn->prepare($this->generateDeleteQueryString($where));
+
+        $this->bindParamsToStmt([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
+
+        $this->stmt->execute();
         return true;
     }
 }
