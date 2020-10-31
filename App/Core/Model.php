@@ -2,6 +2,11 @@
 
 namespace App\Core;
 
+use Exception;
+use PDO;
+use ReflectionClass;
+use ReflectionProperty;
+
 abstract class Model extends Database
 {
     private $stmt;
@@ -13,29 +18,29 @@ abstract class Model extends Database
     public function __construct()
     {
         parent::__construct();
-        self::$tableName = $this->getTableName(new \ReflectionClass($this));
-        self::$primaryKey = $this->getPrimaryKey(new \ReflectionClass($this));
+        self::$tableName = $this->getTableName(new ReflectionClass($this));
+        self::$primaryKey = $this->getPrimaryKey(new ReflectionClass($this));
     }
 
-    private function getTableName(\ReflectionClass $param)
+    private function getTableName(ReflectionClass $param)
     {
         return $param->getStaticPropertyValue("tableName");
     }
 
-    private function getPrimaryKey(\ReflectionClass $param)
+    private function getPrimaryKey(ReflectionClass $param)
     {
         try {
             return $param->getStaticPropertyValue("primaryKey");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "id";
         }
     }
 
-    private function getFieldsArray(\ReflectionClass $param)
+    private function getFieldsArray(ReflectionClass $param)
     {
         $fields = [];
 
-        foreach ($param->getProperties(\ReflectionProperty::IS_PUBLIC) as $field) {
+        foreach ($param->getProperties(ReflectionProperty::IS_PUBLIC) as $field) {
             $fieldName = $field->getName();
 
             if ($this->{$fieldName} != "")
@@ -101,7 +106,7 @@ abstract class Model extends Database
     private function bindParamsToStmt($params)
     {
         foreach ($params as $key => $value) {
-            $type = (is_int($value)) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $type = (is_int($value)) ? PDO::PARAM_INT : PDO::PARAM_STR;
             $this->stmt->bindValue(":{$key}", $value, $type);
         }
     }
@@ -148,7 +153,7 @@ abstract class Model extends Database
 
     public function first()
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToSelect = $this->getFieldsArray($class);
 
@@ -157,7 +162,7 @@ abstract class Model extends Database
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
         $this->stmt->execute();
 
-        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->setFieldsToReflectionClass($data);
 
@@ -167,7 +172,7 @@ abstract class Model extends Database
 
     public function last()
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToSelect = $this->getFieldsArray($class);
 
@@ -176,7 +181,7 @@ abstract class Model extends Database
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
         $this->stmt->execute();
 
-        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->setFieldsToReflectionClass($data);
 
@@ -186,7 +191,7 @@ abstract class Model extends Database
 
     public function find($primaryKeyValue)
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToSelect = $this->getFieldsArray($class);
 
@@ -196,7 +201,7 @@ abstract class Model extends Database
         $this->bindParamsToStmt([self::$primaryKey => $primaryKeyValue]);
         $this->stmt->execute();
 
-        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->setFieldsToReflectionClass($data);
 
@@ -205,7 +210,7 @@ abstract class Model extends Database
 
     public function selectAllWhere($conditions = [], $separator = "OR")
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToselect = $this->getFieldsArray($class);
 
@@ -215,12 +220,12 @@ abstract class Model extends Database
         $this->bindParamsToStmt($conditions);
         $this->stmt->execute();
 
-        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create()
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToInsert = $this->getFieldsArray($class);
 
@@ -234,7 +239,7 @@ abstract class Model extends Database
 
     public function update()
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToInsert = $this->getFieldsArray($class);
 
@@ -252,7 +257,7 @@ abstract class Model extends Database
 
     public function delete()
     {
-        $class = new \ReflectionClass($this);
+        $class = new ReflectionClass($this);
 
         $dataToDelete = $this->getFieldsArray($class);
 
