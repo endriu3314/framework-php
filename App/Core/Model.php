@@ -117,9 +117,9 @@ abstract class Model extends Database
         return implode($separator, $param);
     }
 
-    private function generateWhereStatement($conditions)
+    private function generateWhereStatement($conditions, $separator = '')
     {
-        return "WHERE " . $this->generateFieldsBindString($conditions, '');
+        return "WHERE " . $this->generateFieldsBindString($conditions, $separator);
     }
 
     private function setPrimaryKeyToReflectionClass($value)
@@ -201,6 +201,21 @@ abstract class Model extends Database
         $this->setFieldsToReflectionClass($data);
 
         return $this;
+    }
+
+    public function selectAllWhere($conditions = [], $separator = "OR")
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToselect = $this->getFieldsArray($class);
+
+        $where = $this->generateWhereStatement($conditions, " " . $separator . " ");
+
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToselect, $where));
+        $this->bindParamsToStmt($conditions);
+        $this->stmt->execute();
+
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function create()
