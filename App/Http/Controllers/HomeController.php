@@ -15,21 +15,4 @@ class HomeController extends Controller
             'colors' => ['red', 'blue', 'green']
         ]);
     }
-
-    public function testModel()
-    {
-        $post = new Post();
-
-        $post->id = 1;
-        $post->title = "How2";
-        $post->body = "asdjklaskdlfhjklasjdfljkasdf";
-
-        //$post->save();
-
-        //Post::findd(1);
-        //Post::last();
-        Post::select()::get();
-
-        //echo $post->id;
-    }
 }

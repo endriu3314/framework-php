@@ -4,8 +4,3 @@ routes:
         method: GET
         controller: App\Http\Controllers\HomeController
         action: test
-    asd:
-        url: /asd
-        method: GET
-        controller: App\Http\Controllers\HomeController
-        action: testModel
