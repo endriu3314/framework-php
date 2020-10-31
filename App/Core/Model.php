@@ -91,6 +91,13 @@ abstract class Model extends Database
         return "DELETE FROM " . self::$tableName . " " . $where;
     }
 
+    private function generateSelectQueryString($data, $where = "", $order = "")
+    {
+        $fields = $this->generateFieldsString($data);
+
+        return "SELECT " . $fields . " FROM " . self::$tableName . " " . $where . " " . $order;
+    }
+
     private function bindParamsToStmt($params)
     {
         foreach ($params as $key => $value) {
@@ -120,6 +127,13 @@ abstract class Model extends Database
         $this->{self::$primaryKey} = $value;
     }
 
+    private function setFieldsToReflectionClass($array)
+    {
+        foreach ($array as $key => $value) {
+            $this->{$key} = $array[$key];
+        }
+    }
+
     private function updateLastId()
     {
         $id = $this->conn->lastInsertId();
@@ -130,6 +144,44 @@ abstract class Model extends Database
     {
         $this->updateLastId();
         return $this->lastId;
+    }
+
+    public function first()
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToSelect = $this->getFieldsArray($class);
+
+        $order = " ORDER BY " . self::$primaryKey . " ASC LIMIT 1";
+
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
+        $this->stmt->execute();
+
+        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $this->setFieldsToReflectionClass($data);
+
+        //fallback in case user assigns variable
+        return $this;
+    }
+
+    public function last()
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToSelect = $this->getFieldsArray($class);
+
+        $order = " ORDER BY " . self::$primaryKey . " DESC LIMIT 1";
+
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
+        $this->stmt->execute();
+
+        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $this->setFieldsToReflectionClass($data);
+
+        //fallback in case user assigns variable
+        return $this;
     }
 
     public function create()
