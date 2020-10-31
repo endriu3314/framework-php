@@ -184,6 +184,25 @@ abstract class Model extends Database
         return $this;
     }
 
+    public function find($primaryKeyValue)
+    {
+        $class = new \ReflectionClass($this);
+
+        $dataToSelect = $this->getFieldsArray($class);
+
+        $where = $this->generateWhereStatement([self::$primaryKey => $primaryKeyValue]);
+
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, $where, null));
+        $this->bindParamsToStmt([self::$primaryKey => $primaryKeyValue]);
+        $this->stmt->execute();
+
+        $data = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $this->setFieldsToReflectionClass($data);
+
+        return $this;
+    }
+
     public function create()
     {
         $class = new \ReflectionClass($this);
