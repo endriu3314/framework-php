@@ -22,7 +22,14 @@ spl_autoload_register(function ($class) {
     include ROOT . str_replace('\\', '/', $class) . '.php';
 });
 
-$router = new Router(new Config("../routes.yml"));
+$routes = "";
+
+if (extension_loaded('yaml'))
+    $routes = "../routes.yml";
+else if (extension_loaded('json'))
+    $routes = "../routes.json";
+
+$router = new Router(new Config($routes));
 
 $app = new Application($router);
 $app->run();
