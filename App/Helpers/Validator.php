@@ -112,7 +112,7 @@ class Validator
 
     /**
      * Function used to determine if the input is either integer or float type
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isNumber($value): bool
@@ -122,7 +122,7 @@ class Validator
 
     /**
      * Function used to determine if a string is an integer
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isIntegerInString($value): bool
@@ -136,7 +136,7 @@ class Validator
 
     /**
      * Function used to determine if a string is a float
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isFloatInString($value): bool
@@ -150,7 +150,7 @@ class Validator
 
     /**
      * Function used to determine if the input is either an integer, float or a string representing a number
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isNumeric($value): bool
@@ -160,7 +160,7 @@ class Validator
 
     /**
      * Checks if a function is callable
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isCallable($value): bool
@@ -170,7 +170,7 @@ class Validator
 
     /**
      * Check if the input is a class
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isClass($value): bool
@@ -180,7 +180,7 @@ class Validator
 
     /**
      * Check if the input represents an interface
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isInterface($value): bool
@@ -190,7 +190,7 @@ class Validator
 
     /**
      * Check if the input is a trait
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isTrait($value): bool
@@ -200,7 +200,7 @@ class Validator
 
     /**
      * Check if the input is either a class, interface or trait
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isType($value): bool
@@ -210,7 +210,7 @@ class Validator
 
     /**
      * Check if the input is null/0/false/empty string
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isNone($value): bool
@@ -220,7 +220,7 @@ class Validator
 
     /**
      * Check if the input is a valid email
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isMail($value): bool
@@ -234,7 +234,7 @@ class Validator
 
     /**
      * Check if the input is an url
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isUrl($value): bool
@@ -248,7 +248,7 @@ class Validator
 
     /**
      * Check if the input is an IPv4
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isIpv4($value): bool
@@ -262,7 +262,7 @@ class Validator
 
     /**
      * Check if the input is an IPv6
-     * @param $value
+     * @param $value - Input to validate
      * @return bool
      */
     public static function isIpv6($value): bool
@@ -277,8 +277,8 @@ class Validator
     /**
      * General function to implement all checks
      * @example Validator::is(1, "int,gt:6")
-     * @param $value
-     * @param $rules
+     * @param $value - Input to validate
+     * @param $rules - Rules to validate
      * @return bool
      */
     public static function is($value, $rules): bool
@@ -326,9 +326,9 @@ class Validator
     /**
      * Function to check if a type is bigger than a value (>)
      * It uses the counting array to check the function it uses to count
-     * @param $value
-     * @param $minimum
-     * @param $type
+     * @param $value - Value to check
+     * @param $minimum - Value to be checked with
+     * @param $type - Type of value
      * @return bool
      */
     public static function greaterThan($value, $minimum, $type): bool
@@ -347,9 +347,9 @@ class Validator
     /**
      * Function to check if a type is bigger than a value (>=)
      * It uses the counting array to check the function it uses to count
-     * @param $value
-     * @param $minimum
-     * @param $type
+     * @param $value - Value to check
+     * @param $minimum - Value to be checked with
+     * @param $type - Type of value
      * @return bool
      */
     public static function greaterThanEqual($value, $minimum, $type): bool
@@ -368,9 +368,9 @@ class Validator
     /**
      * Function to check if a type is bigger than a value (<)
      * It uses the counting array to check the function it uses to count
-     * @param $value
-     * @param $maximum
-     * @param $type
+     * @param $value - Value to check
+     * @param $maximum - Value to be checked with
+     * @param $type - Type of value
      * @return bool
      */
     public static function lowerThan($value, $maximum, $type): bool
@@ -389,9 +389,9 @@ class Validator
     /**
      * Function to check if a type is bigger than a value (<=)
      * It uses the counting array to check the function it uses to count
-     * @param $value
-     * @param $maximum
-     * @param $type
+     * @param $value - Value to check
+     * @param $maximum - Value to be checked with
+     * @param $type - Type of value
      * @return bool
      */
     public static function lowerThanEqual($value, $maximum, $type): bool
@@ -410,9 +410,9 @@ class Validator
     /**
      * Function to check if a type is bigger than a value (===)
      * It uses the counting array to check the function it uses to count
-     * @param $value
-     * @param $equal
-     * @param $type
+     * @param $value - Value to check
+     * @param $equal - Value to be checked with
+     * @param $type - Type of value
      * @return bool
      */
     public static function equal($value, $equal, $type): bool
