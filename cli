@@ -17,7 +17,7 @@ $cli = new App\Core\CLI\CLI();
 $cli->registerController('hello', new Hello($cli));
 $cli->registerController('migrate', new Migrate($cli));
 
-$cli->registerCommand('help', function () use($cli) {
+$cli->registerCommand('help', function () use ($cli) {
     $cli->getPrinter()->display("Available commands:", "blue");
     $cli->getPrinter()->newline(2);
 
@@ -31,4 +31,3 @@ $cli->registerCommand('help', function () use($cli) {
 });
 
 $cli->runCommand($argv);
-
