@@ -6,11 +6,14 @@ use RuntimeException;
 
 /**
  * Class Validator
+ * Used to validate data
  * @package App\Helpers
  */
 class Validator
 {
     /**
+     * Array of existing types, PHP or custom ones
+     * For each key that represents a type there is a function that checks that type
      * @var array
      */
     protected static $types = [
@@ -41,6 +44,10 @@ class Validator
     ];
 
     /**
+     * Custom conditions for validations
+     * Each key is an alias, it's value pointing to the function inside the class
+     * Because it's a static class we use an array to give the class
+     * @example gt:6, max:10
      * @var \string[][]
      */
     protected static $conditions = [
@@ -80,6 +87,9 @@ class Validator
     ];
 
     /**
+     * Array of functions to count
+     * Each array key represents a type and the value it's the function you use to count it
+     * Used for comparing
      * @var string[]
      */
     protected static $counts = [
@@ -101,6 +111,7 @@ class Validator
     ];
 
     /**
+     * Function used to determine if the input is either integer or float type
      * @param $value
      * @return bool
      */
@@ -110,6 +121,7 @@ class Validator
     }
 
     /**
+     * Function used to determine if a string is an integer
      * @param $value
      * @return bool
      */
@@ -123,6 +135,7 @@ class Validator
     }
 
     /**
+     * Function used to determine if a string is a float
      * @param $value
      * @return bool
      */
@@ -136,6 +149,7 @@ class Validator
     }
 
     /**
+     * Function used to determine if the input is either an integer, float or a string representing a number
      * @param $value
      * @return bool
      */
@@ -145,6 +159,7 @@ class Validator
     }
 
     /**
+     * Checks if a function is callable
      * @param $value
      * @return bool
      */
@@ -154,6 +169,7 @@ class Validator
     }
 
     /**
+     * Check if the input is a class
      * @param $value
      * @return bool
      */
@@ -163,6 +179,7 @@ class Validator
     }
 
     /**
+     * Check if the input represents an interface
      * @param $value
      * @return bool
      */
@@ -172,6 +189,7 @@ class Validator
     }
 
     /**
+     * Check if the input is a trait
      * @param $value
      * @return bool
      */
@@ -181,6 +199,7 @@ class Validator
     }
 
     /**
+     * Check if the input is either a class, interface or trait
      * @param $value
      * @return bool
      */
@@ -190,6 +209,7 @@ class Validator
     }
 
     /**
+     * Check if the input is null/0/false/empty string
      * @param $value
      * @return bool
      */
@@ -199,6 +219,7 @@ class Validator
     }
 
     /**
+     * Check if the input is a valid email
      * @param $value
      * @return bool
      */
@@ -212,6 +233,7 @@ class Validator
     }
 
     /**
+     * Check if the input is an url
      * @param $value
      * @return bool
      */
@@ -225,6 +247,7 @@ class Validator
     }
 
     /**
+     * Check if the input is an IPv4
      * @param $value
      * @return bool
      */
@@ -238,6 +261,7 @@ class Validator
     }
 
     /**
+     * Check if the input is an IPv6
      * @param $value
      * @return bool
      */
@@ -251,6 +275,8 @@ class Validator
     }
 
     /**
+     * General function to implement all checks
+     * @example Validator::is(1, "int,gt:6")
      * @param $value
      * @param $rules
      * @return bool
@@ -298,6 +324,8 @@ class Validator
     }
 
     /**
+     * Function to check if a type is bigger than a value (>)
+     * It uses the counting array to check the function it uses to count
      * @param $value
      * @param $minimum
      * @param $type
@@ -317,6 +345,8 @@ class Validator
     }
 
     /**
+     * Function to check if a type is bigger than a value (>=)
+     * It uses the counting array to check the function it uses to count
      * @param $value
      * @param $minimum
      * @param $type
@@ -336,6 +366,8 @@ class Validator
     }
 
     /**
+     * Function to check if a type is bigger than a value (<)
+     * It uses the counting array to check the function it uses to count
      * @param $value
      * @param $maximum
      * @param $type
@@ -355,6 +387,8 @@ class Validator
     }
 
     /**
+     * Function to check if a type is bigger than a value (<=)
+     * It uses the counting array to check the function it uses to count
      * @param $value
      * @param $maximum
      * @param $type
@@ -374,6 +408,8 @@ class Validator
     }
 
     /**
+     * Function to check if a type is bigger than a value (===)
+     * It uses the counting array to check the function it uses to count
      * @param $value
      * @param $equal
      * @param $type
