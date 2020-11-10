@@ -60,8 +60,8 @@ class Validator
         "blwe" => [self::class, "lowerThanEqual"],
 
         "sme" => [self::class, "lowerThanEqual"],
-        "smaller_than" => [self::class, "lowerThanEqual"],
-        "smallerThan" => [self::class, "lowerThanEqual"],
+        "smaller_than_equal" => [self::class, "lowerThanEqual"],
+        "smallerThanEqual" => [self::class, "lowerThanEqual"],
 
         "max" => [self::class, "lowerThan"],
 
