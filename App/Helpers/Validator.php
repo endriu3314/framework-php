@@ -202,7 +202,7 @@ class Validator
         return true;
     }
 
-    public function greaterThan($value, $minimum)
+    public static function greaterThan($value, $minimum)
     {
         if (!self::isNumeric($value))
             return false;
@@ -213,7 +213,7 @@ class Validator
         return false;
     }
 
-    public function lowerThan($value, $maximum)
+    public static function lowerThan($value, $maximum)
     {
         if (!self::isNumeric($value))
             return false;
