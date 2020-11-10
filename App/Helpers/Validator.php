@@ -4,8 +4,15 @@ namespace App\Helpers;
 
 use RuntimeException;
 
+/**
+ * Class Validator
+ * @package App\Helpers
+ */
 class Validator
 {
+    /**
+     * @var array
+     */
     protected static $types = [
         "array" => "is_array",
         "bool" => "is_bool",
@@ -33,6 +40,9 @@ class Validator
         "isTrait" => [self::class, "isTrait"],
     ];
 
+    /**
+     * @var \string[][]
+     */
     protected static $conditions = [
         "gt" => [self::class, "greaterThan"],
         "greater_than" => [self::class, "greaterThan"],
@@ -69,6 +79,9 @@ class Validator
         "equal" => [self::class, "equal"],
     ];
 
+    /**
+     * @var string[]
+     */
     protected static $counts = [
         "array" => "count",
         "float" => "number",
@@ -87,11 +100,19 @@ class Validator
         "number" => "number",
     ];
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isNumber($value): bool
     {
         return is_int($value) || is_float($value);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isIntegerInString($value): bool
     {
         if (is_string($value))
@@ -101,6 +122,10 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isFloatInString($value): bool
     {
         if (is_string($value))
@@ -110,41 +135,73 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isNumeric($value): bool
     {
         return is_int($value) || is_float($value) || (is_string($value) && preg_match("#^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$#D", $value));
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isCallable($value): bool
     {
         return is_callable($value, true);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isClass($value): bool
     {
         return class_exists($value);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isInterface($value): bool
     {
         return interface_exists($value);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isTrait($value): bool
     {
         return trait_exists($value);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isType($value): bool
     {
         return self::isClass($value) || self::isInterface($value) || self::isTrait($value);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isNone($value): bool
     {
         return $value == null;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isMail($value): bool
     {
         if (is_string($value))
@@ -154,6 +211,10 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isUrl($value): bool
     {
         if (is_string($value))
@@ -163,6 +224,10 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isIpv4($value): bool
     {
         if (is_string($value))
@@ -172,6 +237,10 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     public static function isIpv6($value): bool
     {
         if (is_string($value))
@@ -181,6 +250,11 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @param $rules
+     * @return bool
+     */
     public static function is($value, $rules): bool
     {
         $rulesArray = explode(",", $rules);
@@ -223,6 +297,12 @@ class Validator
         return true;
     }
 
+    /**
+     * @param $value
+     * @param $minimum
+     * @param $type
+     * @return bool
+     */
     public static function greaterThan($value, $minimum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
@@ -236,6 +316,12 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @param $minimum
+     * @param $type
+     * @return bool
+     */
     public static function greaterThanEqual($value, $minimum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
@@ -249,6 +335,12 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @param $maximum
+     * @param $type
+     * @return bool
+     */
     public static function lowerThan($value, $maximum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
@@ -262,6 +354,12 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @param $maximum
+     * @param $type
+     * @return bool
+     */
     public static function lowerThanEqual($value, $maximum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
@@ -275,6 +373,12 @@ class Validator
         return false;
     }
 
+    /**
+     * @param $value
+     * @param $equal
+     * @param $type
+     * @return bool
+     */
     public static function equal($value, $equal, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
