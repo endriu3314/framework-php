@@ -33,6 +33,7 @@ class Validator
         "isTrait" => [self::class, "isTrait"],
     ];
 
+    //TODO: add equal condition
     protected static $conditions = [
         "gt" => [self::class, "greaterThan"],
         "greater_than" => [self::class, "greaterThan"],
@@ -64,6 +65,24 @@ class Validator
         "smallerThan" => [self::class, "lowerThanEqual"],
 
         "max" => [self::class, "lowerThan"],
+    ];
+
+    protected static $counts = [
+        "array" => "count",
+        "float" => "number",
+        "int" => "number",
+        "integer" => "number",
+        "string" => "strlen",
+
+        "file" => "filesize",
+
+        "url" => "strlen",
+        "ipv4" => "strlen",
+        "ipv6" => "strlen",
+        "email" => "strlen",
+
+        "numeric" => "number",
+        "number" => "number",
     ];
 
     public static function isNumber($value)
@@ -182,7 +201,7 @@ class Validator
 
                 foreach ($conditions as $condition => $conditionValue) {
                     if (isset(self::$conditions[$condition])) {
-                        if (!self::$conditions[$condition]($value, $conditionValue))
+                        if (!self::$conditions[$condition]($value, $conditionValue, $type))
                             return false;
                     } else {
                         throw new RuntimeException("Condition does not exist");
@@ -202,24 +221,28 @@ class Validator
         return true;
     }
 
-    public static function greaterThan($value, $minimum)
+    public static function greaterThan($value, $minimum, $type)
     {
-        if (!self::isNumeric($value))
-            return false;
-
-        if ($value > $minimum)
-            return true;
+        if (function_exists(self::$counts[$type])) {
+            if (self::$counts[$type]($value) > $minimum)
+                return true;
+        } else if (self::$counts[$type] === "number") {
+            if ($value > $minimum)
+                return true;
+        }
 
         return false;
     }
 
-    public static function lowerThan($value, $maximum)
+    public static function lowerThan($value, $maximum, $type)
     {
-        if (!self::isNumeric($value))
-            return false;
-
-        if ($value < $maximum)
-            return true;
+        if (function_exists(self::$counts[$type])) {
+            if (self::$counts[$type]($value) < $maximum)
+                return true;
+        } else if (self::$counts[$type] === "number") {
+            if ($value < $maximum)
+                return true;
+        }
 
         return false;
     }
