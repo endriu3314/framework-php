@@ -22,7 +22,12 @@ class Config
             throw new RuntimeException("$filePath is not readable");
         }
 
-        $this->data = yaml_parse_file($filePath);
+        if (extension_loaded("yaml"))
+            $this->data = yaml_parse_file($filePath);
+        else if (extension_loaded("json")) {
+            $json = file_get_contents($filePath);
+            $this->data = json_decode($json, true);
+        }
     }
 
     public function getData(): array
