@@ -234,6 +234,19 @@ class Validator
         return false;
     }
 
+    public static function greaterThanEqual($value, $minimum, $type)
+    {
+        if (function_exists(self::$counts[$type])) {
+            if (self::$counts[$type]($value) >= $minimum)
+                return true;
+        } else if (self::$counts[$type] === "number") {
+            if ($value >= $minimum)
+                return true;
+        }
+
+        return false;
+    }
+
     public static function lowerThan($value, $maximum, $type)
     {
         if (function_exists(self::$counts[$type])) {
@@ -241,6 +254,19 @@ class Validator
                 return true;
         } else if (self::$counts[$type] === "number") {
             if ($value < $maximum)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static function lowerThanEqual($value, $maximum, $type)
+    {
+        if (function_exists(self::$counts[$type])) {
+            if (self::$counts[$type]($value) <= $maximum)
+                return true;
+        } else if (self::$counts[$type] === "number") {
+            if ($value <= $maximum)
                 return true;
         }
 
