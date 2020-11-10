@@ -8,7 +8,7 @@ class BaseRoute
     private $controller;
     private $action;
 
-    public function __construct(string $model = "", string $controller = "", string $action = "")
+    public function __construct(string $model = '', string $controller = '', string $action = '')
     {
         $this->model = $model;
         $this->controller = $controller;
@@ -17,24 +17,27 @@ class BaseRoute
 
     public function getModel()
     {
-        if ($this->model == "")
+        if ($this->model == '') {
             return null;
+        }
 
         return $this->model;
     }
 
     public function getController()
     {
-        if ($this->controller == "")
+        if ($this->controller == '') {
             return null;
+        }
 
         return $this->controller;
     }
 
     public function getAction()
     {
-        if ($this->action == "")
+        if ($this->action == '') {
             return null;
+        }
 
         return $this->action;
     }

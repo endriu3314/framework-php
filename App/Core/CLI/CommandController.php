@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Core\CLI;
-
 
 abstract class CommandController
 {
