@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Controller;
 use App\Core\Template;
+use App\Helpers\Validator;
 use App\Http\Model\Post;
 
 class HomeController extends Controller
