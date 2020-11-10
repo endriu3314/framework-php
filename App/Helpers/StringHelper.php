@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Helpers;
-
 
 class StringHelper
 {
@@ -22,11 +20,11 @@ class StringHelper
 
     public static function removeExtension($string)
     {
-        return substr($string, 0, strrpos($string, "."));
+        return substr($string, 0, strrpos($string, '.'));
     }
 
     public static function removeLastOccurrence($string, $toRemove)
     {
-        return substr_replace($string, "", strrpos($string, $toRemove), strlen($toRemove));
+        return substr_replace($string, '', strrpos($string, $toRemove), strlen($toRemove));
     }
 }

@@ -14,23 +14,23 @@ class Router
 
         $routesData = $routes->getData();
 
-        foreach ($routesData["routes"] as $route) {
-            $url = $route["url"];
-            $method = $route["method"];
+        foreach ($routesData['routes'] as $route) {
+            $url = $route['url'];
+            $method = $route['method'];
 
-            $model = "";
-            $controller = "";
-            $action = "";
+            $model = '';
+            $controller = '';
+            $action = '';
 
-            if (isset($route["model"])) {
-                $model = $route["model"];
+            if (isset($route['model'])) {
+                $model = $route['model'];
             }
 
-            if (isset($route["controller"])) {
-                $controller = $route["controller"];
+            if (isset($route['controller'])) {
+                $controller = $route['controller'];
 
-                if (isset($route["action"])) {
-                    $action = $route["action"];
+                if (isset($route['action'])) {
+                    $action = $route['action'];
                 }
             }
 

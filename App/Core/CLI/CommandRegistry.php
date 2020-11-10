@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Core\CLI;
-
 
 class CommandRegistry
 {
@@ -12,7 +10,7 @@ class CommandRegistry
 
     public function registerController($command_name, CommandController $controller)
     {
-        $this->controllers = [ $command_name => $controller ];
+        $this->controllers = [$command_name => $controller];
     }
 
     public function registerCommand($name, $callable)
@@ -35,7 +33,7 @@ class CommandRegistry
         $controller = $this->getController($command_name);
 
         if ($controller instanceof CommandController) {
-            return [ $controller, 'run' ];
+            return [$controller, 'run'];
         }
 
         $command = $this->getCommand($command_name);

@@ -16,17 +16,17 @@ class Application
 
     public function run()
     {
-        $request = $_SERVER["REQUEST_URI"];
+        $request = $_SERVER['REQUEST_URI'];
 
-        if ($request != "/") {
-            $request = rtrim($request, "/");
+        if ($request != '/') {
+            $request = rtrim($request, '/');
         }
 
-        $route = $this->router->match($request, $_SERVER["REQUEST_METHOD"]);
+        $route = $this->router->match($request, $_SERVER['REQUEST_METHOD']);
 
         if ($route == null) {
             http_response_code(404);
-            require VIEW . "404.php";
+            require VIEW.'404.php';
         } else {
             $this->initiate($route);
         }

@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use Exception;
 use RuntimeException;
 use SplFileInfo;
 
@@ -22,9 +21,9 @@ class Config
             throw new RuntimeException("$filePath is not readable");
         }
 
-        if (extension_loaded("yaml"))
+        if (extension_loaded('yaml')) {
             $this->data = yaml_parse_file($filePath);
-        else if (extension_loaded("json")) {
+        } elseif (extension_loaded('json')) {
             $json = file_get_contents($filePath);
             $this->data = json_decode($json, true);
         }

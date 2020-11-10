@@ -12,6 +12,7 @@ class Schema
         $this->name = $tableName;
         $this->blueprint = new Blueprint($tableName);
         $callback($this->blueprint);
+
         return $this;
     }
 

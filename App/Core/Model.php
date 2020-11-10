@@ -24,15 +24,15 @@ abstract class Model extends Database
 
     private function getTableName(ReflectionClass $param)
     {
-        return $param->getStaticPropertyValue("tableName");
+        return $param->getStaticPropertyValue('tableName');
     }
 
     private function getPrimaryKey(ReflectionClass $param)
     {
         try {
-            return $param->getStaticPropertyValue("primaryKey");
+            return $param->getStaticPropertyValue('primaryKey');
         } catch (Exception $e) {
-            return "id";
+            return 'id';
         }
     }
 
@@ -43,8 +43,9 @@ abstract class Model extends Database
         foreach ($param->getProperties(ReflectionProperty::IS_PUBLIC) as $field) {
             $fieldName = $field->getName();
 
-            if ($this->{$fieldName} != "")
+            if ($this->{$fieldName} != '') {
                 $fields[$fieldName] = $this->{$fieldName};
+            }
         }
 
         return $fields;
@@ -59,10 +60,10 @@ abstract class Model extends Database
                 $fields[] = $key;
             }
 
-            return implode(",", $fields);
+            return implode(',', $fields);
         }
 
-        return "*";
+        return '*';
     }
 
     private function generateValuesString($data = [])
@@ -73,7 +74,7 @@ abstract class Model extends Database
             $values[] = ":{$key}";
         }
 
-        return implode(",", $values);
+        return implode(',', $values);
     }
 
     private function generateInsertQueryString($data)
@@ -81,26 +82,26 @@ abstract class Model extends Database
         $fields = $this->generateFieldsString($data);
         $values = $this->generateValuesString($data);
 
-        return "INSERT INTO " . self::$tableName . " " . "(" . $fields . ")" . " VALUES " . "(" . $values . ")";
+        return 'INSERT INTO '.self::$tableName.' '.'('.$fields.')'.' VALUES '.'('.$values.')';
     }
 
     private function generateUpdateQueryString($data, $where)
     {
         $fields = $this->generateFieldsBindString($data, ',');
 
-        return "UPDATE " . self::$tableName . " SET " . $fields . " " . $where;
+        return 'UPDATE '.self::$tableName.' SET '.$fields.' '.$where;
     }
 
     private function generateDeleteQueryString($where)
     {
-        return "DELETE FROM " . self::$tableName . " " . $where;
+        return 'DELETE FROM '.self::$tableName.' '.$where;
     }
 
-    private function generateSelectQueryString($data, $where = "", $order = "")
+    private function generateSelectQueryString($data, $where = '', $order = '')
     {
         $fields = $this->generateFieldsString($data);
 
-        return "SELECT " . $fields . " FROM " . self::$tableName . " " . $where . " " . $order;
+        return 'SELECT '.$fields.' FROM '.self::$tableName.' '.$where.' '.$order;
     }
 
     private function bindParamsToStmt($params)
@@ -124,7 +125,7 @@ abstract class Model extends Database
 
     private function generateWhereStatement($conditions, $separator = '')
     {
-        return "WHERE " . $this->generateFieldsBindString($conditions, $separator);
+        return 'WHERE '.$this->generateFieldsBindString($conditions, $separator);
     }
 
     private function setPrimaryKeyToReflectionClass($value)
@@ -148,6 +149,7 @@ abstract class Model extends Database
     public function lastId()
     {
         $this->updateLastId();
+
         return $this->lastId;
     }
 
@@ -157,9 +159,9 @@ abstract class Model extends Database
 
         $dataToSelect = $this->getFieldsArray($class);
 
-        $order = " ORDER BY " . self::$primaryKey . " ASC LIMIT 1";
+        $order = ' ORDER BY '.self::$primaryKey.' ASC LIMIT 1';
 
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
         $this->stmt->execute();
 
         $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
@@ -176,9 +178,9 @@ abstract class Model extends Database
 
         $dataToSelect = $this->getFieldsArray($class);
 
-        $order = " ORDER BY " . self::$primaryKey . " DESC LIMIT 1";
+        $order = ' ORDER BY '.self::$primaryKey.' DESC LIMIT 1';
 
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect,null,$order));
+        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
         $this->stmt->execute();
 
         $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
@@ -208,13 +210,13 @@ abstract class Model extends Database
         return $this;
     }
 
-    public function selectAllWhere($conditions = [], $separator = "OR")
+    public function selectAllWhere($conditions = [], $separator = 'OR')
     {
         $class = new ReflectionClass($this);
 
         $dataToselect = $this->getFieldsArray($class);
 
-        $where = $this->generateWhereStatement($conditions, " " . $separator . " ");
+        $where = $this->generateWhereStatement($conditions, ' '.$separator.' ');
 
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToselect, $where));
         $this->bindParamsToStmt($conditions);
@@ -243,8 +245,9 @@ abstract class Model extends Database
 
         $dataToInsert = $this->getFieldsArray($class);
 
-        if (!array_key_exists(self::$primaryKey, $dataToInsert))
+        if (!array_key_exists(self::$primaryKey, $dataToInsert)) {
             return false;
+        }
 
         $where = $this->generateWhereStatement([self::$primaryKey => $dataToInsert[self::$primaryKey]]);
         $this->stmt = $this->conn->prepare($this->generateUpdateQueryString($dataToInsert, $where));
@@ -261,8 +264,9 @@ abstract class Model extends Database
 
         $dataToDelete = $this->getFieldsArray($class);
 
-        if (!array_key_exists(self::$primaryKey, $dataToDelete))
+        if (!array_key_exists(self::$primaryKey, $dataToDelete)) {
             return false;
+        }
 
         $where = $this->generateWhereStatement([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
         $this->stmt = $this->conn->prepare($this->generateDeleteQueryString($where));
@@ -270,6 +274,7 @@ abstract class Model extends Database
         $this->bindParamsToStmt([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
 
         $this->stmt->execute();
+
         return true;
     }
 }
