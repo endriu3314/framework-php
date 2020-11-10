@@ -20,6 +20,11 @@ class Validator
         "file" => "is_file",
         "directory" => "is_dir",
 
+        "url" => [self::class, "isUrl"],
+        "ipv4" => [self::class, "isIpv4"],
+        "ipv6" => [self::class, "isIpv6"],
+        "email" => [self::class, "isEmail"],
+
         "numeric" => [self::class, "isNumeric"],
         "number" => [self::class, "isNumber"],
 
@@ -117,6 +122,42 @@ class Validator
     public static function isNone($value)
     {
         return $value == null;
+    }
+
+    public static function isMail($value)
+    {
+        if (is_string($value))
+            if (preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", $value))
+                return true;
+
+        return false;
+    }
+
+    public static function isUrl($value)
+    {
+        if (is_string($value))
+            if (preg_match("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", $value))
+                return true;
+
+        return false;
+    }
+
+    public static function isIpv4($value)
+    {
+        if (is_string($value))
+            if (preg_match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", $value))
+                return true;
+
+        return false;
+    }
+
+    public static function isIpv6($value)
+    {
+        if (is_string($value))
+            if (preg_match("^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$", $value))
+                return true;
+
+        return false;
     }
 
     public static function is($value, $rules)
