@@ -20,4 +20,8 @@ class Schema
     {
         $this->blueprint->generate($this->name);
     }
+
+    public function __destruct()
+    {
+    }
 }
