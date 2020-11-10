@@ -10,7 +10,7 @@ class CommandRegistry
 
     public function registerController($command_name, CommandController $controller)
     {
-        $this->controllers[$command_name] =  $controller;
+        $this->controllers[$command_name] = $controller;
     }
 
     public function registerCommand($name, $callable)
