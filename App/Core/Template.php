@@ -6,7 +6,7 @@ class Template
 {
 
     static $blocks = array();
-    static $cache_path = ROOT . "public" . DIRECTORY_SEPARATOR . 'cache\\';
+    static $cache_path = ROOT . "public" . DIRECTORY_SEPARATOR . 'cache' .  DIRECTORY_SEPARATOR;
     static $cache_enabled = ENVIRONMENT == 'development' || ENVIRONMENT == 'dev' ? FALSE : TRUE;
 
     static function view($file, $data = array())
