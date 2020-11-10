@@ -87,12 +87,12 @@ class Validator
         "number" => "number",
     ];
 
-    public static function isNumber($value)
+    public static function isNumber($value): bool
     {
         return is_int($value) || is_float($value);
     }
 
-    public static function isIntegerInString($value)
+    public static function isIntegerInString($value): bool
     {
         if (is_string($value))
             if (preg_match('#^[+-]?[0-9]+$#D', $value))
@@ -101,7 +101,7 @@ class Validator
         return false;
     }
 
-    public static function isFloatInString($value)
+    public static function isFloatInString($value): bool
     {
         if (is_string($value))
             if (preg_match('#^[-+]?\d*\.?\d*$#D', $value))
@@ -110,42 +110,42 @@ class Validator
         return false;
     }
 
-    public static function isNumeric($value)
+    public static function isNumeric($value): bool
     {
         return is_int($value) || is_float($value) || (is_string($value) && preg_match("#^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$#D", $value));
     }
 
-    public static function isCallable($value)
+    public static function isCallable($value): bool
     {
         return is_callable($value, true);
     }
 
-    public static function isClass($value)
+    public static function isClass($value): bool
     {
         return class_exists($value);
     }
 
-    public static function isInterface($value)
+    public static function isInterface($value): bool
     {
         return interface_exists($value);
     }
 
-    public static function isTrait($value)
+    public static function isTrait($value): bool
     {
         return trait_exists($value);
     }
 
-    public static function isType($value)
+    public static function isType($value): bool
     {
         return self::isClass($value) || self::isInterface($value) || self::isTrait($value);
     }
 
-    public static function isNone($value)
+    public static function isNone($value): bool
     {
         return $value == null;
     }
 
-    public static function isMail($value)
+    public static function isMail($value): bool
     {
         if (is_string($value))
             if (preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", $value))
@@ -154,7 +154,7 @@ class Validator
         return false;
     }
 
-    public static function isUrl($value)
+    public static function isUrl($value): bool
     {
         if (is_string($value))
             if (preg_match("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", $value))
@@ -163,7 +163,7 @@ class Validator
         return false;
     }
 
-    public static function isIpv4($value)
+    public static function isIpv4($value): bool
     {
         if (is_string($value))
             if (preg_match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", $value))
@@ -172,7 +172,7 @@ class Validator
         return false;
     }
 
-    public static function isIpv6($value)
+    public static function isIpv6($value): bool
     {
         if (is_string($value))
             if (preg_match("^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$", $value))
@@ -181,7 +181,7 @@ class Validator
         return false;
     }
 
-    public static function is($value, $rules)
+    public static function is($value, $rules): bool
     {
         $rulesArray = explode(",", $rules);
         $type = $rulesArray[0];
@@ -223,7 +223,7 @@ class Validator
         return true;
     }
 
-    public static function greaterThan($value, $minimum, $type)
+    public static function greaterThan($value, $minimum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
             if (self::$counts[$type]($value) > $minimum)
@@ -236,7 +236,7 @@ class Validator
         return false;
     }
 
-    public static function greaterThanEqual($value, $minimum, $type)
+    public static function greaterThanEqual($value, $minimum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
             if (self::$counts[$type]($value) >= $minimum)
@@ -249,7 +249,7 @@ class Validator
         return false;
     }
 
-    public static function lowerThan($value, $maximum, $type)
+    public static function lowerThan($value, $maximum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
             if (self::$counts[$type]($value) < $maximum)
@@ -262,7 +262,7 @@ class Validator
         return false;
     }
 
-    public static function lowerThanEqual($value, $maximum, $type)
+    public static function lowerThanEqual($value, $maximum, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
             if (self::$counts[$type]($value) <= $maximum)
@@ -275,7 +275,7 @@ class Validator
         return false;
     }
 
-    public static function equal($value, $equal, $type)
+    public static function equal($value, $equal, $type): bool
     {
         if (function_exists(self::$counts[$type])) {
             if (self::$counts[$type]($value) <= $equal)
