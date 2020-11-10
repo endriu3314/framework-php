@@ -48,7 +48,7 @@ class Validator
      * Each key is an alias, it's value pointing to the function inside the class
      * Because it's a static class we use an array to give the class
      * @example gt:6, max:10
-     * @var \string[][]
+     * @var string[]
      */
     protected static $conditions = [
         "gt" => [self::class, "greaterThan"],
