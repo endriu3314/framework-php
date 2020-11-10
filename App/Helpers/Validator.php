@@ -33,7 +33,6 @@ class Validator
         "isTrait" => [self::class, "isTrait"],
     ];
 
-    //TODO: add equal condition
     protected static $conditions = [
         "gt" => [self::class, "greaterThan"],
         "greater_than" => [self::class, "greaterThan"],
