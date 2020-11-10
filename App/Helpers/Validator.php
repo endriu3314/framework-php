@@ -65,6 +65,9 @@ class Validator
         "smallerThan" => [self::class, "lowerThanEqual"],
 
         "max" => [self::class, "lowerThan"],
+
+        "eq" => [self::class, "equal"],
+        "equal" => [self::class, "equal"],
     ];
 
     protected static $counts = [
@@ -267,6 +270,19 @@ class Validator
                 return true;
         } else if (self::$counts[$type] === "number") {
             if ($value <= $maximum)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static function equal($value, $equal, $type)
+    {
+        if (function_exists(self::$counts[$type])) {
+            if (self::$counts[$type]($value) <= $equal)
+                return true;
+        } else if (self::$counts[$type] === "number") {
+            if ($value == $equal)
                 return true;
         }
 
