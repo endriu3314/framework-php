@@ -29,24 +29,24 @@ class Blueprint
         foreach ($this->columns as $column) {
             if (!(strlen($column->getForeign()) > 0)) {
                 $columns .=
-                    $column->getName() . ' ' .
-                    $column->getType() . '' .
-                    $column->getMax() . ' ' .
-                    $column->getNullable() . ' ' .
-                    $column->getIncrements() . ' ' .
-                    $column->getPrimary() . ' ' .
-                    $column->getDefault() . ',' . "\n";
+                    $column->getName().' '.
+                    $column->getType().''.
+                    $column->getMax().' '.
+                    $column->getNullable().' '.
+                    $column->getIncrements().' '.
+                    $column->getPrimary().' '.
+                    $column->getDefault().','."\n";
             } else {
                 $columns .=
-                    $column->getName() . ' ' .
-                    $column->getType() . '' .
-                    $column->getMax() . ' ' .
-                    $column->getNullable() . ' ' .
-                    $column->getIncrements() . ' ' .
-                    $column->getPrimary() . ' ' .
-                    $column->getDefault() . ',' . "\n";
+                    $column->getName().' '.
+                    $column->getType().''.
+                    $column->getMax().' '.
+                    $column->getNullable().' '.
+                    $column->getIncrements().' '.
+                    $column->getPrimary().' '.
+                    $column->getDefault().','."\n";
                 $columns .=
-                    $column->getForeign() . ',' . "\n";
+                    $column->getForeign().','."\n";
             }
         }
 
