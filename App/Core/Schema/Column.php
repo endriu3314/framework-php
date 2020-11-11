@@ -41,7 +41,7 @@ class Column
 
     public function getMax()
     {
-        return ($this->max) ? '(' . $this->max . ')' : '';
+        return ($this->max) ? '('.$this->max.')' : '';
     }
 
     public function getIncrements()
@@ -51,7 +51,7 @@ class Column
 
     public function getDefault()
     {
-        return ($this->default) ? "DEFAULT \'" . $this->default . "\'" : '';
+        return ($this->default) ? "DEFAULT \'".$this->default."\'" : '';
     }
 
     public function getPrimary()
@@ -61,17 +61,17 @@ class Column
 
     public function getOnUpdate()
     {
-        return ($this->onupdate) ? 'ON UPDATE ' . $this->onupdate : '';
+        return ($this->onupdate) ? 'ON UPDATE '.$this->onupdate : '';
     }
 
     public function getOnDelete()
     {
-        return ($this->ondelete) ? 'ON DELETE ' . $this->ondelete : '';
+        return ($this->ondelete) ? 'ON DELETE '.$this->ondelete : '';
     }
 
     public function getForeign()
     {
-        return ($this->foreign_key) ? "FOREIGN KEY (" . $this->getName() . ") REFERENCES " . $this->reference . ' ' . $this->getOnUpdate() . ' ' . $this->getOnDelete() : '';
+        return ($this->foreign_key) ? 'FOREIGN KEY ('.$this->getName().') REFERENCES '.$this->reference.' '.$this->getOnUpdate().' '.$this->getOnDelete() : '';
     }
 
     public function autoIncrement()
