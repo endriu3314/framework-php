@@ -7,7 +7,7 @@ use App\Core\Router\Router;
 define('ROOT', dirname(__DIR__).DIRECTORY_SEPARATOR);
 define('APP', ROOT.'App'.DIRECTORY_SEPARATOR);
 
-define('CONFIG', APP.'config'.DIRECTORY_SEPARATOR);
+define('CONFIG', APP.'Config'.DIRECTORY_SEPARATOR);
 define('CORE', APP.'Core'.DIRECTORY_SEPARATOR);
 define('HELPER', APP.'Helpers'.DIRECTORY_SEPARATOR);
 define('HTTP', APP.'Http'.DIRECTORY_SEPARATOR);
