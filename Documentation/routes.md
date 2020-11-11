@@ -10,9 +10,13 @@
 
 - Installing the YAML PHP Extension is required.
 
+Fallback you can use `routes.json`
+
 ### `file` [:up:](#Router)
 
 File has to be called `routes.yml` and has to be at the tree of the project.
+
+Fallback `routes.json`
 
 ### `example` [:up:](#Router)
 
@@ -28,6 +32,20 @@ routes:
     ...
 ```
 
+```json
+{
+    "routes": {
+        ...
+        "home": {
+            "url": "/",
+            "method": "GET",
+            "view": "..\\..\\HomeView"
+        }
+        ...
+    }
+}
+```
+
 Route with **action**
 
 ```yaml
@@ -36,8 +54,24 @@ routes:
     home-submit:
         url: /submit
         method: POST
+        action: test
         model: ..\..\Model
         view: ..\..\HomeView
         controller: ..\..\Controller
     ...
+```
+
+```json
+{
+    "routes": {
+        ...
+        "home": {
+            "url": "/",
+            "method": "GET",
+            "controller": "App\\Http\\Controllers\\HomeController",
+            "action": "submit"
+        }
+        ...
+    }
+}
 ```
