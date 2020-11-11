@@ -22,17 +22,32 @@ class Blueprint
 
     public function generate($name)
     {
-        $baseSQL = "CREATE TABLE $name ( %s )";
+        $baseSQL = "CREATE TABLE $name\n(\n%s\n);";
 
         $columns = '';
-        foreach ($this->columns as $key => $column) {
-            $columns .= $column->getName().' '.
-                $column->getType().' '.
-                $column->getIncrements().' '.
-                $column->getMax().' '.
-                $column->getPrimary().' '.
-                $column->getDefault().' '.
-                $column->getNullable().',';
+
+        foreach ($this->columns as $column) {
+            if (!(strlen($column->getForeign()) > 0)) {
+                $columns .=
+                    $column->getName() . ' ' .
+                    $column->getType() . '' .
+                    $column->getMax() . ' ' .
+                    $column->getNullable() . ' ' .
+                    $column->getIncrements() . ' ' .
+                    $column->getPrimary() . ' ' .
+                    $column->getDefault() . ',' . "\n";
+            } else {
+                $columns .=
+                    $column->getName() . ' ' .
+                    $column->getType() . '' .
+                    $column->getMax() . ' ' .
+                    $column->getNullable() . ' ' .
+                    $column->getIncrements() . ' ' .
+                    $column->getPrimary() . ' ' .
+                    $column->getDefault() . ',' . "\n";
+                $columns .=
+                    $column->getForeign() . ',' . "\n";
+            }
         }
 
         echo StringHelper::removeLastOccurrence(preg_replace("/\s+/", ' ', sprintf($baseSQL, $columns, '')), ',');
