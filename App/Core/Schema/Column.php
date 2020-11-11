@@ -12,6 +12,11 @@ class Column
     protected $increments;
     protected $primary_key;
 
+    protected $foreign_key;
+    protected $reference;
+    protected $onupdate;
+    protected $ondelete;
+
     public function __construct($name, string $type = '', string $max = '')
     {
         $this->name = $name;
@@ -51,7 +56,22 @@ class Column
 
     public function getPrimary()
     {
-        return ($this->primary_key) ? 'primary key' : '';
+        return ($this->primary_key) ? 'PRIMARY KEY' : '';
+    }
+
+    public function getOnUpdate()
+    {
+        return ($this->onupdate) ? 'ON UPDATE '.$this->onupdate : '';
+    }
+
+    public function getOnDelete()
+    {
+        return ($this->ondelete) ? 'ON DELETE '.$this->ondelete : '';
+    }
+
+    public function getForeign()
+    {
+        return ($this->foreign_key) ? 'FOREIGN KEY ('.$this->getName().') REFERENCES '.$this->reference.' '.$this->getOnUpdate().' '.$this->getOnDelete() : '';
     }
 
     public function autoIncrement()
@@ -85,6 +105,35 @@ class Column
     public function maxValue($value)
     {
         $this->max = $value;
+
+        return $this;
+    }
+
+    public function foreignKey()
+    {
+        $this->foreign_key = true;
+        $this->primary_key = false;
+
+        return $this;
+    }
+
+    public function references($column)
+    {
+        $this->reference = $column;
+
+        return $this;
+    }
+
+    public function onUpdate($update)
+    {
+        $this->onupdate = $update;
+
+        return $this;
+    }
+
+    public function onDelete($delete)
+    {
+        $this->ondelete = $delete;
 
         return $this;
     }
