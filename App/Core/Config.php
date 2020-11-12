@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use RuntimeException;
+use App\Core\Exceptions\FileNotFoundException;
 use SplFileInfo;
 
 class Config
@@ -14,11 +14,11 @@ class Config
         $fileData = new SplFileInfo($filePath);
 
         if (!$fileData->isFile()) {
-            throw new RuntimeException("$filePath is not a file");
+            throw new FileNotFoundException("$filePath is not a file");
         }
 
         if (!$fileData->isReadable()) {
-            throw new RuntimeException("$filePath is not readable");
+            throw new FileNotFoundException("$filePath is not readable");
         }
 
         if (extension_loaded('yaml')) {
