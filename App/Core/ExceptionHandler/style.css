@@ -80,6 +80,14 @@ body {
   color: #2D3748;
 }
 
+.error-content-container-errors sm {
+  font-size: 12px;
+}
+
+.error-content-container-errors b {
+  font-size: 17px;
+}
+
 .error-info {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -104,7 +112,11 @@ body {
 }
 
 .tab a:hover {
-  background-color: #e1bf47;
+  background-color: #d6b43c;
+}
+
+.active{
+  background-color: #d6b43c !important;
 }
 
 /* Style the tab content */
