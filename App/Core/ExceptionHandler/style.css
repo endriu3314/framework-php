@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap');
+
+body {
+  background-color: #E2E8F0;
+  //font-family: 'Cousine', monospace;
+  font-family: 'Source Code Pro', monospace;
+}
+
+.error-container {
+  max-width: 80%;
+  margin: 4rem auto;
+}
+
+.error-title-container {
+  background-color: #38A169;
+  padding: 1px 1rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.error-title-container h1 {
+  color: white;
+  font-family: 'Cousine', monospace;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.error-title-container h2 {
+  font-weight: 500;
+  color: #EDF2F7;
+  margin-top: 0;
+}
+
+.error-buttons-container {
+  background-color: #F6E05E;
+  padding: 1rem;
+  text-align: center;
+}
+
+.error-button {
+  cursor: pointer;
+  background-color: #ECC94B;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  font-family: 'Cousine', monospace;
+}
+
+.error-button:hover {
+  background-color: #e1bf47;
+}
+
+.error-content-container {
+  background-color: #ffffff;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.error-content-container-errors {
+  #width: 25%;
+  #border-right: 0.15rem solid #E2E8F0;
+  padding-top: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+.error-content-container-errors .function {
+  color: #1A202C;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.error-content-container-errors .line {
+  color: #38A169;
+  font-size: 1.5rem;
+}
+
+.error-content-container-errors .file {
+  font-size: 1rem;
+  color: #2D3748;
+}
+
+.error-content-container-errors sm {
+  font-size: 12px;
+}
+
+.error-content-container-errors b {
+  font-size: 17px;
+}
+
+.error-info {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+/* Style the tab */
+.tab {
+  background-color: #F6E05E;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Style the buttons that are used to open the tab content */
+
+.tab a {
+  cursor: pointer;
+  background-color: #ECC94B;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  font-family: 'Cousine', monospace;
+}
+
+.tab a:hover {
+  background-color: #d6b43c;
+}
+
+.active{
+  background-color: #d6b43c !important;
+}
+
+/* Style the tab content */
+.tabContent {
+  display: none;
+  border-top: none;
+}
+
+.tabContent {
+  animation: fadeEffect 0.2s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}

@@ -22,6 +22,13 @@ spl_autoload_register(function ($class) {
     include ROOT.str_replace('\\', '/', $class).'.php';
 });
 
+function exception_handler($exception)
+{
+    include CORE.'/ExceptionHandler/template.php';
+}
+
+set_exception_handler('exception_handler');
+
 $routes = '';
 
 if (extension_loaded('yaml')) {

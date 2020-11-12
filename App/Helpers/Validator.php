@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use RuntimeException;
+use App\Core\Exceptions\ValidatorException;
 
 /**
  * Class Validator
@@ -356,17 +356,17 @@ class Validator
                             return false;
                         }
                     } else {
-                        throw new RuntimeException('Condition does not exist');
+                        throw new ValidatorException('Condition does not exist');
                     }
                 }
             } else {
-                throw new RuntimeException('Type does not exist');
+                throw new ValidatorException('Type does not exist');
             }
         } else {
             if (isset(self::$types[$type])) {
                 return self::$types[$type]($value);
             } else {
-                throw new RuntimeException('Type does not exist');
+                throw new ValidatorException('Type does not exist');
             }
         }
 
