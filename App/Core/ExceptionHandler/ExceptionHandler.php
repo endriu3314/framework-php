@@ -28,8 +28,9 @@ class ExceptionHandler
 
     public static function printFileLinesFromArray($fileContentArray, $exception, $lines = 3, $type = "object")
     {
-        $start = $type == "object" ? $exception->getLine() - $lines : $exception["line"] - $lines;
-        $final = $type == "object" ? $exception->getLine() + $lines : $exception["line"] + $lines;
+        $line = $type == "object" ? $exception->getLine() : $exception["line"];
+        $start = $type == "object" ? $line - $lines : $line - $lines;
+        $final = $type == "object" ? $line + $lines : $line + $lines;
         $totalLines = count($fileContentArray);
 
         if ($start < 0) {
@@ -46,7 +47,8 @@ class ExceptionHandler
             if ($counter < 10) echo $counter . '  ';
             else echo $counter . ' ';
 
-            echo $fileContentArray[$counter];
+            $style = $counter == $line ? 'background-color: #FC8181' : 'background-color: none';
+            echo '<a style="'.$style.'">'.$fileContentArray[$counter].'</a>';
         }
     }
 }
