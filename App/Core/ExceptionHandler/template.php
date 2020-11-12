@@ -3,7 +3,7 @@
 <head>
     <title>Error!</title>
     <style>
-        <?php include "style.css" ?>
+        <?php include 'style.css' ?>
     </style>
 </head>
 
@@ -33,17 +33,17 @@
             <div class="error-content-container-errors">
                 <?php
                 echo '<div class="error-info">';
-                echo '<a class="line">' . $exception->getLine() . '</a>';
+                echo '<a class="line">'.$exception->getLine().'</a>';
                 echo '<br/>';
-                echo '<a class="file">' . $exception->getFile() . '</a>';
+                echo '<a class="file">'.$exception->getFile().'</a>';
                 echo '</div>';
                 ?>
                 <?php
                 foreach ($exception->getTrace() as $trace) {
                     echo '<div class="error-info">';
-                    echo '<a class="function">' . $trace["function"] . ' - ' . '</a>' . '<a class="line">' . $trace["line"] . '</a>';
+                    echo '<a class="function">'.$trace['function'].' - '.'</a>'.'<a class="line">'.$trace['line'].'</a>';
                     echo '<br/>';
-                    echo '<a class="file">' . $trace["file"] . '</a>';
+                    echo '<a class="file">'.$trace['file'].'</a>';
                     echo '</div>';
                 }
                 ?>
@@ -56,9 +56,9 @@
             <div class="error-content-container-errors">
                 <?php
                 $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($exception->getFile());
-                echo '<b>' . \App\Helpers\StringHelper::getFileNameFromPath($exception->getFile()) . '</b>';
+                echo '<b>'.\App\Helpers\StringHelper::getFileNameFromPath($exception->getFile()).'</b>';
                 echo '<br/>';
-                echo '<sm>' . $exception->getFile() . '</sm>';
+                echo '<sm>'.$exception->getFile().'</sm>';
                 echo '<pre class="code" style="">';
                 echo '<code>';
                 \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $exception, 5);
@@ -67,13 +67,13 @@
                 echo '<br/>';
 
                 foreach ($exception->getTrace() as $key => $trace) {
-                    $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($trace["file"]);
-                    echo '<b>' . \App\Helpers\StringHelper::getFileNameFromPath($trace["file"]) . ' - ' . $trace["line"] . '</b>';
+                    $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($trace['file']);
+                    echo '<b>'.\App\Helpers\StringHelper::getFileNameFromPath($trace['file']).' - '.$trace['line'].'</b>';
                     echo '<br/>';
-                    echo '<sm>' . $trace["file"] . '</sm>';
+                    echo '<sm>'.$trace['file'].'</sm>';
                     echo '<pre class="code" style="">';
                     echo '<code>';
-                    \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $trace, 5, "array");
+                    \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $trace, 5, 'array');
                     echo '</code>';
                     echo '</pre>';
                     echo '<br/>';
@@ -89,10 +89,12 @@
                 <?php
                 foreach ($exception->getTrace() as $trace) {
                     foreach ($trace as $key => $traceInfo) {
-                        echo '<b>[' . $key . ']</b> : ';
+                        echo '<b>['.$key.']</b> : ';
                         if (is_array($traceInfo)) {
                             var_dump($traceInfo);
-                        } else echo '<a>' . $traceInfo . '</a>';
+                        } else {
+                            echo '<a>'.$traceInfo.'</a>';
+                        }
                         echo '<br/>';
                     }
                     echo '<br/>';
