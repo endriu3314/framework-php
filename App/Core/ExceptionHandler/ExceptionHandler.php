@@ -29,8 +29,8 @@ class ExceptionHandler
     public static function printFileLinesFromArray($fileContentArray, $exception, $lines = 3, $type = "object")
     {
         $line = $type == "object" ? $exception->getLine() : $exception["line"];
-        $start = $type == "object" ? $line - $lines : $line - $lines;
-        $final = $type == "object" ? $line + $lines : $line + $lines;
+        $start = $line - $lines;
+        $final = $line + $lines;
         $totalLines = count($fileContentArray);
 
         if ($start < 0) {
