@@ -22,7 +22,8 @@ spl_autoload_register(function ($class) {
     include ROOT.str_replace('\\', '/', $class).'.php';
 });
 
-function exception_handler($exception) {
+function exception_handler($exception)
+{
     include CORE.'/ExceptionHandler/template.php';
 }
 
