@@ -2,6 +2,8 @@
 
 namespace App\Core\CLI;
 
+use App\Core\Exceptions\CliException;
+
 class CommandRegistry
 {
     protected $registry = [];
@@ -38,7 +40,7 @@ class CommandRegistry
 
         $command = $this->getCommand($command_name);
         if ($command === null) {
-            throw new \Exception("Command \"$command_name\" not found.");
+            throw new CliException("Command \"$command_name\" not found.");
         }
 
         return $command;
