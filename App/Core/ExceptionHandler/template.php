@@ -55,36 +55,11 @@
         <div class="error-content-container">
             <div class="error-content-container-errors">
                 <?php
-                $file = fopen($exception->getFile(), "r");
+                $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($exception->getFile());
 
-                //array starts from 0, when reading file we want to start from 1
-                $fileArray = ['']; //default value to do +1 to index
-
-                while (!feof($file)) {
-                    $fileArray[] = fgets($file) . "<br>";
-                }
-
-                $lines = 3;
-                $start = $exception->getLine() - $lines;
-
-                if ($start < 0) {
-                    echo "There was an error, starting from top of file";
-                    $start = 0;
-                }
-
-                fclose($file);
                 echo '<pre>';
                 echo '<code>';
-                for ($i = $start; $i >= 0 && $i <= $exception->getLine() + $lines; $i++) {
-                    if ($i >= count($fileArray))
-                        break;
-
-                    if ($i < 10) echo $i . '  ';
-                    else echo $i . ' ';
-
-                    $style = $i == $exception->getLine() ? 'background-color: #FC8181' : 'background-color: none';
-                    echo '<a style="' . $style . '">' . $fileArray[$i] . '</a>';
-                }
+                \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $exception, 5);
                 echo '</code>';
                 echo '</pre>';
                 ?>
