@@ -10,7 +10,7 @@ class ExceptionHandler
     {
         $file = fopen($filePath, "r");
 
-        $fileArray = [];
+        $fileArray = [''];
 
         while (!feof($file)) {
             $fileArray[] = fgets($file);
@@ -21,10 +21,15 @@ class ExceptionHandler
         return $fileArray;
     }
 
-    public static function printFileLinesFromArray($fileContentArray, $exception, $lines = 3)
+    public static function getFileContentStringFromPath($filePath)
     {
-        $start = $exception->getLine() - $lines;
-        $final = $exception->getLine() + $lines;
+        return file_get_contents($filePath);
+    }
+
+    public static function printFileLinesFromArray($fileContentArray, $exception, $lines = 3, $type = "object")
+    {
+        $start = $type == "object" ? $exception->getLine() - $lines : $exception["line"] - $lines;
+        $final = $type == "object" ? $exception->getLine() + $lines : $exception["line"] + $lines;
         $totalLines = count($fileContentArray);
 
         if ($start < 0) {
@@ -32,17 +37,16 @@ class ExceptionHandler
             $start = 0;
         }
 
-        if ($final > $totalLines) {
-            echo "There was an error, going till end of file";
-            $final = $totalLines;
+        if ($final > $totalLines-1) {
+            echo "There was an error, going till end of file" . "<br/><br/>";
+            $final = $totalLines-1;
         }
 
         for ($counter = $start; $counter <= $final; $counter++) {
             if ($counter < 10) echo $counter . '  ';
             else echo $counter . ' ';
 
-            $style = $counter == $exception->getLine() ? 'background-color: #FC8181' : 'background-color: none';
-            echo '<a style="' . $style . '">' . $fileContentArray[$counter] . '</a>';
+            echo $fileContentArray[$counter];
         }
     }
 }
