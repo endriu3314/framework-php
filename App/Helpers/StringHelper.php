@@ -27,4 +27,9 @@ class StringHelper
     {
         return substr_replace($string, '', strrpos($string, $toRemove), strlen($toRemove));
     }
+
+    public static function getFileNameFromPath($path, $extension = "")
+    {
+        return basename($path, $extension);
+    }
 }
