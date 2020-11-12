@@ -22,8 +22,8 @@
 
     <!-- Tab links -->
     <div class="tab">
-        <a class="tabLinks" onclick="openHorizontalTab(event, 'Stacktrace')" id="defaultOpen">Stacktrace</a>
-        <a class="tabLinks" onclick="openHorizontalTab(event, 'Code')">Code</a>
+        <a class="tabLinks" onclick="openHorizontalTab(event, 'Stacktrace')">Stacktrace</a>
+        <a class="tabLinks" onclick="openHorizontalTab(event, 'Code')" id="defaultOpen">Code</a>
         <a class="tabLinks" onclick="openHorizontalTab(event, 'FullTrace')">Full Trace</a>
     </div>
 
@@ -56,12 +56,28 @@
             <div class="error-content-container-errors">
                 <?php
                 $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($exception->getFile());
-
-                echo '<pre>';
+                echo '<b>' . \App\Helpers\StringHelper::getFileNameFromPath($exception->getFile()) . '</b>';
+                echo '<br/>';
+                echo '<sm>' . $exception->getFile() . '</sm>';
+                echo '<pre class="code" style="">';
                 echo '<code>';
                 \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $exception, 5);
                 echo '</code>';
                 echo '</pre>';
+                echo '<br/>';
+
+                foreach ($exception->getTrace() as $key => $trace) {
+                    $fileContent = \App\Core\ExceptionHandler\ExceptionHandler::getFileContentArrayFromPath($trace["file"]);
+                    echo '<b>' . \App\Helpers\StringHelper::getFileNameFromPath($trace["file"]) . ' - ' . $trace["line"] . '</b>';
+                    echo '<br/>';
+                    echo '<sm>' . $trace["file"] . '</sm>';
+                    echo '<pre class="code" style="">';
+                    echo '<code>';
+                    \App\Core\ExceptionHandler\ExceptionHandler::printFileLinesFromArray($fileContent, $trace, 5, "array");
+                    echo '</code>';
+                    echo '</pre>';
+                    echo '<br/>';
+                }
                 ?>
             </div>
         </div>
@@ -76,8 +92,7 @@
                         echo '<b>[' . $key . ']</b> : ';
                         if (is_array($traceInfo)) {
                             var_dump($traceInfo);
-                        }
-                        else echo '<a>' . $traceInfo . '</a>';
+                        } else echo '<a>' . $traceInfo . '</a>';
                         echo '<br/>';
                     }
                     echo '<br/>';
