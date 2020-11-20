@@ -5,10 +5,22 @@ namespace App\Core;
 use App\Core\Exceptions\FileNotFoundException;
 use SplFileInfo;
 
+/**
+ * Class Config
+ * Read from YAML or JSON file.
+ */
 class Config
 {
+    /* @var mixed - Data of file*/
     private $data;
 
+    /**
+     * Config constructor.
+     *
+     * @param string $filePath - File path to config file
+     *
+     * @throws FileNotFoundException - Throw exception if file is not valid
+     */
     public function __construct(string $filePath)
     {
         $fileData = new SplFileInfo($filePath);
@@ -29,6 +41,11 @@ class Config
         }
     }
 
+    /**
+     * Return data of file.
+     *
+     * @return array
+     */
     public function getData(): array
     {
         return $this->data;

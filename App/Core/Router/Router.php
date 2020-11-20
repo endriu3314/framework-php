@@ -4,10 +4,21 @@ namespace App\Core\Router;
 
 use App\Core\Config;
 
+/**
+ * Class Router
+ * Handle Routes and Route matches in Application.
+ */
 class Router
 {
+    /* @var array - Array of existing routes */
     private $routes;
 
+    /**
+     * Router constructor.
+     * Reads YAML file and maps routes to class property.
+     *
+     * @param Config $routes
+     */
     public function __construct(Config $routes)
     {
         $this->routes = [];
@@ -38,6 +49,16 @@ class Router
         }
     }
 
+    /**
+     * Match request with routes
+     * Check if requested route exists, then return it
+     * If not return null.
+     *
+     * @param string $request
+     * @param string $requestMethod
+     *
+     * @return mixed|null - Return route/null
+     */
     public function match(string $request, string $requestMethod)
     {
         if (isset($this->routes[$requestMethod][$request])) {

@@ -2,12 +2,26 @@
 
 namespace App\Core\Router;
 
+/**
+ * Class BaseRoute
+ * Define a Base Route object for the Router.
+ */
 class BaseRoute
 {
+    /* @var string */
     private $model;
+    /* @var string */
     private $controller;
+    /* @var string */
     private $action;
 
+    /**
+     * BaseRoute constructor.
+     *
+     * @param string $model      - Model for route
+     * @param string $controller
+     * @param string $action
+     */
     public function __construct(string $model = '', string $controller = '', string $action = '')
     {
         $this->model = $model;
@@ -15,6 +29,11 @@ class BaseRoute
         $this->action = $action;
     }
 
+    /**
+     * Return Route Model if exists.
+     *
+     * @return string|null
+     */
     public function getModel()
     {
         if ($this->model == '') {
@@ -24,6 +43,11 @@ class BaseRoute
         return $this->model;
     }
 
+    /**
+     * Return Route Controller if exists.
+     *
+     * @return string|null
+     */
     public function getController()
     {
         if ($this->controller == '') {
@@ -33,6 +57,11 @@ class BaseRoute
         return $this->controller;
     }
 
+    /**
+     * Return Route Action if exists.
+     *
+     * @return string|null
+     */
     public function getAction()
     {
         if ($this->action == '') {
