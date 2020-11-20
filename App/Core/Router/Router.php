@@ -6,7 +6,7 @@ use App\Core\Config;
 
 /**
  * Class Router
- * Handle Routes and Route matches in Application
+ * Handle Routes and Route matches in Application.
  */
 class Router
 {
@@ -15,7 +15,7 @@ class Router
 
     /**
      * Router constructor.
-     * Reads YAML file and maps routes to class property
+     * Reads YAML file and maps routes to class property.
      *
      * @param Config $routes
      */
@@ -52,7 +52,7 @@ class Router
     /**
      * Match request with routes
      * Check if requested route exists, then return it
-     * If not return null
+     * If not return null.
      *
      * @param string $request
      * @param string $requestMethod

@@ -7,7 +7,7 @@ use SplFileInfo;
 
 /**
  * Class Config
- * Read from YAML or JSON file
+ * Read from YAML or JSON file.
  */
 class Config
 {
@@ -16,7 +16,9 @@ class Config
 
     /**
      * Config constructor.
+     *
      * @param string $filePath - File path to config file
+     *
      * @throws FileNotFoundException - Throw exception if file is not valid
      */
     public function __construct(string $filePath)
@@ -40,7 +42,7 @@ class Config
     }
 
     /**
-     * Return data of file
+     * Return data of file.
      *
      * @return array
      */

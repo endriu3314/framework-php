@@ -4,7 +4,7 @@ namespace App\Core\Router;
 
 /**
  * Class BaseRoute
- * Define a Base Route object for the Router
+ * Define a Base Route object for the Router.
  */
 class BaseRoute
 {
@@ -18,7 +18,7 @@ class BaseRoute
     /**
      * BaseRoute constructor.
      *
-     * @param string $model - Model for route
+     * @param string $model      - Model for route
      * @param string $controller
      * @param string $action
      */
@@ -30,7 +30,7 @@ class BaseRoute
     }
 
     /**
-     * Return Route Model if exists
+     * Return Route Model if exists.
      *
      * @return string|null
      */
@@ -44,7 +44,7 @@ class BaseRoute
     }
 
     /**
-     * Return Route Controller if exists
+     * Return Route Controller if exists.
      *
      * @return string|null
      */
@@ -58,7 +58,7 @@ class BaseRoute
     }
 
     /**
-     * Return Route Action if exists
+     * Return Route Action if exists.
      *
      * @return string|null
      */
