@@ -6,7 +6,7 @@ use App\Core\Exceptions\HttpException;
 
 /**
  * Class Post
- * Used to create a CURL POST request
+ * Used to create a CURL POST request.
  */
 class Post
 {
@@ -20,11 +20,9 @@ class Post
     /**
      * Post constructor.
      *
-     * @param string $url - URL To make request to
-     *
-     * @param array $options - CURL Options
-     *
-     * @param array $headers - Headers for request
+     * @param string $url     - URL To make request to
+     * @param array  $options - CURL Options
+     * @param array  $headers - Headers for request
      */
     public function __construct(string $url, array $options = [], array $headers = [])
     {
@@ -51,7 +49,7 @@ class Post
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
-        $response  = curl_exec($ch);
+        $response = curl_exec($ch);
         $error = curl_error($ch);
         $errno = curl_errno($ch);
 
@@ -63,6 +61,6 @@ class Post
             throw new HttpException($error, $$errno);
         }
 
-        return (string)$response;
+        return (string) $response;
     }
 }
