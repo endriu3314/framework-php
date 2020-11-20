@@ -2,7 +2,7 @@
 
 namespace App\Core\Http;
 
-use RuntimeException;
+use App\Core\Exceptions\HttpException;
 
 /**
  * Class Post
@@ -60,7 +60,7 @@ class Post
         }
 
         if ($errno !== 0) {
-            throw new RuntimeException($error, $$errno);
+            throw new HttpException($error, $$errno);
         }
 
         return (string)$response;
