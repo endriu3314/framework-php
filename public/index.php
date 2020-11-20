@@ -5,6 +5,7 @@ use App\Core\Config;
 use App\Core\Router\Router;
 
 define('ROOT', dirname(__DIR__).DIRECTORY_SEPARATOR);
+define('TEMPLATES', ROOT.'templates'.DIRECTORY_SEPARATOR);
 define('APP', ROOT.'App'.DIRECTORY_SEPARATOR);
 
 define('CONFIG', APP.'Config'.DIRECTORY_SEPARATOR);
@@ -26,8 +27,12 @@ function exception_handler($exception)
 {
     if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev')
         include CORE.'/ExceptionHandler/template.php';
-    else
-        include CORE.'/ExceptionHandler/500.php';
+    else {
+        if (file_exists(TEMPLATES.'500/500.html'))
+            include TEMPLATES . '500/500.html';
+        else
+            include CORE . '/ExceptionHandler/500.php';
+    }
 }
 
 set_exception_handler('exception_handler');
