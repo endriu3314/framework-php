@@ -1,13 +1,15 @@
 # Validator
 
-- [`about`](validator.md#about)
-- [`basic usage`](<validator.md#basic usage>)
-- [`types`](validator.md#types)
-- [`conditions`](validator.md#conditions)
+- [`about`](validator.md#about-up)
+- [`basic usage`](validator.md#basic-usage-up)
+- [`types`](validator.md#types-up)
+- [`conditions`](validator.md#conditions-up)
 
 ### `about` [:up:](#Validator)
 
 - The validator is a feature letting you validate a data. It will always return a boolean meaning the state of validation, true, it succeded or false, it failed.
+
+---
 
 ### `basic usage` [:up:](#Validator)
 
@@ -21,6 +23,8 @@ Validator::is("a.croitoru3@icloud.com", "email");
 Validator::is("string", "int");
 # return false
 ```
+
+---
 
 ### `types` [:up:](#Validator)
 
@@ -43,6 +47,8 @@ Validator::is("string", "int");
 - `class`
 - `interface`
 - `trait`
+
+---
 
 ### `conditions` [:up:](#Validator)
 
