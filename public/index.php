@@ -24,7 +24,10 @@ spl_autoload_register(function ($class) {
 
 function exception_handler($exception)
 {
-    include CORE.'/ExceptionHandler/template.php';
+    if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev')
+        include CORE.'/ExceptionHandler/template.php';
+    else
+        include CORE.'/ExceptionHandler/500.php';
 }
 
 set_exception_handler('exception_handler');
