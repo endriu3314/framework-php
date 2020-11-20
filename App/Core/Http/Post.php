@@ -4,19 +4,42 @@ namespace App\Core\Http;
 
 use RuntimeException;
 
+/**
+ * Class Post
+ * Used to create a CURL POST request
+ */
 class Post
 {
+    /* @var $url string - String with the URL to request to */
     private $url;
+    /* @var $options array - CURL Options for Request */
     private $options;
+    /* @var $headers array - Headers for request */
     private $headers;
 
-    public function __construct($url, $options = [], $headers = [])
+    /**
+     * Post constructor.
+     *
+     * @param string $url - URL To make request to
+     *
+     * @param array $options - CURL Options
+     *
+     * @param array $headers - Headers for request
+     */
+    public function __construct(string $url, array $options = [], array $headers = [])
     {
         $this->url = $url;
         $this->options = $options;
         $this->headers = $headers;
     }
 
+    /**
+     * The CURL request runs in here, when the class is invoked.
+     *
+     * @param $post - Post fields to send
+     *
+     * @return string
+     */
     public function __invoke($post)
     {
         $ch = curl_init($this->url);
@@ -40,6 +63,6 @@ class Post
             throw new RuntimeException($error, $$errno);
         }
 
-        return $response;
+        return (string)$response;
     }
 }
