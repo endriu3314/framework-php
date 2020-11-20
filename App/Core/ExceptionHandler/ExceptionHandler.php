@@ -4,12 +4,12 @@ namespace App\Core\ExceptionHandler;
 
 /**
  * Class ExceptionHandler
- * Used to handle errors in development mode
+ * Used to handle errors in development mode.
  */
 class ExceptionHandler
 {
     /**
-     * Get each line of a file in array
+     * Get each line of a file in array.
      *
      * @param string $filePath - Path to file on disk
      *
@@ -31,7 +31,7 @@ class ExceptionHandler
     }
 
     /**
-     * Get file content inside a string
+     * Get file content inside a string.
      *
      * @param string $filePath - Path to file on disk
      *
@@ -44,12 +44,12 @@ class ExceptionHandler
 
     /**
      * Print lines from array on page
-     * Prints a number of lines before and after the Exception line
+     * Prints a number of lines before and after the Exception line.
      *
-     * @param array $fileContentArray - File of exception content
-     * @param mixed $exception - Exception object/array
-     * @param int $lines - Number of lines to print (before and after error line)
-     * @param string $type - Type of exception (object/array)
+     * @param array  $fileContentArray - File of exception content
+     * @param mixed  $exception        - Exception object/array
+     * @param int    $lines            - Number of lines to print (before and after error line)
+     * @param string $type             - Type of exception (object/array)
      */
     public static function printFileLinesFromArray(array $fileContentArray, $exception, int $lines = 3, string $type = 'object')
     {
