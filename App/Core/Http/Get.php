@@ -6,7 +6,7 @@ use App\Core\Exceptions\HttpException;
 
 /**
  * Class Get
- * Used to create a CURL GET request
+ * Used to create a CURL GET request.
  */
 class Get
 {
@@ -20,11 +20,9 @@ class Get
     /**
      * Get constructor.
      *
-     * @param string $url - URL To make request to
-     *
-     * @param array $options - CURL Options
-     *
-     * @param array $headers - Headers for request
+     * @param string $url     - URL To make request to
+     * @param array  $options - CURL Options
+     * @param array  $headers - Headers for request
      */
     public function __construct(string $url, array $options = [], array $headers = [])
     {
@@ -48,7 +46,7 @@ class Get
         curl_setopt($ch, CURLOPT_POST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $response  = curl_exec($ch);
+        $response = curl_exec($ch);
         $error = curl_error($ch);
         $errno = curl_errno($ch);
 
@@ -60,6 +58,6 @@ class Get
             throw new HttpException($error, $$errno);
         }
 
-        return (string)$response;
+        return (string) $response;
     }
 }
