@@ -25,13 +25,14 @@ spl_autoload_register(function ($class) {
 
 function exception_handler($exception)
 {
-    if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev')
+    if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev') {
         include CORE.'/ExceptionHandler/template.php';
-    else {
-        if (file_exists(TEMPLATES.'500/500.html'))
-            include TEMPLATES . '500/500.html';
-        else
-            include CORE . '/ExceptionHandler/500.php';
+    } else {
+        if (file_exists(TEMPLATES.'500/500.html')) {
+            include TEMPLATES.'500/500.html';
+        } else {
+            include CORE.'/ExceptionHandler/500.php';
+        }
     }
 }
 
