@@ -64,19 +64,19 @@ class ExceptionHandler
         }
 
         if ($final > $totalLines - 1) {
-            echo 'There was an error, going till end of file'.'<br/><br/>';
+            echo 'There was an error, going till end of file' . '<br/><br/>';
             $final = $totalLines - 1;
         }
 
         for ($counter = $start; $counter <= $final; $counter++) {
             if ($counter < 10) {
-                echo $counter.'  ';
+                echo $counter . '  ';
             } else {
-                echo $counter.' ';
+                echo $counter . ' ';
             }
 
             $style = $counter == $line ? 'background-color: #FC8181' : 'background-color: none';
-            echo '<a style="'.$style.'">'.$fileContentArray[$counter].'</a>';
+            echo '<a style="' . $style . '">' . $fileContentArray[$counter] . '</a>';
         }
     }
 }

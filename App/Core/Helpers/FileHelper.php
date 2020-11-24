@@ -17,7 +17,7 @@ class FileHelper
         $result = [];
 
         foreach ($files as $file) {
-            if (is_dir($path.'/'.$file)) {
+            if (is_dir($path . '/' . $file)) {
                 continue;
             }
             if (!in_array($file, ['.', '..', '.DS_Store'])) {

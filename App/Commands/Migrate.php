@@ -40,7 +40,7 @@ class Migrate extends CommandController
         fclose($handle);
 
         for ($counter = 2; $counter < count($migrations); $counter++) {
-            include 'App/Migrations/'.$migrations[$counter];
+            include 'App/Migrations/' . $migrations[$counter];
         }
     }
 }

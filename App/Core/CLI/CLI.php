@@ -40,7 +40,7 @@ class CLI
         try {
             call_user_func($this->command_registry->getCallable($command_name), $argv);
         } catch (\Exception $e) {
-            $this->getPrinter()->display('ERROR: '.$e->getMessage());
+            $this->getPrinter()->display('ERROR: ' . $e->getMessage());
             exit;
         }
     }
