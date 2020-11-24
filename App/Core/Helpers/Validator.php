@@ -41,6 +41,9 @@ class Validator
         'class'     => [self::class, 'isClass'],
         'interface' => [self::class, 'isInterface'],
         'isTrait'   => [self::class, 'isTrait'],
+
+        'date' => [self::class, 'isDate'],
+        'dateTime' => [self::class, 'isDateTime'],
     ];
 
     /**
@@ -108,6 +111,9 @@ class Validator
         'ipv4'  => 'strlen',
         'ipv6'  => 'strlen',
         'email' => 'strlen',
+
+        'date' => 'compareDate',
+        'dateTime' => 'compareDate',
 
         'numeric' => 'number',
         'number'  => 'number',
@@ -318,6 +324,34 @@ class Validator
     }
 
     /**
+     * Check if the input is a Date
+     *
+     * @param mixed  $value
+     * @param string $format Default value is Y-m-d
+     *
+     * @return bool
+     */
+    public static function isDate($value, string $format = 'Y-m-d'): bool
+    {
+        $dt = \DateTime::createFromFormat($format, $value);
+        return $dt !== false && !array_sum($dt::getLastErrors());
+    }
+
+    /**
+     * Check if the input is a DateTime
+     *
+     * @param mixed  $value
+     * @param string $format Default value is Y-m-d H:i:s
+     *
+     * @return bool
+     */
+    public static function isDateTime($value, string $format = 'Y-m-d H:i:s'): bool
+    {
+        $dt = \DateTime::createFromFormat($format, $value);
+        return $dt !== false && !array_sum($dt::getLastErrors());
+    }
+
+    /**
      * General function to implement all checks.
      *
      * @example Validator::is(1, "int,gt:6")
@@ -382,6 +416,7 @@ class Validator
      * @param $type - Type of value
      *
      * @return bool
+     * @throws \Exception
      */
     public static function greaterThan($value, $minimum, $type): bool
     {
@@ -390,9 +425,11 @@ class Validator
                 return true;
             }
         } elseif (self::$counts[$type] === 'number') {
-            if ($value > $minimum) {
-                return true;
-            }
+            return $value > $minimum;
+        } elseif (self::$counts[$type] === 'compareDate') {
+            $date1 = new \DateTime($value);
+            $date2 = new \DateTime($minimum);
+            return $date1 > $date2;
         }
 
         return false;
@@ -407,6 +444,7 @@ class Validator
      * @param $type - Type of value
      *
      * @return bool
+     * @throws \Exception
      */
     public static function greaterThanEqual($value, $minimum, $type): bool
     {
@@ -418,6 +456,10 @@ class Validator
             if ($value >= $minimum) {
                 return true;
             }
+        } elseif (self::$counts[$type] === 'compareDate') {
+            $date1 = new \DateTime($value);
+            $date2 = new \DateTime($minimum);
+            return $date1 >= $date2;
         }
 
         return false;
@@ -432,6 +474,7 @@ class Validator
      * @param $type - Type of value
      *
      * @return bool
+     * @throws \Exception
      */
     public static function lowerThan($value, $maximum, $type): bool
     {
@@ -443,6 +486,10 @@ class Validator
             if ($value < $maximum) {
                 return true;
             }
+        } elseif (self::$counts[$type] === 'compareDate') {
+            $date1 = new \DateTime($value);
+            $date2 = new \DateTime($maximum);
+            return $date1 < $date2;
         }
 
         return false;
@@ -457,6 +504,7 @@ class Validator
      * @param $type - Type of value
      *
      * @return bool
+     * @throws \Exception
      */
     public static function lowerThanEqual($value, $maximum, $type): bool
     {
@@ -468,6 +516,10 @@ class Validator
             if ($value <= $maximum) {
                 return true;
             }
+        } elseif (self::$counts[$type] === 'compareDate') {
+            $date1 = new \DateTime($value);
+            $date2 = new \DateTime($maximum);
+            return $date1 <= $date2;
         }
 
         return false;
@@ -482,6 +534,7 @@ class Validator
      * @param $type - Type of value
      *
      * @return bool
+     * @throws \Exception
      */
     public static function equal($value, $equal, $type): bool
     {
@@ -493,6 +546,10 @@ class Validator
             if ($value == $equal) {
                 return true;
             }
+        } elseif (self::$counts[$type] === 'compareDate') {
+            $date1 = new \DateTime($value);
+            $date2 = new \DateTime($equal);
+            return $date1 == $date2;
         }
 
         return false;
