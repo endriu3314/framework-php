@@ -2,8 +2,8 @@
 
 namespace App\Core\CLI\Commands;
 
-use App\Core\Helpers\FileHelper;
 use App\Core\CLI\CommandController;
+use App\Core\Helpers\FileHelper;
 use App\Core\Helpers\StringHelper;
 
 class Help extends CommandController
@@ -29,14 +29,14 @@ class Help extends CommandController
 
         $commands = array_merge($customCommands, $coreCommands);
 
-        $this->getApp()->getPrinter()->display("Available commands:", 'blue');
+        $this->getApp()->getPrinter()->display('Available commands:', 'blue');
         $this->getApp()->getPrinter()->newline(2);
 
         $this->displayCommands($commands);
     }
 
     /**
-     * Display commands in terminal
+     * Display commands in terminal.
      *
      * @param array $commands - Commands array with "Name" => "Path"
      */
@@ -44,15 +44,15 @@ class Help extends CommandController
     {
         foreach ($commands as $command => $path) {
             $className = StringHelper::removeExtension($command);
-            $classPath = $path . $className;
+            $classPath = $path.$className;
             $commandClassObject = new $classPath($this->getApp());
 
             $commandName = $commandClassObject->name ?? $className;
             $commandHelp = $commandClassObject->help ?? '';
 
-            $this->getApp()->getPrinter()->display("• {$commandName}", "yellow");
+            $this->getApp()->getPrinter()->display("• {$commandName}", 'yellow');
             $this->getApp()->getPrinter()->display(' - ', 'light_green');
-            $this->getApp()->getPrinter()->display($commandHelp, "green");
+            $this->getApp()->getPrinter()->display($commandHelp, 'green');
             $this->getApp()->getPrinter()->newline();
         }
     }
