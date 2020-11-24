@@ -1,33 +1,44 @@
 <?php
 
-use App\Commands\Hello;
-use App\Commands\Migrate;
-use App\Core\Helpers\StringHelper;
-
 spl_autoload_register(function ($class) {
     include __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', '/', $class) . '.php';
 });
 
-if (php_sapi_name() !== "cli") {
+if (PHP_SAPI !== "cli") {
     exit;
 }
 
 $cli = new App\Core\CLI\CLI();
 
-$cli->registerController('hello', new Hello($cli));
-$cli->registerController('migrate', new Migrate($cli));
+/**
+ * Register CORE Commands
+ */
+$commands = \App\Core\Helpers\FileHelper::getFiles('App/Core/CLI/Commands');
 
-$cli->registerCommand('help', function () use ($cli) {
-    $cli->getPrinter()->display("Available commands:", "blue");
-    $cli->getPrinter()->newline(2);
+foreach ($commands as $command) {
+    $className = \App\Core\Helpers\StringHelper::removeExtension($command);
+    $classPath = 'App\Core\CLI\Commands\\'.$className;
+    $commandClassObject = new $classPath($cli);
 
-    $commands = scandir("App/Commands");
+    $commandName = $commandClassObject->name ?? $className;
 
-    for ($counter = 2; $counter < count($commands); $counter++) {
-        $cli->getPrinter()->display("• ", "yellow");
-        $cli->getPrinter()->display(StringHelper::removeExtension($commands[$counter]), "yellow");
-        $cli->getPrinter()->newline();
-    }
-});
+    $cli->registerController($commandName, $commandClassObject);
+}
+
+/**
+ * Register custom commands
+ */
+$commands = \App\Core\Helpers\FileHelper::getFiles('App/Commands');
+
+foreach ($commands as $command) {
+    $className = \App\Core\Helpers\StringHelper::removeExtension($command);
+    $classPath = 'App\Commands\\'.$className;
+    $commandClassObject = new $classPath($cli);
+
+    $commandName = $commandClassObject->name ?? $className;
+
+    $cli->registerController($commandName, $commandClassObject);
+}
+
 
 $cli->runCommand($argv);
