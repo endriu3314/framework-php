@@ -9,6 +9,7 @@ use App\Core\Helpers\StringHelper;
 class Help extends CommandController
 {
     public $name = 'help';
+    public $help = 'Display all commands';
 
     private $customCommandsPath = 'App\Commands\\';
     private $coreCommandsPath = 'App\Core\CLI\Commands\\';
