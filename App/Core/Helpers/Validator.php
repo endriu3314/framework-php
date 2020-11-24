@@ -42,7 +42,7 @@ class Validator
         'interface' => [self::class, 'isInterface'],
         'isTrait'   => [self::class, 'isTrait'],
 
-        'date' => [self::class, 'isDate'],
+        'date'     => [self::class, 'isDate'],
         'dateTime' => [self::class, 'isDateTime'],
     ];
 
@@ -112,7 +112,7 @@ class Validator
         'ipv6'  => 'strlen',
         'email' => 'strlen',
 
-        'date' => 'compareDate',
+        'date'     => 'compareDate',
         'dateTime' => 'compareDate',
 
         'numeric' => 'number',
@@ -324,7 +324,7 @@ class Validator
     }
 
     /**
-     * Check if the input is a Date
+     * Check if the input is a Date.
      *
      * @param mixed  $value
      * @param string $format Default value is Y-m-d
@@ -334,11 +334,12 @@ class Validator
     public static function isDate($value, string $format = 'Y-m-d'): bool
     {
         $dt = \DateTime::createFromFormat($format, $value);
+
         return $dt !== false && !array_sum($dt::getLastErrors());
     }
 
     /**
-     * Check if the input is a DateTime
+     * Check if the input is a DateTime.
      *
      * @param mixed  $value
      * @param string $format Default value is Y-m-d H:i:s
@@ -348,6 +349,7 @@ class Validator
     public static function isDateTime($value, string $format = 'Y-m-d H:i:s'): bool
     {
         $dt = \DateTime::createFromFormat($format, $value);
+
         return $dt !== false && !array_sum($dt::getLastErrors());
     }
 
@@ -415,8 +417,9 @@ class Validator
      * @param $minimum - Value to be checked with
      * @param $type - Type of value
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function greaterThan($value, $minimum, $type): bool
     {
@@ -429,6 +432,7 @@ class Validator
         } elseif (self::$counts[$type] === 'compareDate') {
             $date1 = new \DateTime($value);
             $date2 = new \DateTime($minimum);
+
             return $date1 > $date2;
         }
 
@@ -443,8 +447,9 @@ class Validator
      * @param $minimum - Value to be checked with
      * @param $type - Type of value
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function greaterThanEqual($value, $minimum, $type): bool
     {
@@ -459,6 +464,7 @@ class Validator
         } elseif (self::$counts[$type] === 'compareDate') {
             $date1 = new \DateTime($value);
             $date2 = new \DateTime($minimum);
+
             return $date1 >= $date2;
         }
 
@@ -473,8 +479,9 @@ class Validator
      * @param $maximum - Value to be checked with
      * @param $type - Type of value
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function lowerThan($value, $maximum, $type): bool
     {
@@ -489,6 +496,7 @@ class Validator
         } elseif (self::$counts[$type] === 'compareDate') {
             $date1 = new \DateTime($value);
             $date2 = new \DateTime($maximum);
+
             return $date1 < $date2;
         }
 
@@ -503,8 +511,9 @@ class Validator
      * @param $maximum - Value to be checked with
      * @param $type - Type of value
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function lowerThanEqual($value, $maximum, $type): bool
     {
@@ -519,6 +528,7 @@ class Validator
         } elseif (self::$counts[$type] === 'compareDate') {
             $date1 = new \DateTime($value);
             $date2 = new \DateTime($maximum);
+
             return $date1 <= $date2;
         }
 
@@ -533,8 +543,9 @@ class Validator
      * @param $equal - Value to be checked with
      * @param $type - Type of value
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public static function equal($value, $equal, $type): bool
     {
@@ -549,6 +560,7 @@ class Validator
         } elseif (self::$counts[$type] === 'compareDate') {
             $date1 = new \DateTime($value);
             $date2 = new \DateTime($equal);
+
             return $date1 == $date2;
         }
 
