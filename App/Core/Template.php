@@ -5,7 +5,7 @@ namespace App\Core;
 class Template
 {
     public static $blocks = [];
-    public static $cache_path = ROOT.'public'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR;
+    public static $cache_path = ROOT . 'public' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
     public static $cache_enabled = ENVIRONMENT == 'development' || ENVIRONMENT == 'dev' ? false : true;
 
     public static function view($file, $data = [])
@@ -21,12 +21,12 @@ class Template
             mkdir(self::$cache_path, 0744);
         }
 
-        $cached_file = self::$cache_path.str_replace(['/', '.html'], ['_', ''], $file.'.php');
+        $cached_file = self::$cache_path . str_replace(['/', '.html'], ['_', ''], $file . '.php');
 
-        if (!self::$cache_enabled || !file_exists($cached_file) || filemtime($cached_file) < filemtime(ROOT.'templates\\'.$file)) {
+        if (!self::$cache_enabled || !file_exists($cached_file) || filemtime($cached_file) < filemtime(ROOT . 'templates\\' . $file)) {
             $code = self::includeFiles($file);
             $code = self::compileCode($code);
-            file_put_contents($cached_file, '<?php class_exists(\''.__CLASS__.'\') or exit; ?>'.PHP_EOL.$code);
+            file_put_contents($cached_file, '<?php class_exists(\'' . __CLASS__ . '\') or exit; ?>' . PHP_EOL . $code);
         }
 
         return $cached_file;
@@ -34,7 +34,7 @@ class Template
 
     public static function clearCache()
     {
-        foreach (glob(self::$cache_path.'*') as $file) {
+        foreach (glob(self::$cache_path . '*') as $file) {
             unlink($file);
         }
     }
@@ -52,7 +52,7 @@ class Template
 
     public static function includeFiles($file)
     {
-        $code = file_get_contents(ROOT.'templates'.DIRECTORY_SEPARATOR.$file);
+        $code = file_get_contents(ROOT . 'templates' . DIRECTORY_SEPARATOR . $file);
         preg_match_all('/{# ?(extends|include) ?\'?(.*?)\'? ?#}/i', $code, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $value) {
@@ -103,7 +103,7 @@ class Template
     public static function compileYield($code)
     {
         foreach (self::$blocks as $block => $value) {
-            $code = preg_replace('/{# ?yield ?'.$block.' ?#}/', $value, $code);
+            $code = preg_replace('/{# ?yield ?' . $block . ' ?#}/', $value, $code);
         }
 
         $code = preg_replace('/{# ?yield ?(.*?) ?#}/i', '', $code);

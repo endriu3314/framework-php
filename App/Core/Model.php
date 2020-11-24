@@ -82,26 +82,26 @@ abstract class Model extends Database
         $fields = $this->generateFieldsString($data);
         $values = $this->generateValuesString($data);
 
-        return 'INSERT INTO '.self::$tableName.' '.'('.$fields.')'.' VALUES '.'('.$values.')';
+        return 'INSERT INTO ' . self::$tableName . ' ' . '(' . $fields . ')' . ' VALUES ' . '(' . $values . ')';
     }
 
     private function generateUpdateQueryString($data, $where)
     {
         $fields = $this->generateFieldsBindString($data, ',');
 
-        return 'UPDATE '.self::$tableName.' SET '.$fields.' '.$where;
+        return 'UPDATE ' . self::$tableName . ' SET ' . $fields . ' ' . $where;
     }
 
     private function generateDeleteQueryString($where)
     {
-        return 'DELETE FROM '.self::$tableName.' '.$where;
+        return 'DELETE FROM ' . self::$tableName . ' ' . $where;
     }
 
     private function generateSelectQueryString($data, $where = '', $order = '')
     {
         $fields = $this->generateFieldsString($data);
 
-        return 'SELECT '.$fields.' FROM '.self::$tableName.' '.$where.' '.$order;
+        return 'SELECT ' . $fields . ' FROM ' . self::$tableName . ' ' . $where . ' ' . $order;
     }
 
     private function bindParamsToStmt($params)
@@ -125,7 +125,7 @@ abstract class Model extends Database
 
     private function generateWhereStatement($conditions, $separator = '')
     {
-        return 'WHERE '.$this->generateFieldsBindString($conditions, $separator);
+        return 'WHERE ' . $this->generateFieldsBindString($conditions, $separator);
     }
 
     private function setPrimaryKeyToReflectionClass($value)
@@ -159,7 +159,7 @@ abstract class Model extends Database
 
         $dataToSelect = $this->getFieldsArray($class);
 
-        $order = ' ORDER BY '.self::$primaryKey.' ASC LIMIT 1';
+        $order = ' ORDER BY ' . self::$primaryKey . ' ASC LIMIT 1';
 
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
         $this->stmt->execute();
@@ -178,7 +178,7 @@ abstract class Model extends Database
 
         $dataToSelect = $this->getFieldsArray($class);
 
-        $order = ' ORDER BY '.self::$primaryKey.' DESC LIMIT 1';
+        $order = ' ORDER BY ' . self::$primaryKey . ' DESC LIMIT 1';
 
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
         $this->stmt->execute();
@@ -216,7 +216,7 @@ abstract class Model extends Database
 
         $dataToselect = $this->getFieldsArray($class);
 
-        $where = $this->generateWhereStatement($conditions, ' '.$separator.' ');
+        $where = $this->generateWhereStatement($conditions, ' ' . $separator . ' ');
 
         $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToselect, $where));
         $this->bindParamsToStmt($conditions);

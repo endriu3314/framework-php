@@ -13,6 +13,6 @@ class HttpException extends \RuntimeException
 
     public function __toString()
     {
-        return __CLASS__.": [{$this->code}]: {$this->message}\n";
+        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
 }

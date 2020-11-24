@@ -44,7 +44,7 @@ class Help extends CommandController
     {
         foreach ($commands as $command => $path) {
             $className = StringHelper::removeExtension($command);
-            $classPath = $path.$className;
+            $classPath = $path . $className;
             $commandClassObject = new $classPath($this->getApp());
 
             $commandName = $commandClassObject->name ?? $className;

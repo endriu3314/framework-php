@@ -26,7 +26,7 @@ class Application
 
         if ($route == null) {
             http_response_code(404);
-            require VIEW.'404.php';
+            require VIEW . '404.php';
         } else {
             $this->initiate($route);
         }

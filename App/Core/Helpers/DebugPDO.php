@@ -12,13 +12,13 @@ class DebugPDO
         if ($parameters != null) {
             foreach ($parameters as $key => $value) {
                 if (is_string($key)) {
-                    $keys[] = '/'.$key.'/';
+                    $keys[] = '/' . $key . '/';
                 } else {
                     $keys[] = '/[?]/';
                 }
 
                 if (is_string($value)) {
-                    $values[$key] = "'".$value."'";
+                    $values[$key] = "'" . $value . "'";
                 } elseif (is_array($value)) {
                     $values[$key] = implode(',', $value);
                 } elseif (is_null($value)) {
@@ -27,10 +27,10 @@ class DebugPDO
             }
         }
 
-        echo "<span style='font-weight: bold; color: #121212'>[DEBUG]</span> <span>Keys:</span>".'<br />';
+        echo "<span style='font-weight: bold; color: #121212'>[DEBUG]</span> <span>Keys:</span>" . '<br />';
         $keys == null ? print_r('null') : print_r($keys);
         echo '<br />';
-        echo "<span style='font-weight: bold; color: #121212'>[DEBUG]</span> <span>Values:</span>".'<br />';
+        echo "<span style='font-weight: bold; color: #121212'>[DEBUG]</span> <span>Values:</span>" . '<br />';
         $keys == null ? print_r('null') : print_r($values);
         echo '<br />';
 
