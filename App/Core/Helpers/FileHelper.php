@@ -17,7 +17,7 @@ class FileHelper
         $result = [];
 
         foreach ($files as $key => $file) {
-            if (!in_array($file, array('.', '..', '.DS_Store'))) {
+            if (!in_array($file, ['.', '..', '.DS_Store'])) {
                 $result[] = $file;
             }
         }
