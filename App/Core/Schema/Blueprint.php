@@ -2,7 +2,7 @@
 
 namespace App\Core\Schema;
 
-use App\Helpers\StringHelper;
+use App\Core\Helpers\StringHelper;
 
 class Blueprint
 {

@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use App\Core\CLI\CommandController;
-use App\Helpers\StringHelper;
+use App\Core\Helpers\StringHelper;
 
 class Migrate extends CommandController
 {

@@ -2,7 +2,7 @@
 
 use App\Commands\Hello;
 use App\Commands\Migrate;
-use App\Helpers\StringHelper;
+use App\Core\Helpers\StringHelper;
 
 spl_autoload_register(function ($class) {
     include __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', '/', $class) . '.php';
