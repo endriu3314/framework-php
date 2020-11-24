@@ -15,29 +15,31 @@ class Make extends CommandController
         $printer = $this->getApp()->getPrinter();
 
         $types = [
-            'model' => 'php',
+            'model'      => 'php',
             'controller' => 'php',
-            'command' => 'php',
-            'template' => 'html',
-            'migration' => 'php',
+            'command'    => 'php',
+            'template'   => 'html',
+            'migration'  => 'php',
         ];
 
         $paths = [
-            'model' => 'App/Http/Model/',
+            'model'      => 'App/Http/Model/',
             'controller' => 'App/Http/Controllers/',
-            'command' => 'App/Commands/',
-            'template' => 'templates/',
-            'migration' => 'App/Migrations/',
+            'command'    => 'App/Commands/',
+            'template'   => 'templates/',
+            'migration'  => 'App/Migrations/',
         ];
 
         if (!isset($argv[2])) {
             $printer->display('Type required', 'red');
             $printer->newline();
+
             return;
         }
         if (!isset($argv[3])) {
             $printer->display('Name required', 'red');
             $printer->newline();
+
             return;
         }
 
@@ -54,6 +56,7 @@ class Make extends CommandController
                 $printer->display($file, 'green');
                 $printer->display('/');
             }
+
             return;
         }
 
@@ -65,12 +68,14 @@ class Make extends CommandController
         if (file_exists($file)) {
             $printer->display('[✘] ', 'red');
             $printer->display("{$file} already exists");
+
             return;
         }
 
         if (!file_put_contents($file, $content, FILE_APPEND | LOCK_EX)) {
             $printer->display('[✘] ', 'red');
             $printer->display("{$file} was not created");
+
             return;
         }
 
