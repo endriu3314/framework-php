@@ -2,7 +2,7 @@
 
 namespace App\Core\Http;
 
-use App\Helpers\Validator;
+use App\Core\Helpers\Validator;
 
 /**
  * Class Request
