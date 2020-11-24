@@ -20,7 +20,7 @@ class FileHelper
             if (is_dir($path.'/'.$file)) {
                 continue;
             }
-            if (!in_array($file, array('.', '..', '.DS_Store'))) {
+            if (!in_array($file, ['.', '..', '.DS_Store'])) {
                 $result[] = $file;
             }
         }
