@@ -2,6 +2,10 @@
 
 namespace App\Core;
 
-class Controller
+abstract class Controller
 {
+    public function sanitize(string $var): string
+    {
+        return strip_tags($var);
+    }
 }
