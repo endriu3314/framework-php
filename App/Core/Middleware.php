@@ -12,6 +12,5 @@ abstract class Middleware
 
     public function run()
     {
-
     }
 }
