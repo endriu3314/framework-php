@@ -38,13 +38,7 @@ function exception_handler($exception)
 
 set_exception_handler('exception_handler');
 
-$routes = '';
-
-if (extension_loaded('yaml')) {
-    $routes = '../routes.yml';
-} elseif (extension_loaded('json')) {
-    $routes = '../routes.json';
-}
+$routes = '../routes.yml';
 
 $router = new Router(new Config($routes));
 

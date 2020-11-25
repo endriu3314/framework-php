@@ -11,7 +11,7 @@ use SplFileInfo;
  */
 class Config
 {
-    /* @var mixed - Data of file*/
+    /* @var mixed - Data of file */
     private $data;
 
     /**
@@ -33,12 +33,7 @@ class Config
             throw new FileNotFoundException("$filePath is not readable");
         }
 
-        if (extension_loaded('yaml')) {
-            $this->data = yaml_parse_file($filePath);
-        } elseif (extension_loaded('json')) {
-            $json = file_get_contents($filePath);
-            $this->data = json_decode($json, true);
-        }
+        $this->data = yaml_parse_file($filePath);
     }
 
     /**
