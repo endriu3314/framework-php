@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      args:
+        user: framework-php-user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: php:7.4.12
+    container_name: framework-php-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/php/upload.ini:/usr/local/etc/php/conf.d/upload.ini:rw,delegated
+    networks:
+      - framework-php
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: framework-php-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx/:/etc/nginx/conf.d/
+    networks:
+      - framework-php
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: framework-php-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./docker-compose/mysql/my.cnf:/etc/mysql/my.cnf
+    environment:
+      MYSQL_USER: php_framework
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: php_framework
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - framework-php
+
+networks:
+  framework-php:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
