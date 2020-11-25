@@ -63,7 +63,13 @@ class Make extends CommandController
         $content = file_get_contents("App/Core/CLI/Commands/make/{$type}");
         $content = str_replace('#NAME#', $name, $content);
 
-        $file = "{$paths[$type]}{$name}.{$types[$type]}";
+        $prefix = '';
+
+        if ($type === 'migration') {
+            $prefix = date('YmdHis') . "_";
+        }
+
+        $file = "{$paths[$type]}{$prefix}{$name}.{$types[$type]}";
 
         if (file_exists($file)) {
             $printer->display('[✘] ', 'red');
