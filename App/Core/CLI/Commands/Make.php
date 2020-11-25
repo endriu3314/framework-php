@@ -20,6 +20,7 @@ class Make extends CommandController
             'command'    => 'php',
             'template'   => 'html',
             'migration'  => 'php',
+            'middleware' => 'php',
         ];
 
         $paths = [
@@ -28,6 +29,7 @@ class Make extends CommandController
             'command'    => 'App/Commands/',
             'template'   => 'templates/',
             'migration'  => 'App/Migrations/',
+            'middleware' => 'App/Http/Middleware/',
         ];
 
         if (!isset($argv[2])) {
