@@ -49,10 +49,21 @@ class Help extends CommandController
 
             $commandName = $commandClassObject->name ?? $className;
             $commandHelp = $commandClassObject->help ?? '';
+            $commandUsage = $commandClassObject->usage ?? '';
 
             $this->getApp()->getPrinter()->display("• {$commandName}", 'yellow');
-            $this->getApp()->getPrinter()->display(' - ', 'light_green');
-            $this->getApp()->getPrinter()->display($commandHelp, 'green');
+
+            if ($commandHelp !== '') {
+                $this->getApp()->getPrinter()->display(' - ', 'light_green');
+                $this->getApp()->getPrinter()->display($commandHelp, 'green');
+            }
+
+            if ($commandUsage !== '') {
+                $this->getApp()->getPrinter()->newline();
+                $this->getApp()->getPrinter()->display('Usage: ');
+                $this->getApp()->getPrinter()->display($commandUsage, 'yellow');
+            }
+
             $this->getApp()->getPrinter()->newline();
         }
     }
