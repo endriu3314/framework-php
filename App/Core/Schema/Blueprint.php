@@ -35,6 +35,7 @@ class Blueprint
                     $column->getNullable() . ' ' .
                     $column->getIncrements() . ' ' .
                     $column->getPrimary() . ' ' .
+                    $column->getUnique() . ' ' .
                     $column->getDefault() . ',' . "\n";
             } else {
                 $columns .=
@@ -44,6 +45,7 @@ class Blueprint
                     $column->getNullable() . ' ' .
                     $column->getIncrements() . ' ' .
                     $column->getPrimary() . ' ' .
+                    $column->getUnique() . ' ' .
                     $column->getDefault() . ',' . "\n";
                 $columns .=
                     $column->getForeign() . ',' . "\n";
