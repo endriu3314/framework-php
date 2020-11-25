@@ -52,7 +52,7 @@ class Column
 
     public function getDefault()
     {
-        return ($this->default) ? "DEFAULT \'" . $this->default . "\'" : '';
+        return ($this->default) ? "DEFAULT " . $this->default : '';
     }
 
     public function getPrimary()
