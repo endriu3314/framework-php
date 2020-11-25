@@ -34,6 +34,15 @@ class Application
 
     private function initiate(BaseRoute $route)
     {
+        session_start();
+
+        $middleware = null;
+        $middlewareName = $route->getMiddleware();
+        if ($middlewareName != null) {
+            $middleware = new $middlewareName();
+            $middleware->run();
+        }
+
         $model = null;
         $modelName = $route->getModel();
         if ($modelName != null) {

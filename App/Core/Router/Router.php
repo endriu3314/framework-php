@@ -32,6 +32,11 @@ class Router
             $model = '';
             $controller = '';
             $action = '';
+            $middleware = '';
+
+            if (isset($route['middleware'])) {
+                $middleware = $route['middleware'];
+            }
 
             if (isset($route['model'])) {
                 $model = $route['model'];
@@ -45,7 +50,7 @@ class Router
                 }
             }
 
-            $this->routes[$method][$url] = new BaseRoute($model, $controller, $action);
+            $this->routes[$method][$url] = new BaseRoute($model, $controller, $action, $middleware);
         }
     }
 
