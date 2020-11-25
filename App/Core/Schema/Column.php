@@ -10,6 +10,7 @@ class Column
     protected $nullable;
     protected $max;
     protected $increments;
+    protected $unique;
     protected $primary_key;
 
     protected $foreign_key;
@@ -74,6 +75,11 @@ class Column
         return ($this->foreign_key) ? 'FOREIGN KEY (' . $this->getName() . ') REFERENCES ' . $this->reference . ' ' . $this->getOnUpdate() . ' ' . $this->getOnDelete() : '';
     }
 
+    public function getUnique()
+    {
+        return ($this->unique) ? 'UNIQUE' : '';
+    }
+
     public function autoIncrement()
     {
         $this->increments = true;
@@ -134,6 +140,13 @@ class Column
     public function onDelete($delete)
     {
         $this->ondelete = $delete;
+
+        return $this;
+    }
+
+    public function unique()
+    {
+        $this->unique = true;
 
         return $this;
     }
