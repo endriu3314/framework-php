@@ -1,0 +1,9 @@
+environment: prod
+debug: false
+database:
+  type: mysql
+  host: framework-php-db
+  port: 3306
+  database: php_framework
+  user: php_framework
+  password: secret

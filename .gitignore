@@ -74,3 +74,6 @@ fabric.properties
 
 # Other idea files not ignored
 .idea/
+
+# Project config
+config.yml
