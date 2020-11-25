@@ -1,46 +1,58 @@
 <?php
 
-namespace App\Commands;
+namespace App\Core\CLI\Commands;
 
 use App\Core\CLI\CommandController;
+use App\Core\Helpers\FileHelper;
 use App\Core\Helpers\StringHelper;
 
 class Migrate extends CommandController
 {
+    public $name = 'migrate';
+    public $help = 'Run migrations';
+    public $usage = 'php cli migrate App/Migrations';
+
     public function run($argv)
     {
         $printer = $this->getApp()->getPrinter();
 
-        $printer->display('Migrations to run:', 'white');
+        $path = $argv[2] ?? "App" . DIRECTORY_SEPARATOR . "Migrations";
 
+        $printer->display('Migrations to run:', 'white');
         $printer->newline(2);
 
-        $migrations = scandir('App/Migrations');
+        $migrations = FileHelper::getFilesRecursive($path);
 
-        for ($counter = 2; $counter < count($migrations); $counter++) {
-            $printer->display('- ', 'white');
-            $printer->display(StringHelper::removeExtension($migrations[$counter]), 'green');
+        foreach ($migrations as $migration) {
+            $printer->display('- ');
+            $printer->display(StringHelper::removeExtension($migration), 'green');
             $printer->newline();
         }
 
         $printer->newline();
         $printer->display('Do you want to run the migrations? ', 'yellow');
-        $printer->display('[yes/no] ', 'green');
-        $printer->display('no ', 'white');
+        $printer->display('[yes/', 'green');
+        $printer->display('no');
+        $printer->display('] ', 'green');
 
-        $handle = fopen('php://stdin', 'r');
+        $handle = fopen('php://stdin', 'rb');
         $line = fgets($handle);
 
-        if (trim($line) != 'yes') {
+        $yes = [
+            'yes',
+            'YES',
+            'y',
+            'Y',
+        ];
+
+        if (!in_array(trim($line), $yes)) {
             $printer->newline();
             $printer->display('Aborting!', 'red');
-            exit;
+            return;
         }
 
-        fclose($handle);
-
-        for ($counter = 2; $counter < count($migrations); $counter++) {
-            include 'App/Migrations/' . $migrations[$counter];
+        foreach ($migrations as $migration) {
+            include $migration;
         }
     }
 }
