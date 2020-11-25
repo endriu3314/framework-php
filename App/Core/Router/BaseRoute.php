@@ -14,19 +14,23 @@ class BaseRoute
     private $controller;
     /* @var string */
     private $action;
+    /* @var string */
+    private $middleware;
 
     /**
      * BaseRoute constructor.
      *
-     * @param string $model      - Model for route
+     * @param string $model - Model for route
      * @param string $controller
      * @param string $action
+     * @param string $middleware
      */
-    public function __construct(string $model = '', string $controller = '', string $action = '')
+    public function __construct(string $model = '', string $controller = '', string $action = '', string $middleware = '')
     {
         $this->model = $model;
         $this->controller = $controller;
         $this->action = $action;
+        $this->middleware = $middleware;
     }
 
     /**
@@ -69,5 +73,19 @@ class BaseRoute
         }
 
         return $this->action;
+    }
+
+    /**
+     * Return Middleware if exists.
+     *
+     * @return string|null
+     */
+    public function getMiddleware()
+    {
+        if ($this->middleware == '') {
+            return null;
+        }
+
+        return $this->middleware;
     }
 }
