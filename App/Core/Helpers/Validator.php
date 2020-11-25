@@ -33,7 +33,7 @@ class Validator
         'url'   => [self::class, 'isUrl'],
         'ipv4'  => [self::class, 'isIpv4'],
         'ipv6'  => [self::class, 'isIpv6'],
-        'email' => [self::class, 'isEmail'],
+        'email' => [self::class, 'isMail'],
 
         'numeric' => [self::class, 'isNumeric'],
         'number'  => [self::class, 'isNumber'],
@@ -261,7 +261,7 @@ class Validator
     public static function isMail($value): bool
     {
         if (is_string($value)) {
-            if (preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", $value)) {
+            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 return true;
             }
         }
