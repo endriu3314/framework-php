@@ -13,6 +13,11 @@
             </h2>
         </div>
         <form class="mt-8 space-y-6" action="/register" method="POST">
+            {# foreach($errors as $error): #}
+            <a class="appearance-none rounded-none relative block w-full px-3 py-2 border border-red-500 bg-red-100 text-red rounded-md focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm">
+                {{ $error }}
+            </a>
+            {# endforeach; #}
             <input type="hidden" name="remember" value="true">
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
