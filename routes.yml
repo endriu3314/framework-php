@@ -26,9 +26,14 @@ routes:
     url: /register
     method: POST
     controller: App\Http\Controllers\Auth\RegisterController
-    action: create
+    action: register
   auth-login:
     url: /login
     method: POST
     controller: App\Http\Controllers\Auth\LoginController
     action: authenticate
+  auth-logout:
+    url: /logout
+    method: POST
+    controller: App\Http\Controllers\Auth\LoginController
+    action: logout
