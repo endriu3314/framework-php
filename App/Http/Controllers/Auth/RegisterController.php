@@ -11,10 +11,12 @@ class RegisterController extends Controller
 {
     public function registerView(): void
     {
-        Template::view('register.html');
+        Template::view('register.html', [
+            'errors' => $this->validateErrors
+        ]);
     }
 
-    public function register()
+    public function register(): void
     {
         $user = new User();
 
@@ -24,9 +26,18 @@ class RegisterController extends Controller
         $email = $this->sanitize($formData['email']);
         $password = $this->sanitize($formData['password']);
 
-        Validator::is($username, "string,gt:6");
-        Validator::is($email, "email");
-        Validator::is($password, "string,gt:8");
+        $validator = $this->validate([
+            $username => 'string,gt:6',
+            $email => 'email',
+            $password => 'string,gt:8',
+        ]);
+
+        if (!$validator) {
+            Template::view('register.html', [
+                'errors' => $this->validateErrors
+            ]);
+            return;
+        }
 
         $user->username = $username;
         $user->email = $email;
@@ -35,6 +46,6 @@ class RegisterController extends Controller
 
         $user->create();
 
-        return http_redirect('/register');
+        $this->redirect()->url('/login')->do();
     }
 }
