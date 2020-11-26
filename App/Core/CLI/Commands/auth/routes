@@ -1,0 +1,33 @@
+
+  view-register:
+    url: /register
+    method: GET
+    controller: App\Http\Controllers\Auth\RegisterController
+    action: registerView
+  view-login:
+    url: /login
+    method: GET
+    controller: App\Http\Controllers\Auth\LoginController
+    action: loginView
+  dashboard-view:
+    url: /dashboard
+    method: GET
+    middleware: App\Http\Middleware\AuthMiddleware
+    controller: App\Http\Controllers\Auth\UserController
+    action: dashboardView
+
+  auth-register:
+    url: /register
+    method: POST
+    controller: App\Http\Controllers\Auth\RegisterController
+    action: register
+  auth-login:
+    url: /login
+    method: POST
+    controller: App\Http\Controllers\Auth\LoginController
+    action: authenticate
+  auth-logout:
+    url: /logout
+    method: POST
+    controller: App\Http\Controllers\Auth\LoginController
+    action: logout
