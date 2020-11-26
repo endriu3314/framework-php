@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Core\Controller;
 use App\Core\Helpers\Validator;
 use App\Core\Template;
+use App\Http\Model\Auth;
 use App\Http\Model\Session;
 use App\Http\Model\User;
 
@@ -42,7 +43,10 @@ class LoginController extends Controller
             $user->register_at = $users[0]['register_at'];
 
             $this->registerSession($user->id);
+            $this->redirect()->url('/dashboard')->do();
         }
+
+        $this->redirect()->url('/register')->do();
     }
 
     private function registerSession(int $userId): void
@@ -86,6 +90,22 @@ class LoginController extends Controller
             $session->login_time = $now->format('Y-m-d H:i:s');
 
             $session->update();
+        }
+    }
+
+    public function logout()
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $session = new Session();
+            $session->session_id = session_id();
+            $session->user_id = Auth::auth()->id;
+
+            $session->delete();
+
+            session_unset();
+            session_destroy();
+
+            $this->redirect()->back()->do();
         }
     }
 }
