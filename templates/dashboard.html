@@ -28,6 +28,11 @@
             <a class="inline-block rounded-lg py-1 px-2 text-xs bg-indigo-400 text-white mr-4" href="#">
                 {{ \App\Http\Model\Auth::auth()->username }}
             </a>
+            <form class="inline-block" action="/logout" method="POST">
+            <button type="submit" class="inline-block rounded-lg py-1 px-2 text-xs bg-blue-500 text-white mr-4" href="/logout">
+                Logout
+            </button>
+            </form>
             <a href="https://github.com/endriu3314" target="_blank"
                class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-indigo-800 hover:bg-white mt-4 lg:mt-0">GitHub</a>
         </div>
