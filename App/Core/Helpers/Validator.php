@@ -91,6 +91,11 @@ class Validator
         'equal' => [self::class, 'equal'],
     ];
 
+    /**
+     * Messages for each rule validation fail.
+     *
+     * @var string[]
+     */
     protected static $conditionMessages = [
         'gt'           => 'has to be bigger than',
         'greater_than' => 'has to be bigger than',
