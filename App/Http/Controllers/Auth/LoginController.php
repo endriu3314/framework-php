@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Core\Controller;
-use App\Core\Helpers\Validator;
 use App\Core\Template;
 use App\Http\Model\Auth;
 use App\Http\Model\Session;
@@ -13,7 +12,9 @@ class LoginController extends Controller
 {
     public function loginView(): void
     {
-        Template::view('login.html');
+        Template::view('login.html', [
+            'errors' => $this->validateErrors
+        ]);
     }
 
     public function authenticate(): void
@@ -24,8 +25,17 @@ class LoginController extends Controller
         $email = $this->sanitize($formData['email']);
         $password = $this->sanitize($formData['password']);
 
-        Validator::is($email, "email");
-        Validator::is($password, "string,gt:8");
+        $validator = $this->validate([
+            $email => 'email',
+            $password => 'string,gt:8'
+        ]);
+
+        if (!$validator) {
+            Template::view('login.html', [
+                'errors' => $this->validateErrors
+            ]);
+            return;
+        }
 
         $users = $user->selectAllWhere([
             'email' => $email,
