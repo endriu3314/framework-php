@@ -45,7 +45,7 @@ abstract class Controller
     public function validate(array $validate): bool
     {
         foreach ($validate as $value => $rules) {
-            if (!Validator::is($value, $rules)) {
+            if (!Validator::is($value, $rules, $this->validateErrors)) {
                 return false;
             }
         }

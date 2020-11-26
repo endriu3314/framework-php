@@ -92,6 +92,47 @@ class Validator
     ];
 
     /**
+     * Messages for each rule validation fail.
+     *
+     * @var string[]
+     */
+    protected static $conditionMessages = [
+        'gt'           => 'has to be bigger than',
+        'greater_than' => 'has to be bigger than',
+        'greaterThan'  => 'has to be bigger than',
+
+        'gte'                => 'has to be bigger or equal than',
+        'greater_than_equal' => 'has to be bigger or equal than',
+        'greaterThanEqual'   => 'has to be bigger or equal than',
+
+        'bigger'      => 'has to be bigger than',
+        'bigger_than' => 'has to be bigger than',
+        'biggerThan'  => 'has to be bigger than',
+
+        'below' => 'has to be lower than',
+        'bel'   => 'has to be lower than',
+        'blw'   => 'has to be lower than',
+
+        'sm'           => 'has to be lower than',
+        'smaller_than' => 'has to be lower than',
+        'smallerThan'  => 'has to be lower than',
+
+        'below_equal' => 'has to be lower or equal than',
+        'belowEqual'  => 'has to be lower or equal than',
+        'bele'        => 'has to be lower or equal than',
+        'blwe'        => 'has to be lower or equal than',
+
+        'sme'                => 'has to be lower or equal than',
+        'smaller_than_equal' => 'has to be lower or equal than',
+        'smallerThanEqual'   => 'has to be lower or equal than',
+
+        'max' => 'has to be lower than',
+
+        'eq'    => 'has to be equal than',
+        'equal' => 'has to be equal than',
+    ];
+
+    /**
      * Array of functions to count
      * Each array key represents a type and the value it's the function you use to count it
      * Used for comparing.
@@ -356,14 +397,16 @@ class Validator
     /**
      * General function to implement all checks.
      *
-     * @example Validator::is(1, "int,gt:6")
-     *
      * @param $value - Input to validate
      * @param $rules - Rules to validate
      *
+     * @param $errors
+     *
      * @return bool
+     * @example Validator::is(1, "int,gt:6")
+     *
      */
-    public static function is($value, $rules): bool
+    public static function is($value, $rules, &$errors): bool
     {
         $rulesArray = explode(',', $rules);
         $type = $rulesArray[0];
@@ -389,6 +432,7 @@ class Validator
                 foreach ($conditions as $condition => $conditionValue) {
                     if (isset(self::$conditions[$condition])) {
                         if (!self::$conditions[$condition]($value, $conditionValue, $type)) {
+                            $errors[] = "{$value} " . self::$conditionMessages[$condition] . " {$conditionValue}";
                             return false;
                         }
                     } else {
@@ -400,7 +444,11 @@ class Validator
             }
         } else {
             if (isset(self::$types[$type])) {
-                return self::$types[$type]($value);
+                if (!self::$types[$type]($value)) {
+                    $errors[] = "{$value} has to be of type {$type}";
+                    return false;
+                }
+                return true;
             } else {
                 throw new ValidatorException('Type does not exist');
             }
