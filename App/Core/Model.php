@@ -205,7 +205,9 @@ abstract class Model extends Database
 
         $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->setFieldsToReflectionClass($data);
+        if (is_array($data)) {
+            $this->setFieldsToReflectionClass($data);
+        }
 
         return $this;
     }
