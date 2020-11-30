@@ -38,7 +38,7 @@ class BaseRoute
      *
      * @return string|null
      */
-    public function getModel()
+    public function getModel(): ?string
     {
         if ($this->model == '') {
             return null;
@@ -52,7 +52,7 @@ class BaseRoute
      *
      * @return string|null
      */
-    public function getController()
+    public function getController(): ?string
     {
         if ($this->controller == '') {
             return null;
@@ -66,7 +66,7 @@ class BaseRoute
      *
      * @return string|null
      */
-    public function getAction()
+    public function getAction(): ?string
     {
         if ($this->action == '') {
             return null;
@@ -80,7 +80,7 @@ class BaseRoute
      *
      * @return string|null
      */
-    public function getMiddleware()
+    public function getMiddleware(): ?string
     {
         if ($this->middleware == '') {
             return null;
