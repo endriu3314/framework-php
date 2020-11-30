@@ -20,7 +20,7 @@ class Blueprint
         return $this->columns[$columnName];
     }
 
-    public function generate($name)
+    public function generate($name): void
     {
         $baseSQL = "CREATE TABLE $name\n(\n%s\n);";
 

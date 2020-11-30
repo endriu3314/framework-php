@@ -25,97 +25,97 @@ class Column
         $this->max = $max;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getNullable()
+    public function getNullable(): string
     {
         return ($this->nullable) ? '' : 'NOT NULL';
     }
 
-    public function getMax()
+    public function getMax(): string
     {
         return ($this->max) ? '(' . $this->max . ')' : '';
     }
 
-    public function getIncrements()
+    public function getIncrements(): string
     {
         return ($this->increments) ? 'AUTO_INCREMENT' : '';
     }
 
-    public function getDefault()
+    public function getDefault(): string
     {
         return ($this->default) ? "DEFAULT " . $this->default : '';
     }
 
-    public function getPrimary()
+    public function getPrimary(): string
     {
         return ($this->primary_key) ? 'PRIMARY KEY' : '';
     }
 
-    public function getOnUpdate()
+    public function getOnUpdate(): string
     {
         return ($this->onupdate) ? 'ON UPDATE ' . $this->onupdate : '';
     }
 
-    public function getOnDelete()
+    public function getOnDelete(): string
     {
         return ($this->ondelete) ? 'ON DELETE ' . $this->ondelete : '';
     }
 
-    public function getForeign()
+    public function getForeign(): string
     {
         return ($this->foreign_key) ? 'FOREIGN KEY (' . $this->getName() . ') REFERENCES ' . $this->reference . ' ' . $this->getOnUpdate() . ' ' . $this->getOnDelete() : '';
     }
 
-    public function getUnique()
+    public function getUnique(): string
     {
         return ($this->unique) ? 'UNIQUE' : '';
     }
 
-    public function autoIncrement()
+    public function autoIncrement(): Column
     {
         $this->increments = true;
 
         return $this;
     }
 
-    public function nullable()
+    public function nullable(): Column
     {
         $this->nullable = true;
 
         return $this;
     }
 
-    public function primaryKey()
+    public function primaryKey(): Column
     {
         $this->primary_key = true;
 
         return $this;
     }
 
-    public function defaultValue($value)
+    public function defaultValue($value): Column
     {
         $this->default = $value;
 
         return $this;
     }
 
-    public function maxValue($value)
+    public function maxValue($value): Column
     {
         $this->max = $value;
 
         return $this;
     }
 
-    public function foreignKey()
+    public function foreignKey(): Column
     {
         $this->foreign_key = true;
         $this->primary_key = false;
@@ -123,28 +123,28 @@ class Column
         return $this;
     }
 
-    public function references($column)
+    public function references($column): Column
     {
         $this->reference = $column;
 
         return $this;
     }
 
-    public function onUpdate($update)
+    public function onUpdate($update): Column
     {
         $this->onupdate = $update;
 
         return $this;
     }
 
-    public function onDelete($delete)
+    public function onDelete($delete): Column
     {
         $this->ondelete = $delete;
 
         return $this;
     }
 
-    public function unique()
+    public function unique(): Column
     {
         $this->unique = true;
 

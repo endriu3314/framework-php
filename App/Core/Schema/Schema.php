@@ -7,7 +7,7 @@ class Schema
     public $name;
     public $blueprint;
 
-    public function create($tableName, $callback)
+    public function create($tableName, $callback): Schema
     {
         $this->name = $tableName;
         $this->blueprint = new Blueprint($tableName);
@@ -16,7 +16,7 @@ class Schema
         return $this;
     }
 
-    public function generate()
+    public function generate(): void
     {
         $this->blueprint->generate($this->name);
     }
