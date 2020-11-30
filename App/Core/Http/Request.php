@@ -26,7 +26,7 @@ class Request
      *
      * @return $this
      */
-    public function setUrl(string $url)
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
@@ -40,7 +40,7 @@ class Request
      *
      * @return $this
      */
-    public function setHeader(array $headers)
+    public function setHeader(array $headers): self
     {
         $this->headers = $headers;
 
@@ -54,7 +54,7 @@ class Request
      *
      * @return $this
      */
-    public function setBody(array $body)
+    public function setBody(array $body): self
     {
         $this->body = $body;
 
@@ -68,7 +68,7 @@ class Request
      *
      * @return $this
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -80,7 +80,7 @@ class Request
      *
      * @return string - Response from URL
      */
-    public function post()
+    public function post(): string
     {
         if (Validator::isNone($this->options)) {
             $this->options = [];
@@ -100,7 +100,7 @@ class Request
      *
      * @return string - Response from URL
      */
-    public function get()
+    public function get(): string
     {
         if (Validator::isNone($this->options)) {
             $this->options = [];
