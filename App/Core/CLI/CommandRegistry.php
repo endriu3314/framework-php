@@ -7,30 +7,29 @@ use App\Core\Exceptions\CliException;
 class CommandRegistry
 {
     protected $registry = [];
-
     protected $controllers = [];
 
-    public function registerController($command_name, CommandController $controller)
+    public function registerController(string $command_name, CommandController $controller): void
     {
         $this->controllers[$command_name] = $controller;
     }
 
-    public function registerCommand($name, $callable)
+    public function registerCommand(string $name, callable $callable): void
     {
         $this->registry[$name] = $callable;
     }
 
-    public function getController($command)
+    public function getController(string $command)
     {
-        return isset($this->controllers[$command]) ? $this->controllers[$command] : null;
+        return $this->controllers[$command] ?? null;
     }
 
-    public function getCommand($command)
+    public function getCommand(string $command)
     {
-        return isset($this->registry[$command]) ? $this->registry[$command] : null;
+        return $this->registry[$command] ?? null;
     }
 
-    public function getCallable($command_name)
+    public function getCallable(string $command_name)
     {
         $controller = $this->getController($command_name);
 

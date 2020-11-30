@@ -13,7 +13,7 @@ abstract class CommandController
         $this->app = $app;
     }
 
-    protected function getApp()
+    protected function getApp(): CLI
     {
         return $this->app;
     }

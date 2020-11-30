@@ -38,7 +38,7 @@ class Colors
     }
 
     // Returns colored string
-    public function getColoredString($string, $foreground_color = null, $background_color = null)
+    public function getColoredString(string $string, string $foreground_color = null, string $background_color = null): string
     {
         $colored_string = '';
 
@@ -58,13 +58,13 @@ class Colors
     }
 
     // Returns all foreground color names
-    public function getForegroundColors()
+    public function getForegroundColors(): array
     {
         return array_keys($this->foreground_colors);
     }
 
     // Returns all background color names
-    public function getBackgroundColors()
+    public function getBackgroundColors(): array
     {
         return array_keys($this->background_colors);
     }
