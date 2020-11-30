@@ -4,7 +4,14 @@ namespace App\Core\Helpers;
 
 class StringHelper
 {
-    public static function toCamelCase($string)
+    /**
+     * Change a string to camelCase
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function toCamelCase(string $string): string
     {
         $result = strtolower($string);
 
@@ -18,17 +25,42 @@ class StringHelper
         return $result;
     }
 
-    public static function removeExtension($string)
+    /**
+     * Remove extension from a filename
+     *
+     * @param string $string
+     *
+     * @return string
+     * @example removeExtension('test.php') => test
+     */
+    public static function removeExtension(string $string): string
     {
         return substr($string, 0, strrpos($string, '.'));
     }
 
-    public static function removeLastOccurrence($string, $toRemove)
+    /**
+     * Remove last occurrence of a string in a string
+     *
+     * @param string $string
+     * @param string $toRemove
+     *
+     * @return string
+     * @example removeLastOccurrence('test..', '.') => test.
+     */
+    public static function removeLastOccurrence(string $string, string $toRemove): string
     {
         return substr_replace($string, '', strrpos($string, $toRemove), strlen($toRemove));
     }
 
-    public static function getFileNameFromPath($path, $extension = '')
+    /**
+     * Split a file path to get just the filename
+     *
+     * @param string $path
+     * @param string $extension
+     *
+     * @return string
+     */
+    public static function getFileNameFromPath(string $path, string $extension = ''): string
     {
         return basename($path, $extension);
     }
