@@ -9,7 +9,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    image: php:7.4.12
+    image: php:8.0.0
     container_name: framework-php-app
     restart: unless-stopped
     working_dir: /var/www/
