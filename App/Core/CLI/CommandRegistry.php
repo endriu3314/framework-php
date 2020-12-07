@@ -6,8 +6,8 @@ use App\Core\Exceptions\CliException;
 
 class CommandRegistry
 {
-    protected $registry = [];
-    protected $controllers = [];
+    protected array $registry = [];
+    protected array $controllers = [];
 
     public function registerController(string $command_name, CommandController $controller): void
     {

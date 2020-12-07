@@ -16,7 +16,7 @@ class Validator
      *
      * @var array
      */
-    protected static $types = [
+    protected static array $types = [
         'array'   => 'is_array',
         'bool'    => 'is_bool',
         'boolean' => 'is_bool',
@@ -55,7 +55,7 @@ class Validator
      *
      * @var string[]
      */
-    protected static $conditions = [
+    protected static array $conditions = [
         'gt'           => [self::class, 'greaterThan'],
         'greater_than' => [self::class, 'greaterThan'],
         'greaterThan'  => [self::class, 'greaterThan'],
@@ -96,7 +96,7 @@ class Validator
      *
      * @var string[]
      */
-    protected static $conditionMessages = [
+    protected static array $conditionMessages = [
         'gt'           => 'has to be bigger than',
         'greater_than' => 'has to be bigger than',
         'greaterThan'  => 'has to be bigger than',
@@ -139,7 +139,7 @@ class Validator
      *
      * @var string[]
      */
-    protected static $counts = [
+    protected static array $counts = [
         'array'   => 'count',
         'float'   => 'number',
         'int'     => 'number',

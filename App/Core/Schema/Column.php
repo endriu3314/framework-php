@@ -4,19 +4,19 @@ namespace App\Core\Schema;
 
 class Column
 {
-    protected $name;
-    protected $default;
-    protected $type;
-    protected $nullable;
-    protected $max;
-    protected $increments;
-    protected $unique;
-    protected $primary_key;
+    protected string $name;
+    protected string $default;
+    protected string $type;
+    protected string $nullable;
+    protected string $max;
+    protected string $increments;
+    protected string $unique;
+    protected bool $primary_key;
 
-    protected $foreign_key;
-    protected $reference;
-    protected $onupdate;
-    protected $ondelete;
+    protected bool $foreign_key;
+    protected string $reference;
+    protected string $onupdate;
+    protected string $ondelete;
 
     public function __construct($name, string $type = '', string $max = '')
     {

@@ -4,7 +4,7 @@ namespace App\Core\Helpers;
 
 class DebugPDO
 {
-    public static function debugPDO($raw_sql, ?array $parameters)
+    public static function debugPDO($raw_sql, ?array $parameters): array|string|null
     {
         $keys = [];
         $values = $parameters;

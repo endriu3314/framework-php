@@ -6,11 +6,11 @@ use App\Core\Helpers\StringHelper;
 
 class Blueprint
 {
-    protected $incrementFlag = false;
-    protected $PrimaryKeyFlag = false;
-    private $columns = [];
+    protected bool $incrementFlag = false;
+    protected bool $PrimaryKeyFlag = false;
+    private array $columns = [];
 
-    public function __call($columnType, $arguments)
+    public function __call($columnType, $arguments): Column
     {
         $columnName = $arguments[0];
         $columnMax = isset($arguments[1]) ? $arguments[1] : '';

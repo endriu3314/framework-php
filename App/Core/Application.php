@@ -7,14 +7,14 @@ use App\Core\Router\Router;
 
 class Application
 {
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
-    public function run()
+    public function run(): void
     {
         $request = $_SERVER['REQUEST_URI'];
 
@@ -32,7 +32,7 @@ class Application
         }
     }
 
-    private function initiate(BaseRoute $route)
+    private function initiate(BaseRoute $route): void
     {
         session_start();
 

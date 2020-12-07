@@ -11,18 +11,18 @@ use App\Core\Exceptions\HttpException;
 class Post
 {
     /* @var $url string - String with the URL to request to */
-    private $url;
+    private string $url;
     /* @var $options array - CURL Options for Request */
-    private $options;
+    private array $options;
     /* @var $headers array - Headers for request */
-    private $headers;
+    private array $headers;
 
     /**
      * Post constructor.
      *
-     * @param string $url     - URL To make request to
-     * @param array  $options - CURL Options
-     * @param array  $headers - Headers for request
+     * @param string $url - URL To make request to
+     * @param array $options - CURL Options
+     * @param array $headers - Headers for request
      */
     public function __construct(string $url, array $options = [], array $headers = [])
     {
@@ -38,7 +38,7 @@ class Post
      *
      * @return string
      */
-    public function __invoke($post)
+    public function __invoke($post): string
     {
         $ch = curl_init($this->url);
 
@@ -61,6 +61,6 @@ class Post
             throw new HttpException($error, $$errno);
         }
 
-        return (string) $response;
+        return (string)$response;
     }
 }

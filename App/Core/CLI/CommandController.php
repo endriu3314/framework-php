@@ -4,7 +4,7 @@ namespace App\Core\CLI;
 
 abstract class CommandController
 {
-    protected $app;
+    protected CLI $app;
 
     abstract public function run($argv);
 
