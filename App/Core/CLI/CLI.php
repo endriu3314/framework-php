@@ -27,19 +27,15 @@ class CLI
     {
         $this->command_registry->registerCommand($name, $callable);
     }
-
+    
     public function runCommand(array $argv = [], string $default_command = 'help'): void
     {
-        $command_name = $default_command;
-
-        if (isset($argv[1])) {
-            $command_name = $argv[1];
-        }
+        $command_name = $argv[1] ?? $default_command;
 
         try {
             call_user_func($this->command_registry->getCallable($command_name), $argv);
         } catch (\Exception $e) {
-            $this->getPrinter()->display('ERROR: ' . $e->getMessage());
+            $this->getPrinter()->display("ERROR: {$e->getMessage()}");
             exit;
         }
     }

@@ -13,13 +13,18 @@ class Blueprint
     public function __call($columnType, $arguments): Column
     {
         $columnName = $arguments[0];
-        $columnMax = isset($arguments[1]) ? $arguments[1] : '';
+        $columnMax = $arguments[1] ?? '';
 
         $this->columns[$columnName] = new Column($columnName, $columnType, $columnMax);
 
         return $this->columns[$columnName];
     }
 
+    /**
+     * Generate SQL for table
+     *
+     * @param $name
+     */
     public function generate($name): void
     {
         $baseSQL = "CREATE TABLE $name\n(\n%s\n);";
@@ -27,28 +32,18 @@ class Blueprint
         $columns = '';
 
         foreach ($this->columns as $column) {
-            if (!(strlen($column->getForeign()) > 0)) {
-                $columns .=
-                    $column->getName() . ' ' .
-                    $column->getType() . '' .
-                    $column->getMax() . ' ' .
-                    $column->getNullable() . ' ' .
-                    $column->getIncrements() . ' ' .
-                    $column->getPrimary() . ' ' .
-                    $column->getUnique() . ' ' .
-                    $column->getDefault() . ',' . "\n";
-            } else {
-                $columns .=
-                    $column->getName() . ' ' .
-                    $column->getType() . '' .
-                    $column->getMax() . ' ' .
-                    $column->getNullable() . ' ' .
-                    $column->getIncrements() . ' ' .
-                    $column->getPrimary() . ' ' .
-                    $column->getUnique() . ' ' .
-                    $column->getDefault() . ',' . "\n";
-                $columns .=
-                    $column->getForeign() . ',' . "\n";
+            $columns .=
+                $column->getName() . ' ' .
+                $column->getType() . '' .
+                $column->getMax() . ' ' .
+                $column->getNullable() . ' ' .
+                $column->getIncrements() . ' ' .
+                $column->getPrimary() . ' ' .
+                $column->getUnique() . ' ' .
+                $column->getDefault() . ',' . "\n";
+
+            if (($column->getForeign() !== '')) {
+                $columns .= $column->getForeign() . ',' . "\n";
             }
         }
 

@@ -17,32 +17,32 @@ class Validator
      * @var array
      */
     protected static array $types = [
-        'array'   => 'is_array',
-        'bool'    => 'is_bool',
+        'array' => 'is_array',
+        'bool' => 'is_bool',
         'boolean' => 'is_bool',
-        'float'   => 'is_float',
-        'int'     => 'is_int',
+        'float' => 'is_float',
+        'int' => 'is_int',
         'integer' => 'is_int',
-        'null'    => 'is_null',
-        'object'  => 'is_object',
-        'string'  => 'is_string',
+        'null' => 'is_null',
+        'object' => 'is_object',
+        'string' => 'is_string',
 
-        'file'      => 'is_file',
+        'file' => 'is_file',
         'directory' => 'is_dir',
 
-        'url'   => [self::class, 'isUrl'],
-        'ipv4'  => [self::class, 'isIpv4'],
-        'ipv6'  => [self::class, 'isIpv6'],
+        'url' => [self::class, 'isUrl'],
+        'ipv4' => [self::class, 'isIpv4'],
+        'ipv6' => [self::class, 'isIpv6'],
         'email' => [self::class, 'isMail'],
 
         'numeric' => [self::class, 'isNumeric'],
-        'number'  => [self::class, 'isNumber'],
+        'number' => [self::class, 'isNumber'],
 
-        'class'     => [self::class, 'isClass'],
+        'class' => [self::class, 'isClass'],
         'interface' => [self::class, 'isInterface'],
-        'isTrait'   => [self::class, 'isTrait'],
+        'isTrait' => [self::class, 'isTrait'],
 
-        'date'     => [self::class, 'isDate'],
+        'date' => [self::class, 'isDate'],
         'dateTime' => [self::class, 'isDateTime'],
     ];
 
@@ -56,38 +56,38 @@ class Validator
      * @var string[]
      */
     protected static array $conditions = [
-        'gt'           => [self::class, 'greaterThan'],
+        'gt' => [self::class, 'greaterThan'],
         'greater_than' => [self::class, 'greaterThan'],
-        'greaterThan'  => [self::class, 'greaterThan'],
+        'greaterThan' => [self::class, 'greaterThan'],
 
-        'gte'                => [self::class, 'greaterThanEqual'],
+        'gte' => [self::class, 'greaterThanEqual'],
         'greater_than_equal' => [self::class, 'greaterThanEqual'],
-        'greaterThanEqual'   => [self::class, 'greaterThanEqual'],
+        'greaterThanEqual' => [self::class, 'greaterThanEqual'],
 
-        'bigger'      => [self::class, 'greaterThan'],
+        'bigger' => [self::class, 'greaterThan'],
         'bigger_than' => [self::class, 'greaterThan'],
-        'biggerThan'  => [self::class, 'greaterThan'],
+        'biggerThan' => [self::class, 'greaterThan'],
 
         'below' => [self::class, 'lowerThan'],
-        'bel'   => [self::class, 'lowerThan'],
-        'blw'   => [self::class, 'lowerThan'],
+        'bel' => [self::class, 'lowerThan'],
+        'blw' => [self::class, 'lowerThan'],
 
-        'sm'           => [self::class, 'lowerThan'],
+        'sm' => [self::class, 'lowerThan'],
         'smaller_than' => [self::class, 'lowerThan'],
-        'smallerThan'  => [self::class, 'lowerThan'],
+        'smallerThan' => [self::class, 'lowerThan'],
 
         'below_equal' => [self::class, 'lowerThanEqual'],
-        'belowEqual'  => [self::class, 'lowerThanEqual'],
-        'bele'        => [self::class, 'lowerThanEqual'],
-        'blwe'        => [self::class, 'lowerThanEqual'],
+        'belowEqual' => [self::class, 'lowerThanEqual'],
+        'bele' => [self::class, 'lowerThanEqual'],
+        'blwe' => [self::class, 'lowerThanEqual'],
 
-        'sme'                => [self::class, 'lowerThanEqual'],
+        'sme' => [self::class, 'lowerThanEqual'],
         'smaller_than_equal' => [self::class, 'lowerThanEqual'],
-        'smallerThanEqual'   => [self::class, 'lowerThanEqual'],
+        'smallerThanEqual' => [self::class, 'lowerThanEqual'],
 
         'max' => [self::class, 'lowerThan'],
 
-        'eq'    => [self::class, 'equal'],
+        'eq' => [self::class, 'equal'],
         'equal' => [self::class, 'equal'],
     ];
 
@@ -97,38 +97,38 @@ class Validator
      * @var string[]
      */
     protected static array $conditionMessages = [
-        'gt'           => 'has to be bigger than',
+        'gt' => 'has to be bigger than',
         'greater_than' => 'has to be bigger than',
-        'greaterThan'  => 'has to be bigger than',
+        'greaterThan' => 'has to be bigger than',
 
-        'gte'                => 'has to be bigger or equal than',
+        'gte' => 'has to be bigger or equal than',
         'greater_than_equal' => 'has to be bigger or equal than',
-        'greaterThanEqual'   => 'has to be bigger or equal than',
+        'greaterThanEqual' => 'has to be bigger or equal than',
 
-        'bigger'      => 'has to be bigger than',
+        'bigger' => 'has to be bigger than',
         'bigger_than' => 'has to be bigger than',
-        'biggerThan'  => 'has to be bigger than',
+        'biggerThan' => 'has to be bigger than',
 
         'below' => 'has to be lower than',
-        'bel'   => 'has to be lower than',
-        'blw'   => 'has to be lower than',
+        'bel' => 'has to be lower than',
+        'blw' => 'has to be lower than',
 
-        'sm'           => 'has to be lower than',
+        'sm' => 'has to be lower than',
         'smaller_than' => 'has to be lower than',
-        'smallerThan'  => 'has to be lower than',
+        'smallerThan' => 'has to be lower than',
 
         'below_equal' => 'has to be lower or equal than',
-        'belowEqual'  => 'has to be lower or equal than',
-        'bele'        => 'has to be lower or equal than',
-        'blwe'        => 'has to be lower or equal than',
+        'belowEqual' => 'has to be lower or equal than',
+        'bele' => 'has to be lower or equal than',
+        'blwe' => 'has to be lower or equal than',
 
-        'sme'                => 'has to be lower or equal than',
+        'sme' => 'has to be lower or equal than',
         'smaller_than_equal' => 'has to be lower or equal than',
-        'smallerThanEqual'   => 'has to be lower or equal than',
+        'smallerThanEqual' => 'has to be lower or equal than',
 
         'max' => 'has to be lower than',
 
-        'eq'    => 'has to be equal than',
+        'eq' => 'has to be equal than',
         'equal' => 'has to be equal than',
     ];
 
@@ -140,24 +140,24 @@ class Validator
      * @var string[]
      */
     protected static array $counts = [
-        'array'   => 'count',
-        'float'   => 'number',
-        'int'     => 'number',
+        'array' => 'count',
+        'float' => 'number',
+        'int' => 'number',
         'integer' => 'number',
-        'string'  => 'strlen',
+        'string' => 'strlen',
 
         'file' => 'filesize',
 
-        'url'   => 'strlen',
-        'ipv4'  => 'strlen',
-        'ipv6'  => 'strlen',
+        'url' => 'strlen',
+        'ipv4' => 'strlen',
+        'ipv6' => 'strlen',
         'email' => 'strlen',
 
-        'date'     => 'compareDate',
+        'date' => 'compareDate',
         'dateTime' => 'compareDate',
 
         'numeric' => 'number',
-        'number'  => 'number',
+        'number' => 'number',
     ];
 
     /**
@@ -181,10 +181,8 @@ class Validator
      */
     public static function isIntegerInString($value): bool
     {
-        if (is_string($value)) {
-            if (preg_match('#^[+-]?[0-9]+$#D', $value)) {
-                return true;
-            }
+        if (is_string($value) && preg_match('#^[+-]?[0-9]+$#D', $value)) {
+            return true;
         }
 
         return false;
@@ -199,10 +197,8 @@ class Validator
      */
     public static function isFloatInString($value): bool
     {
-        if (is_string($value)) {
-            if (preg_match('#^[-+]?\d*\.?\d*$#D', $value)) {
-                return true;
-            }
+        if (is_string($value) && preg_match('#^[-+]?\d*\.?\d*$#D', $value)) {
+            return true;
         }
 
         return false;
@@ -217,7 +213,9 @@ class Validator
      */
     public static function isNumeric($value): bool
     {
-        return is_int($value) || is_float($value) || (is_string($value) && preg_match('#^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$#D', $value));
+        return is_int($value) ||
+            is_float($value) ||
+            (is_string($value) && preg_match('#^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$#D', $value));
     }
 
     /**
@@ -301,10 +299,8 @@ class Validator
      */
     public static function isMail($value): bool
     {
-        if (is_string($value)) {
-            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                return true;
-            }
+        if (is_string($value) && filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            return true;
         }
 
         return false;
@@ -319,10 +315,8 @@ class Validator
      */
     public static function isUrl($value): bool
     {
-        if (is_string($value)) {
-            if (preg_match("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", $value)) {
-                return true;
-            }
+        if (is_string($value) && preg_match("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", $value)) {
+            return true;
         }
 
         return false;
@@ -337,10 +331,8 @@ class Validator
      */
     public static function isIpv4($value): bool
     {
-        if (is_string($value)) {
-            if (preg_match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", $value)) {
-                return true;
-            }
+        if (is_string($value) && preg_match("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", $value)) {
+            return true;
         }
 
         return false;
@@ -355,10 +347,8 @@ class Validator
      */
     public static function isIpv6($value): bool
     {
-        if (is_string($value)) {
-            if (preg_match('^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$', $value)) {
-                return true;
-            }
+        if (is_string($value) && preg_match('^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$', $value)) {
+            return true;
         }
 
         return false;
@@ -367,7 +357,7 @@ class Validator
     /**
      * Check if the input is a Date.
      *
-     * @param mixed  $value
+     * @param mixed $value
      * @param string $format Default value is Y-m-d
      *
      * @return bool
@@ -376,13 +366,13 @@ class Validator
     {
         $dt = \DateTime::createFromFormat($format, $value);
 
-        return $dt !== false && !array_sum($dt::getLastErrors());
+        return $dt !== false && ! array_sum($dt::getLastErrors());
     }
 
     /**
      * Check if the input is a DateTime.
      *
-     * @param mixed  $value
+     * @param mixed $value
      * @param string $format Default value is Y-m-d H:i:s
      *
      * @return bool
@@ -391,7 +381,7 @@ class Validator
     {
         $dt = \DateTime::createFromFormat($format, $value);
 
-        return $dt !== false && !array_sum($dt::getLastErrors());
+        return $dt !== false && ! array_sum($dt::getLastErrors());
     }
 
     /**
@@ -413,7 +403,7 @@ class Validator
 
         if (count($rulesArray) > 1) {
             if (isset(self::$types[$type])) {
-                if (!self::$types[$type]($value)) {
+                if (! self::$types[$type]($value)) {
                     return false;
                 }
 
@@ -431,7 +421,7 @@ class Validator
 
                 foreach ($conditions as $condition => $conditionValue) {
                     if (isset(self::$conditions[$condition])) {
-                        if (!self::$conditions[$condition]($value, $conditionValue, $type)) {
+                        if (! self::$conditions[$condition]($value, $conditionValue, $type)) {
                             $errors[] = "{$value} " . self::$conditionMessages[$condition] . " {$conditionValue}";
                             return false;
                         }
@@ -444,7 +434,7 @@ class Validator
             }
         } else {
             if (isset(self::$types[$type])) {
-                if (!self::$types[$type]($value)) {
+                if (! self::$types[$type]($value)) {
                     $errors[] = "{$value} has to be of type {$type}";
                     return false;
                 }
@@ -465,9 +455,9 @@ class Validator
      * @param $minimum - Value to be checked with
      * @param $type - Type of value
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public static function greaterThan($value, $minimum, $type): bool
     {
@@ -495,9 +485,9 @@ class Validator
      * @param $minimum - Value to be checked with
      * @param $type - Type of value
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public static function greaterThanEqual($value, $minimum, $type): bool
     {
@@ -527,9 +517,9 @@ class Validator
      * @param $maximum - Value to be checked with
      * @param $type - Type of value
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public static function lowerThan($value, $maximum, $type): bool
     {
@@ -559,9 +549,9 @@ class Validator
      * @param $maximum - Value to be checked with
      * @param $type - Type of value
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public static function lowerThanEqual($value, $maximum, $type): bool
     {
@@ -591,9 +581,9 @@ class Validator
      * @param $equal - Value to be checked with
      * @param $type - Type of value
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public static function equal($value, $equal, $type): bool
     {

@@ -18,7 +18,7 @@ class Application
     {
         $request = $_SERVER['REQUEST_URI'];
 
-        if ($request != '/') {
+        if ($request !== '/') {
             $request = rtrim($request, '/');
         }
 

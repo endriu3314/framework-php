@@ -9,7 +9,6 @@ class Colors
 
     public function __construct()
     {
-        // Set up shell colors
         $this->foreground_colors['black'] = '0;30';
         $this->foreground_colors['dark_gray'] = '1;30';
         $this->foreground_colors['blue'] = '0;34';
@@ -37,33 +36,37 @@ class Colors
         $this->background_colors['light_gray'] = '47';
     }
 
-    // Returns colored string
+    /**
+     * Generate string with color
+     *
+     * @param string $string
+     * @param string|null $foreground_color
+     * @param string|null $background_color
+     *
+     * @return string
+     */
     public function getColoredString(string $string, string $foreground_color = null, string $background_color = null): string
     {
         $colored_string = '';
 
-        // Check if given foreground color found
         if (isset($this->foreground_colors[$foreground_color])) {
             $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . 'm';
         }
-        // Check if given background color found
+
         if (isset($this->background_colors[$background_color])) {
             $colored_string .= "\033[" . $this->background_colors[$background_color] . 'm';
         }
 
-        // Add string and end coloring
         $colored_string .= $string . "\033[0m";
 
         return $colored_string;
     }
 
-    // Returns all foreground color names
     public function getForegroundColors(): array
     {
         return array_keys($this->foreground_colors);
     }
 
-    // Returns all background color names
     public function getBackgroundColors(): array
     {
         return array_keys($this->background_colors);

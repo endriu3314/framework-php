@@ -36,7 +36,7 @@ abstract class Model extends Database
         }
     }
 
-    private function getFieldsArray(ReflectionClass $param)
+    private function getFieldsArray(ReflectionClass $param): array
     {
         $fields = [];
 
@@ -51,11 +51,11 @@ abstract class Model extends Database
         return $fields;
     }
 
-    private function generateFieldsString($data = [])
+    private function generateFieldsString($data = []): string
     {
         $fields = [];
 
-        if (!empty($data)) {
+        if (! empty($data)) {
             foreach ($data as $key => $value) {
                 $fields[] = $key;
             }
@@ -66,7 +66,7 @@ abstract class Model extends Database
         return '*';
     }
 
-    private function generateValuesString($data = [])
+    private function generateValuesString($data = []): string
     {
         $values = [];
 
@@ -77,7 +77,7 @@ abstract class Model extends Database
         return implode(',', $values);
     }
 
-    private function generateInsertQueryString($data)
+    private function generateInsertQueryString($data): string
     {
         $fields = $this->generateFieldsString($data);
         $values = $this->generateValuesString($data);
@@ -85,26 +85,26 @@ abstract class Model extends Database
         return 'INSERT INTO ' . self::$tableName . ' ' . '(' . $fields . ')' . ' VALUES ' . '(' . $values . ')';
     }
 
-    private function generateUpdateQueryString($data, $where)
+    private function generateUpdateQueryString($data, $where): string
     {
         $fields = $this->generateFieldsBindString($data, ',');
 
         return 'UPDATE ' . self::$tableName . ' SET ' . $fields . ' ' . $where;
     }
 
-    private function generateDeleteQueryString($where)
+    private function generateDeleteQueryString($where): string
     {
         return 'DELETE FROM ' . self::$tableName . ' ' . $where;
     }
 
-    private function generateSelectQueryString($data, $where = '', $order = '')
+    private function generateSelectQueryString($data, $where = '', $order = ''): string
     {
         $fields = $this->generateFieldsString($data);
 
         return 'SELECT ' . $fields . ' FROM ' . self::$tableName . ' ' . $where . ' ' . $order;
     }
 
-    private function bindParamsToStmt($params)
+    private function bindParamsToStmt($params): void
     {
         foreach ($params as $key => $value) {
             $type = (is_int($value)) ? PDO::PARAM_INT : PDO::PARAM_STR;
@@ -112,7 +112,7 @@ abstract class Model extends Database
         }
     }
 
-    private function generateFieldsBindString($array, $separator)
+    private function generateFieldsBindString($array, $separator): string
     {
         $param = [];
 
@@ -123,24 +123,24 @@ abstract class Model extends Database
         return implode($separator, $param);
     }
 
-    private function generateWhereStatement($conditions, $separator = '')
+    private function generateWhereStatement($conditions, $separator = ''): string
     {
         return 'WHERE ' . $this->generateFieldsBindString($conditions, $separator);
     }
 
-    private function setPrimaryKeyToReflectionClass($value)
+    private function setPrimaryKeyToReflectionClass($value): void
     {
         $this->{self::$primaryKey} = $value;
     }
 
-    private function setFieldsToReflectionClass($array)
+    private function setFieldsToReflectionClass($array): void
     {
         foreach ($array as $key => $value) {
             $this->{$key} = $array[$key];
         }
     }
 
-    private function updateLastId()
+    private function updateLastId(): void
     {
         $id = $this->conn->lastInsertId();
         $this->lastId = $id ?? $this->lastId;
@@ -153,7 +153,7 @@ abstract class Model extends Database
         return $this->lastId;
     }
 
-    public function first()
+    public function first(): Model
     {
         $class = new ReflectionClass($this);
 
@@ -172,7 +172,7 @@ abstract class Model extends Database
         return $this;
     }
 
-    public function last()
+    public function last(): Model
     {
         $class = new ReflectionClass($this);
 
@@ -191,7 +191,7 @@ abstract class Model extends Database
         return $this;
     }
 
-    public function find($primaryKeyValue)
+    public function find($primaryKeyValue): Model
     {
         $class = new ReflectionClass($this);
 
@@ -212,7 +212,7 @@ abstract class Model extends Database
         return $this;
     }
 
-    public function selectAllWhere($conditions = [], $separator = 'OR')
+    public function selectAllWhere($conditions = [], $separator = 'OR'): array
     {
         $class = new ReflectionClass($this);
 
@@ -227,7 +227,7 @@ abstract class Model extends Database
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create()
+    public function create(): void
     {
         $class = new ReflectionClass($this);
 
@@ -241,13 +241,13 @@ abstract class Model extends Database
         $this->setPrimaryKeyToReflectionClass($this->lastId());
     }
 
-    public function update()
+    public function update(): bool
     {
         $class = new ReflectionClass($this);
 
         $dataToInsert = $this->getFieldsArray($class);
 
-        if (!array_key_exists(self::$primaryKey, $dataToInsert)) {
+        if (! array_key_exists(self::$primaryKey, $dataToInsert)) {
             return false;
         }
 
@@ -260,13 +260,13 @@ abstract class Model extends Database
         return true;
     }
 
-    public function delete()
+    public function delete(): bool
     {
         $class = new ReflectionClass($this);
 
         $dataToDelete = $this->getFieldsArray($class);
 
-        if (!array_key_exists(self::$primaryKey, $dataToDelete)) {
+        if (! array_key_exists(self::$primaryKey, $dataToDelete)) {
             return false;
         }
 

@@ -28,20 +28,11 @@ class Router
         foreach ($routesData['routes'] as $route) {
             $url = $route['url'];
             $method = $route['method'];
+            $middleware = $route['middleware'] ?? '';
+            $model = $route['model'] ?? '';
 
-            $model = '';
             $controller = '';
             $action = '';
-            $middleware = '';
-
-            if (isset($route['middleware'])) {
-                $middleware = $route['middleware'];
-            }
-
-            if (isset($route['model'])) {
-                $model = $route['model'];
-            }
-
             if (isset($route['controller'])) {
                 $controller = $route['controller'];
 
