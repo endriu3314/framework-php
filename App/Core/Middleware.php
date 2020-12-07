@@ -10,7 +10,7 @@ abstract class Middleware
         exit();
     }
 
-    public function run()
+    public function run(): void
     {
     }
 }

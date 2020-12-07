@@ -11,7 +11,7 @@ use App\Core\Config;
 class Router
 {
     /* @var array - Array of existing routes */
-    private $routes;
+    private array $routes;
 
     /**
      * Router constructor.
@@ -62,14 +62,10 @@ class Router
      * @param string $request
      * @param string $requestMethod
      *
-     * @return mixed|null - Return route/null
+     * @return mixed - Return route/null
      */
-    public function match(string $request, string $requestMethod)
+    public function match(string $request, string $requestMethod): mixed
     {
-        if (isset($this->routes[$requestMethod][$request])) {
-            return $this->routes[$requestMethod][$request];
-        }
-
-        return null;
+        return $this->routes[$requestMethod][$request] ?? null;
     }
 }

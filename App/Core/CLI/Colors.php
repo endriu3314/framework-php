@@ -4,8 +4,8 @@ namespace App\Core\CLI;
 
 class Colors
 {
-    private $foreground_colors = [];
-    private $background_colors = [];
+    private array $foreground_colors = [];
+    private array $background_colors = [];
 
     public function __construct()
     {

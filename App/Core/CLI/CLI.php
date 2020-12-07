@@ -4,9 +4,8 @@ namespace App\Core\CLI;
 
 class CLI
 {
-    protected $printer;
-
-    protected $command_registry;
+    protected CLIHelper $printer;
+    protected CommandRegistry $command_registry;
 
     public function __construct()
     {

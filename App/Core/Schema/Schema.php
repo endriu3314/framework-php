@@ -4,8 +4,8 @@ namespace App\Core\Schema;
 
 class Schema
 {
-    public $name;
-    public $blueprint;
+    public string $name;
+    public Blueprint $blueprint;
 
     public function create($tableName, $callback): Schema
     {

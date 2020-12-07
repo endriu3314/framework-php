@@ -9,13 +9,13 @@ namespace App\Core\Router;
 class BaseRoute
 {
     /* @var string */
-    private $model;
+    private string $model;
     /* @var string */
-    private $controller;
+    private string $controller;
     /* @var string */
-    private $action;
+    private string $action;
     /* @var string */
-    private $middleware;
+    private string $middleware;
 
     /**
      * BaseRoute constructor.

@@ -11,13 +11,13 @@ use App\Core\Helpers\Validator;
 class Request
 {
     /* @var $url string - String with the URL to request to */
-    private $url;
+    private string $url;
     /* @var $options array - CURL Options for Request */
-    private $options;
+    private array $options;
     /* @var $headers array - Headers for request */
-    private $headers;
+    private array $headers;
     /* @var $body array - Body | Only used in POST requests */
-    private $body;
+    private array $body;
 
     /**
      * Set URL for request.

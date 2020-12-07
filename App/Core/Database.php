@@ -6,14 +6,14 @@ use PDO;
 
 abstract class Database
 {
-    protected $conn;
+    protected PDO $conn;
 
     public function __construct()
     {
         try {
             $options = [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING];
 
-            if (DB_TYPE == 'pgsql') {
+            if (DB_TYPE === 'pgsql') {
                 $databaseEncodingenc = " options='--client_encoding=" . DB_CHARSET . "'";
             } else {
                 $databaseEncodingenc = '; charset=' . DB_CHARSET;
