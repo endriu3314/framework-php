@@ -6,7 +6,7 @@ class Template
 {
     public static array $blocks = [];
     public static string $cache_path = ROOT . 'public' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
-    public static bool $cache_enabled = ENVIRONMENT === 'development' || ENVIRONMENT === 'dev' ? false : true;
+    public static bool $cache_enabled = ! (ENVIRONMENT === 'development' || ENVIRONMENT === 'dev');
 
     public static function view($file, $data = []): void
     {
@@ -47,7 +47,7 @@ class Template
         }
     }
 
-    public static function compileCode($code): array|string|null
+    public static function compileCode($code): array | string | null
     {
         $code = self::compileBlock($code);
         $code = self::compileYield($code);
@@ -58,7 +58,7 @@ class Template
         return $code;
     }
 
-    public static function includeFiles($file): array|string|null
+    public static function includeFiles($file): array | string | null
     {
         $code = file_get_contents(ROOT . 'templates' . DIRECTORY_SEPARATOR . $file);
         preg_match_all('/{# ?(extends|include) ?\'?(.*?)\'? ?#}/i', $code, $matches, PREG_SET_ORDER);
@@ -72,17 +72,17 @@ class Template
         return $code;
     }
 
-    public static function compilePHP($code): array|string|null
+    public static function compilePHP($code): array | string | null
     {
         return preg_replace('~\{#\s*(.+?)\s*\#}~is', '<?php $1 ?>', $code);
     }
 
-    public static function compileEchos($code): array|string|null
+    public static function compileEchos($code): array | string | null
     {
         return preg_replace('~\{{\s*(.+?)\s*\}}~is', '<?php echo $1 ?>', $code);
     }
 
-    public static function compileEscapedEchos($code): array|string|null
+    public static function compileEscapedEchos($code): array | string | null
     {
         return preg_replace('~\{{{\s*(.+?)\s*\}}}~is', '<?php echo htmlentities($1, ENT_QUOTES, \'UTF-8\') ?>', $code);
     }
@@ -108,7 +108,7 @@ class Template
         return $code;
     }
 
-    public static function compileYield($code): array|string|null
+    public static function compileYield($code): array | string | null
     {
         foreach (self::$blocks as $block => $value) {
             $code = preg_replace('/{# ?yield ?' . $block . ' ?#}/', $value, $code);
