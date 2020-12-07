@@ -72,7 +72,7 @@ class ExceptionHandler
             }
 
             $style = $counter == $line ? 'background-color: #FC8181' : 'background-color: none';
-            echo '<a style="' . $style . '">' . $fileContentArray[$counter] . '</a>';
+            echo "<a style='{$style}'>{$fileContentArray[$counter]}</a>";
         }
     }
 }

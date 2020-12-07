@@ -26,11 +26,11 @@ class Config
         $fileData = new SplFileInfo($filePath);
 
         if (!$fileData->isFile()) {
-            throw new FileNotFoundException("$filePath is not a file");
+            throw new FileNotFoundException("{$filePath} is not a file");
         }
 
         if (!$fileData->isReadable()) {
-            throw new FileNotFoundException("$filePath is not readable");
+            throw new FileNotFoundException("{$filePath} is not readable");
         }
 
         $this->data = yaml_parse_file($filePath);

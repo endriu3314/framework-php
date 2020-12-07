@@ -48,14 +48,14 @@ class Colors
         $colored_string = '';
 
         if (isset($this->foreground_colors[$foreground_color])) {
-            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . 'm';
+            $colored_string .= "\033[{$this->foreground_colors[$foreground_color]}m";
         }
 
         if (isset($this->background_colors[$background_color])) {
-            $colored_string .= "\033[" . $this->background_colors[$background_color] . 'm';
+            $colored_string .= "\033[{$this->background_colors[$background_color]}m";
         }
 
-        $colored_string .= $string . "\033[0m";
+        $colored_string .= "{$string}\033[0m";
 
         return $colored_string;
     }

@@ -27,7 +27,7 @@ class Blueprint
      */
     public function generate($name): void
     {
-        $baseSQL = "CREATE TABLE $name\n(\n%s\n);";
+        $baseSQL = "CREATE TABLE {$name}\n(\n%s\n);";
 
         $columns = '';
 

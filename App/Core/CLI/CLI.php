@@ -27,7 +27,7 @@ class CLI
     {
         $this->command_registry->registerCommand($name, $callable);
     }
-    
+
     public function runCommand(array $argv = [], string $default_command = 'help'): void
     {
         $command_name = $argv[1] ?? $default_command;

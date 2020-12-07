@@ -56,7 +56,7 @@ abstract class Controller
      */
     public function do(): void
     {
-        header("Location: $this->url", true, $this->statusCode);
+        header("Location: {$this->url}", true, $this->statusCode);
         exit();
     }
 

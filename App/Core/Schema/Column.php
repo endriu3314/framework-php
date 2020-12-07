@@ -5,18 +5,19 @@ namespace App\Core\Schema;
 class Column
 {
     protected string $name;
-    protected string $default;
     protected string $type;
-    protected string $nullable;
     protected string $max;
-    protected string $increments;
-    protected string $unique;
-    protected bool $primary_key;
 
-    protected bool $foreign_key;
-    protected string $reference;
-    protected string $onupdate;
-    protected string $ondelete;
+    protected string $default = '';
+    protected string $nullable = '';
+    protected string $increments = '';
+    protected string $unique = '';
+    protected bool $primary_key = false;
+
+    protected bool $foreign_key = false;
+    protected string $reference = '';
+    protected string $onupdate = '';
+    protected string $ondelete = '';
 
     public function __construct($name, string $type = '', string $max = '')
     {
@@ -42,7 +43,7 @@ class Column
 
     public function getMax(): string
     {
-        return ($this->max) ? '(' . $this->max . ')' : '';
+        return ($this->max) ? "({$this->max})" : '';
     }
 
     public function getIncrements(): string
@@ -52,7 +53,7 @@ class Column
 
     public function getDefault(): string
     {
-        return ($this->default) ? "DEFAULT " . $this->default : '';
+        return ($this->default) ? "DEFAULT {$this->default}" : '';
     }
 
     public function getPrimary(): string
@@ -62,17 +63,20 @@ class Column
 
     public function getOnUpdate(): string
     {
-        return ($this->onupdate) ? 'ON UPDATE ' . $this->onupdate : '';
+        return ($this->onupdate) ? "ON UPDATE {$this->onupdate}" : '';
     }
 
     public function getOnDelete(): string
     {
-        return ($this->ondelete) ? 'ON DELETE ' . $this->ondelete : '';
+        return ($this->ondelete) ? "ON DELETE {$this->ondelete}" : '';
     }
 
     public function getForeign(): string
     {
-        return ($this->foreign_key) ? 'FOREIGN KEY (' . $this->getName() . ') REFERENCES ' . $this->reference . ' ' . $this->getOnUpdate() . ' ' . $this->getOnDelete() : '';
+        return ($this->foreign_key) ?
+            "FOREIGN KEY ({$this->getName()})
+            REFERENCES {$this->reference} {$this->getOnUpdate()} {$this->getOnDelete()}"
+            : '';
     }
 
     public function getUnique(): string
