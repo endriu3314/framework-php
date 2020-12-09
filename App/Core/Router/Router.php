@@ -53,9 +53,9 @@ class Router
      * @param string $request
      * @param string $requestMethod
      *
-     * @return mixed - Return route/null
+     * @return \App\Core\Router\BaseRoute|null - Return route/null
      */
-    public function match(string $request, string $requestMethod): mixed
+    public function match(string $request, string $requestMethod): ?BaseRoute
     {
         return $this->routes[$requestMethod][$request] ?? null;
     }
