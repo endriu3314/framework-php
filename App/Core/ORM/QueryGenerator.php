@@ -102,7 +102,7 @@ class QueryGenerator
 
     public static function generateInsertQuery(
         string $tableName,
-        array $dataToInsert,
+        array $dataToInsert
     ): string {
         $fields = self::generateFieldsToInsert($dataToInsert);
         $values = self::generateValuesToInsert($dataToInsert);

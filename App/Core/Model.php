@@ -221,6 +221,11 @@ abstract class Model extends Database
         return $this;
     }
 
+    /**
+     * Set query type to insert, creating new
+     *
+     * @return \App\Core\Model
+     */
     public function create(): Model
     {
         $this->queryType = QueryTypes::INSERT;
