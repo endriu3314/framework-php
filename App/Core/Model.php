@@ -114,9 +114,9 @@ abstract class Model extends Database
      *
      * @return array|bool Query result
      */
-    private function query(): array | bool
+    private function query(): array|bool
     {
-        $query = match($this->queryType) {
+        $query = match ($this->queryType) {
             QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
                 tableName: $this->tableName,
                 dataToSelect: ReflectionHelper::getPublicProperties($this),
@@ -248,11 +248,27 @@ abstract class Model extends Database
     }
 
     /**
+     * Set query type to either update or insert
+     *
+     * @return \App\Core\Model
+     */
+    public function save(): Model
+    {
+        if ($this->{$this->primaryKey} != null) {
+            $this->queryType = QueryTypes::UPDATE;
+        } else {
+            $this->queryType = QueryTypes::INSERT;
+        }
+
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
      * @return \App\Core\ORM\Collection|bool
      */
-    public function do(): Collection | bool
+    public function do(): Collection|bool
     {
         if ($this->queryType === QueryTypes::SELECT) {
             $data = $this->query();
