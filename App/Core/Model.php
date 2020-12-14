@@ -4,6 +4,8 @@ namespace App\Core;
 
 use App\Core\Helpers\ReflectionHelper;
 use App\Core\ORM\Collection;
+use App\Core\ORM\QueryGenerator;
+use App\Core\ORM\QueryTypes;
 use PDO;
 use ReflectionClass;
 
@@ -13,6 +15,7 @@ abstract class Model extends Database
     protected string $primaryKey;
 
     private $stmt;
+    private int $queryType;
 
     private ReflectionClass $class;
     private string $limit = '';
@@ -113,13 +116,22 @@ abstract class Model extends Database
      */
     private function query(): array
     {
-        $query = ORM\QueryGenerator::generateSelectQuery(
-            tableName: $this->tableName,
-            dataToSelect: ReflectionHelper::getPublicProperties($this),
-            where: $this->where,
-            order: $this->order,
-            limit: $this->limit,
-        );
+        $query = match ($this->queryType) {
+            QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
+                tableName: $this->tableName,
+                dataToSelect: ReflectionHelper::getPublicProperties($this),
+                where: $this->where,
+                order: $this->order,
+                limit: $this->limit
+            ),
+            QueryTypes::INSERT => QueryGenerator::generateInsertQuery(
+                tableName: $this->tableName,
+                dataToInsert: ReflectionHelper::getPublicPropertiesValues($this),
+                where: $this->where
+            ),
+            QueryTypes::UPDATE => QueryGenerator::generateUpdateQuery(),
+            QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(),
+        };
 
         $this->stmt = $this->conn->query($query);
         $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
@@ -135,6 +147,7 @@ abstract class Model extends Database
      */
     public function all(): Model
     {
+        $this->queryType = QueryTypes::SELECT;
         return $this;
     }
 
@@ -145,6 +158,7 @@ abstract class Model extends Database
      */
     public function first(): Model
     {
+        $this->queryType = QueryTypes::SELECT;
         $this->order($this->primaryKey, 'ASC')->limit(1);
 
         $data = $this->query();
@@ -160,6 +174,7 @@ abstract class Model extends Database
      */
     public function last(): Model
     {
+        $this->queryType = QueryTypes::SELECT;
         $this->order($this->primaryKey, 'DESC')->limit(1);
 
         $data = $this->query();
@@ -187,6 +202,7 @@ abstract class Model extends Database
             $this->{$this->primaryKey} = $value;
         }
 
+        $this->queryType = QueryTypes::SELECT;
         $this->where($this->primaryKey, '=', $value)->limit(1);
 
         $data = $this->query();
