@@ -38,10 +38,9 @@ class HomeController extends Controller
 //        $firstTest->create()->do();
 
         $firstTest = new Test();
-        $firstTest->id = 6;
         $firstTest->username = 'updated_andrei';
         $firstTest->email = 'updated.a.@icloud.com';
-        var_dump($firstTest->update()->do());
+        var_dump($firstTest->update()->where('id', '=', '6')->do());
 
         Template::view('home.html', [
             'title'  => 'Home Page',

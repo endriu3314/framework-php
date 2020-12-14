@@ -126,6 +126,6 @@ class QueryGenerator
         ?string $where
     ): string {
         $fieldsAndValues = self::generateFieldsAndValuesToUpdate($dataToUpdate);
-        return "UPDATE {$tableName} SET ({$fieldsAndValues}) {$where}";
+        return "UPDATE {$tableName} SET {$fieldsAndValues} {$where}";
     }
 }

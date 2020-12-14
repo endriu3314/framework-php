@@ -142,9 +142,7 @@ abstract class Model extends Database
             case QueryTypes::DELETE:
                 $this->stmt = $this->conn->prepare($query);
                 $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
-                $this->stmt->execute();
-                $this->stmt->debugDumpParams();
-                break;
+                return $this->stmt->execute();
             case QueryTypes::SELECT:
                 $this->stmt = $this->conn->query($query);
                 $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
@@ -275,7 +273,7 @@ abstract class Model extends Database
         }
 
         if ($this->queryType === QueryTypes::UPDATE) {
-            if ($this->{$this->primaryKey} == null) {
+            if ($this->{$this->primaryKey} == null && $this->where != '') {
                 return false;
             }
 
