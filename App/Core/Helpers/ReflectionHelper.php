@@ -39,7 +39,7 @@ class ReflectionHelper
             $propertyName = $property->getName();
             $propertyValue = $property->getValue($class);
 
-            if ($propertyValue !== '') {
+            if ($propertyValue != '') {
                 $properties[] = $propertyName;
             }
         }
