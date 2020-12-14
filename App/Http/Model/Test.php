@@ -12,4 +12,6 @@ class Test extends Model
     public $id;
     public $username;
     public $email;
+    public $password;
+    public $activated;
 }
