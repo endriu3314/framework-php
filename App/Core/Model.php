@@ -12,9 +12,6 @@ abstract class Model extends Database
     protected string $tableName;
     protected string $primaryKey;
 
-    private $stmt;
-    private array $items = [];
-
     private ReflectionClass $class;
     private string $limit = '';
     private string $order = '';
@@ -109,8 +106,8 @@ abstract class Model extends Database
             limit: $this->limit,
         );
 
-        $this->stmt = $this->conn->query($query);
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -180,14 +177,14 @@ abstract class Model extends Database
     {
         $data = $this->query();
 
-        $this->items = [];
+        $items = [];
 
         foreach ($data as $object) {
             $newClass = clone $this;
             ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
-            $this->items[] = $newClass;
+            $items[] = $newClass;
         }
 
-        return new Collection($this->items);
+        return new Collection($items);
     }
 }
