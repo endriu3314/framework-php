@@ -30,12 +30,18 @@ class HomeController extends Controller
 //        $firstTest = $firstTest->find();
 //        var_dump($firstTest);
 
+//        $firstTest = new Test();
+//        $firstTest->username = 'andrei';
+//        $firstTest->email = 'a.croitoru33@icloud.com';
+//        $firstTest->password = password_hash('12345678', PASSWORD_BCRYPT);
+//        $firstTest->activated = true;
+//        $firstTest->create()->do();
+
         $firstTest = new Test();
-        $firstTest->username = 'andrei';
-        $firstTest->email = 'a.croitoru3@icloud.com';
-        $firstTest->password = password_hash('12345678', PASSWORD_BCRYPT);
-        $firstTest->activated = true;
-        $firstTest->create()->do();
+        $firstTest->id = 6;
+        $firstTest->username = 'updated_andrei';
+        $firstTest->email = 'updated.a.@icloud.com';
+        var_dump($firstTest->update()->do());
 
         Template::view('home.html', [
             'title'  => 'Home Page',

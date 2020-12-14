@@ -126,9 +126,13 @@ abstract class Model extends Database
             ),
             QueryTypes::INSERT => QueryGenerator::generateInsertQuery(
                 tableName: $this->tableName,
-                dataToInsert: ReflectionHelper::getPublicPropertiesValues($this),
+                dataToInsert: ReflectionHelper::getPublicPropertiesValues($this)
             ),
-            QueryTypes::UPDATE => QueryGenerator::generateUpdateQuery(),
+            QueryTypes::UPDATE => QueryGenerator::generateUpdateQuery(
+                tableName: $this->tableName,
+                dataToUpdate: ReflectionHelper::getPublicPropertiesValues($this),
+                where: $this->where
+            ),
             QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(),
         };
 
@@ -138,7 +142,9 @@ abstract class Model extends Database
             case QueryTypes::DELETE:
                 $this->stmt = $this->conn->prepare($query);
                 $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
-                return $this->stmt->execute();
+                $this->stmt->execute();
+                $this->stmt->debugDumpParams();
+                break;
             case QueryTypes::SELECT:
                 $this->stmt = $this->conn->query($query);
                 $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
@@ -233,34 +239,53 @@ abstract class Model extends Database
     }
 
     /**
+     * Set query type to update
+     *
+     * @return \App\Core\Model
+     */
+    public function update(): Model
+    {
+        $this->queryType = QueryTypes::UPDATE;
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
      * @return \App\Core\ORM\Collection|bool
      */
     public function do(): Collection | bool
     {
-        $data = $this->query();
+        if ($this->queryType === QueryTypes::SELECT) {
+            $data = $this->query();
+
+            $items = [];
+
+            foreach ($data as $object) {
+                $newClass = clone $this;
+                ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
+                $items[] = $newClass;
+            }
+
+            return new Collection($items);
+        }
 
         if ($this->queryType === QueryTypes::INSERT) {
-            return $data;
+            return $this->query();
         }
 
         if ($this->queryType === QueryTypes::UPDATE) {
-            return $data;
+            if ($this->{$this->primaryKey} == null) {
+                return false;
+            }
+
+            $this->where($this->primaryKey, '=', $this->{$this->primaryKey});
+
+            return $this->query();
         }
 
         if ($this->queryType === QueryTypes::DELETE) {
             return $data;
         }
-
-        $items = [];
-
-        foreach ($data as $object) {
-            $newClass = clone $this;
-            ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
-            $items[] = $newClass;
-        }
-
-        return new Collection($items);
     }
 }

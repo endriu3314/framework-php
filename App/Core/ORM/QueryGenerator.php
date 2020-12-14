@@ -65,6 +65,17 @@ class QueryGenerator
         return implode(',', $values);
     }
 
+    private static function generateFieldsAndValuesToUpdate(array $dataToInsert): string
+    {
+        $params = [];
+
+        foreach ($dataToInsert as $key => $value) {
+            $params[] = "${key} = :${key}";
+        }
+
+        return implode(', ', $params);
+    }
+
     public static function generateWhereQuery(string $where, string $comparator, string $value): string
     {
         return "{$where} {$comparator} {$value}";
@@ -107,5 +118,14 @@ class QueryGenerator
         $fields = self::generateFieldsToInsert($dataToInsert);
         $values = self::generateValuesToInsert($dataToInsert);
         return "INSERT INTO {$tableName} ({$fields}) VALUES ({$values})";
+    }
+
+    public static function generateUpdateQuery(
+        string $tableName,
+        array $dataToUpdate,
+        ?string $where
+    ): string {
+        $fieldsAndValues = self::generateFieldsAndValuesToUpdate($dataToUpdate);
+        return "UPDATE {$tableName} SET ({$fieldsAndValues}) {$where}";
     }
 }
