@@ -144,7 +144,6 @@ abstract class Model extends Database
                 $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
                 return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        //return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
