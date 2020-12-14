@@ -6,7 +6,7 @@ class QueryGenerator
 {
     /**
      * Generate fields, separate by , or return a *
-     * Used in SELECT id,name
+     * Used in SELECT
      *
      * @param array $fields
      *
@@ -25,6 +25,44 @@ class QueryGenerator
         }
 
         return "*";
+    }
+
+    /**
+     * Generate fields, separated by ,
+     * Used in INSERT
+     *
+     * @param array $dataToInsert Data to insert array ["username" => "endriu3314]
+     *
+     * @return string
+     */
+    private static function generateFieldsToInsert(array $dataToInsert = []): string
+    {
+        $fields = [];
+
+        foreach ($dataToInsert as $field => $value) {
+            $fields[] = $field;
+        }
+
+        return implode(', ', $fields);
+    }
+
+    /**
+     * Generate string for values that have to be inserted, with PDO binding
+     * Used in INSERT
+     *
+     * @param array $dataToInsert Data to insert array ["username" => "endriu3314]
+     *
+     * @return string
+     */
+    private static function generateValuesToInsert(array $dataToInsert = []): string
+    {
+        $values = [];
+
+        foreach ($dataToInsert as $key => $value) {
+            $values[] = ":{$key}";
+        }
+
+        return implode(',', $values);
     }
 
     public static function generateWhereQuery(string $where, string $comparator, string $value): string
@@ -60,5 +98,14 @@ class QueryGenerator
         $fields = self::generateFieldsToSelect($dataToSelect);
         return
             "SELECT {$fields} FROM {$tableName} {$where} {$order} {$limit}";
+    }
+
+    public static function generateInsertQuery(
+        string $tableName,
+        array $dataToInsert,
+    ): string {
+        $fields = self::generateFieldsToInsert($dataToInsert);
+        $values = self::generateValuesToInsert($dataToInsert);
+        return "INSERT INTO {$tableName} ({$fields}) VALUES ({$values})";
     }
 }

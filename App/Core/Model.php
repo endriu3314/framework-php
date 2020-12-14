@@ -112,11 +112,11 @@ abstract class Model extends Database
     /**
      * Run a query
      *
-     * @return array Query result
+     * @return array|bool Query result
      */
-    private function query(): array
+    private function query(): array | bool
     {
-        $query = match ($this->queryType) {
+        $query = match($this->queryType) {
             QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
                 tableName: $this->tableName,
                 dataToSelect: ReflectionHelper::getPublicProperties($this),
@@ -127,16 +127,24 @@ abstract class Model extends Database
             QueryTypes::INSERT => QueryGenerator::generateInsertQuery(
                 tableName: $this->tableName,
                 dataToInsert: ReflectionHelper::getPublicPropertiesValues($this),
-                where: $this->where
             ),
             QueryTypes::UPDATE => QueryGenerator::generateUpdateQuery(),
             QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(),
         };
 
-        $this->stmt = $this->conn->query($query);
-        $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
-
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        switch ($this->queryType) {
+            case QueryTypes::INSERT:
+            case QueryTypes::UPDATE:
+            case QueryTypes::DELETE:
+                $this->stmt = $this->conn->prepare($query);
+                $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
+                return $this->stmt->execute();
+            case QueryTypes::SELECT:
+                $this->stmt = $this->conn->query($query);
+                $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
+                return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        //return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -214,14 +222,32 @@ abstract class Model extends Database
         return $this;
     }
 
+    public function create(): Model
+    {
+        $this->queryType = QueryTypes::INSERT;
+        return $this;
+    }
+
     /**
      * Execute a query
      *
-     * @return \App\Core\ORM\Collection
+     * @return \App\Core\ORM\Collection|bool
      */
-    public function do(): Collection
+    public function do(): Collection | bool
     {
         $data = $this->query();
+
+        if ($this->queryType === QueryTypes::INSERT) {
+            return $data;
+        }
+
+        if ($this->queryType === QueryTypes::UPDATE) {
+            return $data;
+        }
+
+        if ($this->queryType === QueryTypes::DELETE) {
+            return $data;
+        }
 
         $items = [];
 
