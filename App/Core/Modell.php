@@ -7,7 +7,7 @@ use PDO;
 use ReflectionClass;
 use ReflectionProperty;
 
-abstract class Model extends Database
+abstract class Modell extends Database
 {
     private $stmt;
     private $lastId;
@@ -161,8 +161,7 @@ abstract class Model extends Database
 
         $order = ' ORDER BY ' . self::$primaryKey . ' ASC LIMIT 1';
 
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
-        $this->stmt->execute();
+        $this->stmt = $this->conn->query($this->generateSelectQueryString($dataToSelect, null, $order));
 
         $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
