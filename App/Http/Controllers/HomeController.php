@@ -16,14 +16,19 @@ class HomeController extends Controller
 //            var_dump($test->id);
 //        }
 
+//        $firstTest = new Test();
+//        $tests = $firstTest->all()
+//            ->where('id', '>=', '1')
+//            ->where('id', '<', '4')
+//            ->do()->reverse()->get();
+//        foreach ($tests as $object) {
+//            var_dump($object->id);
+//        }
+
         $firstTest = new Test();
-        $tests = $firstTest->all()
-            ->where('id', '>=', '1')
-            ->where('id', '<', '4')
-            ->do()->reverse()->get();
-        foreach ($tests as $object) {
-            var_dump($object->id);
-        }
+        $firstTest->id = 3;
+        $firstTest = $firstTest->find();
+        var_dump($firstTest);
 
         Template::view('home.html', [
             'title'  => 'Home Page',

@@ -10,4 +10,6 @@ class Test extends Model
     protected string $primaryKey = 'id';
 
     public $id;
+    public $username;
+    public $email;
 }

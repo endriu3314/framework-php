@@ -12,6 +12,8 @@ abstract class Model extends Database
     protected string $tableName;
     protected string $primaryKey;
 
+    private $stmt;
+
     private ReflectionClass $class;
     private string $limit = '';
     private string $order = '';
@@ -92,6 +94,19 @@ abstract class Model extends Database
     }
 
     /**
+     * Bind parameters to a stmt object
+     *
+     * @param array $params
+     */
+    private function bindParamsToStmt(array $params): void
+    {
+        foreach ($params as $key => $value) {
+            $type = (is_int($value)) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $this->stmt->bindValue(":{$key}", $value, $type);
+        }
+    }
+
+    /**
      * Run a query
      *
      * @return array Query result
@@ -106,8 +121,10 @@ abstract class Model extends Database
             limit: $this->limit,
         );
 
-        $stmt = $this->conn->query($query);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->stmt = $this->conn->query($query);
+        $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
+
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -158,12 +175,25 @@ abstract class Model extends Database
      *
      * @return \App\Core\Model
      */
-    public function find(mixed $value): Model
+    public function find(mixed $value = null): Model
     {
+        if ($value === null) {
+            if ($this->{$this->primaryKey} !== null) {
+                $value = $this->{$this->primaryKey};
+            } else {
+                throw new \InvalidArgumentException("Primary key value must be provided");
+            }
+        } else {
+            $this->{$this->primaryKey} = $value;
+        }
+
         $this->where($this->primaryKey, '=', $value)->limit(1);
 
         $data = $this->query();
-        ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
+
+        if ($data) {
+            ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
+        }
 
         return $this;
     }
