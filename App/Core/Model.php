@@ -114,9 +114,9 @@ abstract class Model extends Database
      *
      * @return array|bool Query result
      */
-    private function query(): array|bool
+    private function query(): array | bool
     {
-        $query = match ($this->queryType) {
+        $query = match($this->queryType) {
             QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
                 tableName: $this->tableName,
                 dataToSelect: ReflectionHelper::getPublicProperties($this),
@@ -133,7 +133,10 @@ abstract class Model extends Database
                 dataToUpdate: ReflectionHelper::getPublicPropertiesValues($this),
                 where: $this->where
             ),
-            QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(),
+            QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(
+                tableName: $this->tableName,
+                where: $this->where
+            ),
         };
 
         switch ($this->queryType) {
@@ -264,11 +267,22 @@ abstract class Model extends Database
     }
 
     /**
+     * Set query type to delete
+     *
+     * @return $this
+     */
+    public function delete(): Model
+    {
+        $this->queryType = QueryTypes::DELETE;
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
      * @return \App\Core\ORM\Collection|bool
      */
-    public function do(): Collection|bool
+    public function do(): Collection | bool
     {
         if ($this->queryType === QueryTypes::SELECT) {
             $data = $this->query();
@@ -299,7 +313,13 @@ abstract class Model extends Database
         }
 
         if ($this->queryType === QueryTypes::DELETE) {
-            return $data;
+            if ($this->{$this->primaryKey} == null && $this->where != '') {
+                return false;
+            }
+
+            $this->where($this->primaryKey, '=', $this->{$this->primaryKey});
+
+            return $this->query();
         }
     }
 }

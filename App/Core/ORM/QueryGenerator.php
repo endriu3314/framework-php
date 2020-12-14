@@ -128,4 +128,11 @@ class QueryGenerator
         $fieldsAndValues = self::generateFieldsAndValuesToUpdate($dataToUpdate);
         return "UPDATE {$tableName} SET {$fieldsAndValues} {$where}";
     }
+
+    public static function generateDeleteQuery(
+        string $tableName,
+        ?string $where
+    ): string {
+        return "DELETE FROM {$tableName} {$where}";
+    }
 }

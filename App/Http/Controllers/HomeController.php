@@ -37,10 +37,14 @@ class HomeController extends Controller
 //        $firstTest->activated = true;
 //        $firstTest->create()->do();
 
+//        $firstTest = new Test();
+//        $firstTest->username = 'updated_andrei';
+//        $firstTest->email = 'updated.a.@icloud.com';
+//        var_dump($firstTest->update()->where('id', '=', '6')->do());
+
         $firstTest = new Test();
-        $firstTest->username = 'updated_andrei';
-        $firstTest->email = 'updated.a.@icloud.com';
-        var_dump($firstTest->update()->where('id', '=', '6')->do());
+        $firstTest->id = 6;
+        var_dump($firstTest->delete()->do());
 
         Template::view('home.html', [
             'title'  => 'Home Page',
