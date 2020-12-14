@@ -155,6 +155,23 @@ abstract class Model extends Database
     }
 
     /**
+     * Find value by primary key match
+     *
+     * @param mixed $value Primary key value
+     *
+     * @return \App\Core\Model
+     */
+    public function find(mixed $value): Model
+    {
+        $this->where($this->primaryKey, '=', $value)->limit(1);
+
+        $data = $this->query();
+        ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
+
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
      * @return \App\Core\ORM\Collection
