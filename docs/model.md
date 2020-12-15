@@ -10,6 +10,15 @@
 
 `php cli make model User`
 
+```php
+$users = new User();
+$users = $users->all()->do()->get();
+
+foreach ($users as $user) {
+    var_dump($user->id);
+}
+```
+
 ---
 
 ## Template
@@ -34,72 +43,124 @@ class User extends Model
 
 ---
 
-## ORM
+## Models
 
-- Cu utilitatea ORM (Object Relational Mapping) se creaza modele pentru fiecare tabel din baza de date avand functii pentru metode CRUD.
+# `collections`
 
-# `create`
+Functia de select `all()` returneaza mai multe valori din baza de date.
+In loc sa intoarca inapoi un array returneaza o instanta de `App\Core\ORM\Collection`.
+
+Se foloseste clasa `Collection` pentru a avea access la functii de filtrare si de manipulare a datelor precum `reverse()`
+
+```php
+$users = new User();
+$users = $users->all()->do()->get();
+```
+
+#### Functii
+
+> `get()` trebuie adaugat pentru a returna valoriile din colectie
+- `get()` Returneaza valoriile din colectie
+
+- `reverse()` Invarte colectia
+
+- `count()` Numara elementele din colectie
+
+---
+
+> Fiecare comanda de manipulare a datelor trebuie urmata de `do()` pentru executare
+
+# `insert`
+
+Salveaza in baza de date
+
+Returneaza `bool` in functie de statusul insertiei
 
 ```php
 $user = new User();
-
-$user->username = 'andrei';
-$user->password = hash('sha256', $_POST['password']);
-
-$user->create();
+$user->username = "andrei";
+$user->email = "a.croitoru3@icloud.com";
+$user->password = password_hash('1235678', PASSWORD_BCRYPT);
+$user->create()->do();
 ```
 
 ---
 
 # `update`
-- Returneaza bool 
+
+Updateaza o valoare din baza de date
+
+Returneaza `bool` in functie de statusul updatelui
 
 ```php
 $user = new User();
+$user->id = 6;
+$user->username = "updated_andrei";
+$user->update()->do();
+```
 
-$user->id = 1;
-$user->username = 'andre_updated';
+Alternativ se poate folosii where pentru mass-update normal, adaugand doar PK in clauza
 
-$user->update();
+```php
+$user = new User();
+$user->username = "updated_andrei";
+$user->update()->where('id', '=', 6)->do();
+```
+
+```php
+$user = new User();
+$user->activated = false;
+$user->update()->where('id', '>', 3)->do();
 ```
 
 ---
 
 # `delete`
-- Returneaza bool
+
+Sterge o valoare din baza de date
+
+Returneaza `bool` in functie de statusul stergerii
 
 ```php
 $user = new User();
-$user->id=1;
-$user->delete();
+$user->id = 6;
+$user->delete()->do();
+```
+
+Ca la `update`, se poate folosii clauza where pentru mass-delete sau pentru a adauga conditia de PK
+
+```php
+$user = new User();
+$user->delete()->where('id', '=', '6')->do();
+```
+
+```php
+$user = new User();
+$user->delete()->where('id', '>=', 3)->do();
 ```
 
 ---
 
-# `first`
-- Returneaza prima valoare din tabel
+# `where`
+
+Where se poate adauga la orice interogare, de cate ori este necesar
+
+Adaugarea unui `where()` nou se va face prin apenduire cu `AND`
+
+Daca dorim appenduire cu `OR` avem varianta `whereOr()`
 
 ```php
-$user = new User();
-$user = $user->first();
+$users = new User();
+$users = $users->all()
+    ->where('id', '>=', 1)
+    ->where('id', '<', 4)
+    ->do()->reverse()->get();
 ```
 
---- 
-
-# `last`
-- Returneaza ultima valoare din tabel
-
 ```php
-$user = new User();
-$user = $user->last();
-```
-
----
-
-# `find`
-- Cauta element dupa PK
-
-```php
-$user = new User();
-$user = $user->find(1);
+$users = new User();
+$users = $users->all()
+    ->where('id', '>', 1)
+    ->whereOr('username', '=', 'andrei')
+    ->do()->get();
 ```
