@@ -164,3 +164,75 @@ $users = $users->all()
     ->whereOr('username', '=', 'andrei')
     ->do()->get();
 ```
+
+---
+
+#### Relatii
+
+Pentru a stabilii o relatie noua se adauga o functie in model
+
+# `oneToOne`
+
+- Returneaza model normal (obiect)
+
+```php
+class User extends Model
+{
+    protected string $tableName = 'users';
+    protected string $primaryKey = 'id';
+
+    public $id;
+    public $role_id;
+    public $username;
+    public $email;
+    public $password;
+    public $activated;
+
+    public function role()
+    {
+        return $this->oneToOne(Role::class, 'role_id');
+    }
+}
+```
+
+Utilizare
+
+```php
+$user = new User();
+$user = $user->find(1);
+$user->role()->name;
+```
+
+# `oneToMany`
+
+- Returneaza `Collection`
+
+```php
+class Role extends Model
+{
+    protected string $tableName = 'roles';
+    protected string $primaryKey = 'id';
+
+    public $id;
+    public $name;
+
+    public function users()
+    {
+        return $this->oneToMany(User::class, 'role_id', 'id');
+    }
+}
+```
+
+Utilizare
+
+> !!! Returnand colectie trebuie sa obtinem valoriile din colectie inainte de a le prelucra, cu `get()`
+
+```php
+$roles = new Role();
+$roles = $roles->all()->where('name', '=', 'admin')->do()->get();
+foreach ($roles as $role) {
+    foreach ($role->users()->get() as $user) {
+        echo "{$role->name} is a role for {$user->username} <br/>";
+    }
+}
+```
