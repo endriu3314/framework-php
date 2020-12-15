@@ -2,109 +2,106 @@
 
 namespace App\Core;
 
-use Exception;
+use App\Core\Helpers\ReflectionHelper;
+use App\Core\ORM\Collection;
+use App\Core\ORM\QueryGenerator;
+use App\Core\ORM\QueryTypes;
 use PDO;
 use ReflectionClass;
-use ReflectionProperty;
 
 abstract class Model extends Database
 {
-    private $stmt;
-    private $lastId;
+    protected string $tableName;
+    protected string $primaryKey;
 
-    private static $tableName;
-    private static $primaryKey;
+    private $stmt;
+    private int $queryType;
+
+    private ReflectionClass $class;
+    private string $limit = '';
+    private string $order = '';
+    private string $where = '';
 
     public function __construct()
     {
         parent::__construct();
-        self::$tableName = $this->getTableName(new ReflectionClass($this));
-        self::$primaryKey = $this->getPrimaryKey(new ReflectionClass($this));
+        $this->class = new ReflectionClass($this::class);
+        $this->tableName = ReflectionHelper::getPrivatePropertyValue($this, 'tableName');
+        $this->primaryKey = ReflectionHelper::getPrivatePropertyValue($this, 'primaryKey');
     }
 
-    private function getTableName(ReflectionClass $param)
+    /**
+     * Add a limit to the query
+     *
+     * @param int $limit Limit value
+     *
+     * @return \App\Core\Model
+     */
+    public function limit(int $limit): Model
     {
-        return $param->getStaticPropertyValue('tableName');
+        $this->limit = ORM\QueryGenerator::generateLimitQuery($limit);
+        return $this;
     }
 
-    private function getPrimaryKey(ReflectionClass $param)
+    /**
+     * Add order to the query
+     *
+     * @param string $by Column to order by
+     * @param string $direction Represents the direction of order ASC/DESC
+     *
+     * @return \App\Core\Model
+     */
+    public function order(string $by, string $direction = "ASC"): Model
     {
-        try {
-            return $param->getStaticPropertyValue('primaryKey');
-        } catch (Exception $e) {
-            return 'id';
-        }
+        $this->order = ORM\QueryGenerator::generateOrderByQuery($by, $direction);
+        return $this;
     }
 
-    private function getFieldsArray(ReflectionClass $param): array
+    /**
+     * Generate where statement or append an existing one
+     * Uses AND to append an existing where statement
+     *
+     * @param string $where
+     * @param string $comparator
+     * @param string $value
+     *
+     * @return \App\Core\Model
+     */
+    public function where(string $where, string $comparator, string $value): Model
     {
-        $fields = [];
-
-        foreach ($param->getProperties(ReflectionProperty::IS_PUBLIC) as $field) {
-            $fieldName = $field->getName();
-
-            if ($this->{$fieldName} != '') {
-                $fields[$fieldName] = $this->{$fieldName};
-            }
-        }
-
-        return $fields;
-    }
-
-    private function generateFieldsString($data = []): string
-    {
-        $fields = [];
-
-        if (! empty($data)) {
-            foreach ($data as $key => $value) {
-                $fields[] = $key;
-            }
-
-            return implode(',', $fields);
-        }
-
-        return '*';
-    }
-
-    private function generateValuesString($data = []): string
-    {
-        $values = [];
-
-        foreach ($data as $key => $value) {
-            $values[] = ":{$key}";
+        if ($this->where === '') {
+            $this->where = "WHERE ";
+            $this->where .= ORM\QueryGenerator::generateWhereQuery($where, $comparator, $value);
+            return $this;
         }
 
-        return implode(',', $values);
+        $this->where .= " AND ";
+        $this->where .= ORM\QueryGenerator::generateWhereQuery($where, $comparator, $value);
+        return $this;
     }
 
-    private function generateInsertQueryString($data): string
+    /**
+     * Append the where with an OR condition instead of AND
+     *
+     * @param string $where Field to compare
+     * @param string $comparator Comparator used
+     * @param string $value Value to compare to
+     *
+     * @return \App\Core\Model
+     */
+    public function whereOr(string $where, string $comparator, string $value): Model
     {
-        $fields = $this->generateFieldsString($data);
-        $values = $this->generateValuesString($data);
-
-        return 'INSERT INTO ' . self::$tableName . ' ' . '(' . $fields . ')' . ' VALUES ' . '(' . $values . ')';
+        $this->where .= " OR ";
+        $this->where .= ORM\QueryGenerator::generateWhereQuery($where, $comparator, $value);
+        return $this;
     }
 
-    private function generateUpdateQueryString($data, $where): string
-    {
-        $fields = $this->generateFieldsBindString($data, ',');
-
-        return 'UPDATE ' . self::$tableName . ' SET ' . $fields . ' ' . $where;
-    }
-
-    private function generateDeleteQueryString($where): string
-    {
-        return 'DELETE FROM ' . self::$tableName . ' ' . $where;
-    }
-
-    private function generateSelectQueryString($data, $where = '', $order = ''): string
-    {
-        $fields = $this->generateFieldsString($data);
-
-        return 'SELECT ' . $fields . ' FROM ' . self::$tableName . ' ' . $where . ' ' . $order;
-    }
-
-    private function bindParamsToStmt($params): void
+    /**
+     * Bind parameters to a stmt object
+     *
+     * @param array $params
+     */
+    private function bindParamsToStmt(array $params): void
     {
         foreach ($params as $key => $value) {
             $type = (is_int($value)) ? PDO::PARAM_INT : PDO::PARAM_STR;
@@ -112,171 +109,205 @@ abstract class Model extends Database
         }
     }
 
-    private function generateFieldsBindString($array, $separator): string
+    /**
+     * Run a query
+     *
+     * @return array|bool Query result
+     */
+    private function query(): array | bool
     {
-        $param = [];
+        $query = match($this->queryType) {
+            QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
+                tableName: $this->tableName,
+                dataToSelect: ReflectionHelper::getPublicProperties($this),
+                where: $this->where,
+                order: $this->order,
+                limit: $this->limit
+            ),
+            QueryTypes::INSERT => QueryGenerator::generateInsertQuery(
+                tableName: $this->tableName,
+                dataToInsert: ReflectionHelper::getPublicPropertiesValues($this)
+            ),
+            QueryTypes::UPDATE => QueryGenerator::generateUpdateQuery(
+                tableName: $this->tableName,
+                dataToUpdate: ReflectionHelper::getPublicPropertiesValues($this),
+                where: $this->where
+            ),
+            QueryTypes::DELETE => QueryGenerator::generateDeleteQuery(
+                tableName: $this->tableName,
+                where: $this->where
+            ),
+        };
 
-        foreach ($array as $key => $value) {
-            $param[] = "${key} = :${key}";
+        switch ($this->queryType) {
+            case QueryTypes::INSERT:
+            case QueryTypes::UPDATE:
+            case QueryTypes::DELETE:
+                $this->stmt = $this->conn->prepare($query);
+                $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
+                return $this->stmt->execute();
+            case QueryTypes::SELECT:
+                $this->stmt = $this->conn->query($query);
+                $this->bindParamsToStmt(ReflectionHelper::getPublicPropertiesValues($this));
+                return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-
-        return implode($separator, $param);
     }
 
-    private function generateWhereStatement($conditions, $separator = ''): string
+    /**
+     * Construct a query, looks better if you have all()
+     * May be useful in the future
+     *
+     * @return $this
+     */
+    public function all(): Model
     {
-        return 'WHERE ' . $this->generateFieldsBindString($conditions, $separator);
+        $this->queryType = QueryTypes::SELECT;
+        return $this;
     }
 
-    private function setPrimaryKeyToReflectionClass($value): void
-    {
-        $this->{self::$primaryKey} = $value;
-    }
-
-    private function setFieldsToReflectionClass($array): void
-    {
-        foreach ($array as $key => $value) {
-            $this->{$key} = $array[$key];
-        }
-    }
-
-    private function updateLastId(): void
-    {
-        $id = $this->conn->lastInsertId();
-        $this->lastId = $id ?? $this->lastId;
-    }
-
-    public function lastId()
-    {
-        $this->updateLastId();
-
-        return $this->lastId;
-    }
-
+    /**
+     * Get first element of a tabel
+     *
+     * @return \App\Core\Model
+     */
     public function first(): Model
     {
-        $class = new ReflectionClass($this);
+        $this->queryType = QueryTypes::SELECT;
+        $this->order($this->primaryKey, 'ASC')->limit(1);
 
-        $dataToSelect = $this->getFieldsArray($class);
+        $data = $this->query();
+        ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
 
-        $order = ' ORDER BY ' . self::$primaryKey . ' ASC LIMIT 1';
-
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
-        $this->stmt->execute();
-
-        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
-
-        $this->setFieldsToReflectionClass($data);
-
-        //fallback in case user assigns variable
         return $this;
     }
 
+    /**
+     * Get last element of a tabel
+     *
+     * @return \App\Core\Model
+     */
     public function last(): Model
     {
-        $class = new ReflectionClass($this);
+        $this->queryType = QueryTypes::SELECT;
+        $this->order($this->primaryKey, 'DESC')->limit(1);
 
-        $dataToSelect = $this->getFieldsArray($class);
-
-        $order = ' ORDER BY ' . self::$primaryKey . ' DESC LIMIT 1';
-
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, null, $order));
-        $this->stmt->execute();
-
-        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
-
-        $this->setFieldsToReflectionClass($data);
-
-        //fallback in case user assigns variable
-        return $this;
-    }
-
-    public function find($primaryKeyValue): Model
-    {
-        $class = new ReflectionClass($this);
-
-        $dataToSelect = $this->getFieldsArray($class);
-
-        $where = $this->generateWhereStatement([self::$primaryKey => $primaryKeyValue]);
-
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToSelect, $where, null));
-        $this->bindParamsToStmt([self::$primaryKey => $primaryKeyValue]);
-        $this->stmt->execute();
-
-        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (is_array($data)) {
-            $this->setFieldsToReflectionClass($data);
-        }
+        $data = $this->query();
+        ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
 
         return $this;
     }
 
-    public function selectAllWhere($conditions = [], $separator = 'OR'): array
+    /**
+     * Find value by primary key match
+     *
+     * @param mixed $value Primary key value
+     *
+     * @return \App\Core\Model
+     */
+    public function find(mixed $value = null): Model
     {
-        $class = new ReflectionClass($this);
-
-        $dataToselect = $this->getFieldsArray($class);
-
-        $where = $this->generateWhereStatement($conditions, ' ' . $separator . ' ');
-
-        $this->stmt = $this->conn->prepare($this->generateSelectQueryString($dataToselect, $where));
-        $this->bindParamsToStmt($conditions);
-        $this->stmt->execute();
-
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function create(): void
-    {
-        $class = new ReflectionClass($this);
-
-        $dataToInsert = $this->getFieldsArray($class);
-
-        $this->stmt = $this->conn->prepare($this->generateInsertQueryString($dataToInsert));
-        $this->bindParamsToStmt($dataToInsert);
-
-        $this->stmt->execute();
-
-        $this->setPrimaryKeyToReflectionClass($this->lastId());
-    }
-
-    public function update(): bool
-    {
-        $class = new ReflectionClass($this);
-
-        $dataToInsert = $this->getFieldsArray($class);
-
-        if (! array_key_exists(self::$primaryKey, $dataToInsert)) {
-            return false;
+        if ($value === null) {
+            if ($this->{$this->primaryKey} !== null) {
+                $value = $this->{$this->primaryKey};
+            } else {
+                throw new \InvalidArgumentException("Primary key value must be provided");
+            }
+        } else {
+            $this->{$this->primaryKey} = $value;
         }
 
-        $where = $this->generateWhereStatement([self::$primaryKey => $dataToInsert[self::$primaryKey]]);
-        $this->stmt = $this->conn->prepare($this->generateUpdateQueryString($dataToInsert, $where));
+        $this->queryType = QueryTypes::SELECT;
+        $this->where($this->primaryKey, '=', $value)->limit(1);
 
-        $this->bindParamsToStmt($dataToInsert);
-        $this->stmt->execute();
+        $data = $this->query();
 
-        return true;
-    }
-
-    public function delete(): bool
-    {
-        $class = new ReflectionClass($this);
-
-        $dataToDelete = $this->getFieldsArray($class);
-
-        if (! array_key_exists(self::$primaryKey, $dataToDelete)) {
-            return false;
+        if ($data) {
+            ReflectionHelper::setFieldsToReflectionClass($this, $data[0]);
         }
 
-        $where = $this->generateWhereStatement([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
-        $this->stmt = $this->conn->prepare($this->generateDeleteQueryString($where));
+        return $this;
+    }
 
-        $this->bindParamsToStmt([self::$primaryKey => $dataToDelete[self::$primaryKey]]);
+    /**
+     * Set query type to insert, creating new
+     *
+     * @return \App\Core\Model
+     */
+    public function create(): Model
+    {
+        $this->queryType = QueryTypes::INSERT;
+        return $this;
+    }
 
-        $this->stmt->execute();
+    /**
+     * Set query type to update
+     *
+     * @return \App\Core\Model
+     */
+    public function update(): Model
+    {
+        $this->queryType = QueryTypes::UPDATE;
+        return $this;
+    }
 
-        return true;
+    /**
+     * Set query type to either update or insert
+     *
+     * @return \App\Core\Model
+     */
+    public function save(): Model
+    {
+        if ($this->{$this->primaryKey} != null) {
+            $this->queryType = QueryTypes::UPDATE;
+        } else {
+            $this->queryType = QueryTypes::INSERT;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set query type to delete
+     *
+     * @return $this
+     */
+    public function delete(): Model
+    {
+        $this->queryType = QueryTypes::DELETE;
+        return $this;
+    }
+
+    /**
+     * Execute a query
+     *
+     * @return \App\Core\ORM\Collection|bool
+     */
+    public function do(): Collection | bool
+    {
+        if ($this->queryType === QueryTypes::SELECT) {
+            $data = $this->query();
+
+            $items = [];
+
+            foreach ($data as $object) {
+                $newClass = clone $this;
+                ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
+                $items[] = $newClass;
+            }
+
+            return new Collection($items);
+        }
+
+        if ($this->queryType === QueryTypes::INSERT) {
+            return $this->query();
+        }
+
+        if ($this->queryType === QueryTypes::UPDATE) {
+            return $this->query();
+        }
+
+        if ($this->queryType === QueryTypes::DELETE) {
+            return $this->query();
+        }
     }
 }
