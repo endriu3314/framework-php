@@ -303,22 +303,10 @@ abstract class Model extends Database
         }
 
         if ($this->queryType === QueryTypes::UPDATE) {
-            if ($this->{$this->primaryKey} == null && $this->where != '') {
-                return false;
-            }
-
-            $this->where($this->primaryKey, '=', $this->{$this->primaryKey});
-
             return $this->query();
         }
 
         if ($this->queryType === QueryTypes::DELETE) {
-            if ($this->{$this->primaryKey} == null && $this->where != '') {
-                return false;
-            }
-
-            $this->where($this->primaryKey, '=', $this->{$this->primaryKey});
-
             return $this->query();
         }
     }

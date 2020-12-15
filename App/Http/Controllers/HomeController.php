@@ -42,9 +42,16 @@ class HomeController extends Controller
 //        $firstTest->email = 'updated.a.@icloud.com';
 //        var_dump($firstTest->update()->where('id', '=', '6')->do());
 
+//        $firstTest = new Test();
+//        $firstTest->id = 6;
+//        var_dump($firstTest->delete()->do());
+
+//        $firstTest = new Test();
+//        $firstTest->activated = true;
+//        $firstTest->update();
+
         $firstTest = new Test();
-        $firstTest->id = 6;
-        var_dump($firstTest->delete()->do());
+        var_dump($firstTest->delete()->where('id', '>=', 1)->do());
 
         Template::view('home.html', [
             'title'  => 'Home Page',
