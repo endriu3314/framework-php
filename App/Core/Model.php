@@ -303,4 +303,33 @@ abstract class Model extends Database
                 return new Collection($items);
         }
     }
+
+    /**
+     * Create a oneToMany relationship for a model
+     *
+     * @param string $class The class for the relationship
+     * @param string $localForeign Local column for the foreign value
+     * @param string $foreign Relationship table column where to match the foreign
+     *
+     * @return \App\Core\ORM\Collection
+     */
+    public function oneToMany(string $class, string $localForeign, string $foreign): Collection
+    {
+        $foreignClass = new $class();
+        return $foreignClass->all()->where($localForeign, '=', $this->{$foreign})->do();
+    }
+
+    /**
+     * Create a oneToOne relationship for a model
+     *
+     * @param string $class The class for the relationship
+     * @param string $localColumn
+     *
+     * @return \App\Core\Model
+     */
+    public function oneToOne(string $class, string $localColumn): Model
+    {
+        $foreignClass = new $class();
+        return $foreignClass->find($this->{$localColumn});
+    }
 }
