@@ -78,7 +78,7 @@ class QueryGenerator
 
     public static function generateWhereQuery(string $where, string $comparator, string $value): string
     {
-        return "{$where} {$comparator} {$value}";
+        return "{$where} {$comparator} '{$value}'";
     }
 
     public static function generateOrderByQuery(string $orderBy, string $orderDirection): string
