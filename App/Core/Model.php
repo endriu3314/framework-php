@@ -284,30 +284,23 @@ abstract class Model extends Database
      */
     public function do(): Collection | bool
     {
-        if ($this->queryType === QueryTypes::SELECT) {
-            $data = $this->query();
+        switch ($this->queryType) {
+            case QueryTypes::INSERT:
+            case QueryTypes::UPDATE:
+            case QueryTypes::DELETE:
+                return $this->query();
+            case QueryTypes::SELECT:
+                $data = $this->query();
 
-            $items = [];
+                $items = [];
 
-            foreach ($data as $object) {
-                $newClass = clone $this;
-                ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
-                $items[] = $newClass;
-            }
+                foreach ($data as $object) {
+                    $newClass = clone $this;
+                    ReflectionHelper::setFieldsToReflectionClass($newClass, $object);
+                    $items[] = $newClass;
+                }
 
-            return new Collection($items);
-        }
-
-        if ($this->queryType === QueryTypes::INSERT) {
-            return $this->query();
-        }
-
-        if ($this->queryType === QueryTypes::UPDATE) {
-            return $this->query();
-        }
-
-        if ($this->queryType === QueryTypes::DELETE) {
-            return $this->query();
+                return new Collection($items);
         }
     }
 }
