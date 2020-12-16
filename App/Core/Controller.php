@@ -6,9 +6,9 @@ use App\Core\Helpers\Validator;
 
 abstract class Controller
 {
-    protected bool $redirect;
-    protected string $url;
-    protected int $statusCode;
+    protected bool $redirect = false;
+    protected string $url = '/';
+    protected int $statusCode = 303;
 
     public array $validateErrors = [];
 
