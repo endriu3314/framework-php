@@ -21,7 +21,7 @@ class Migrate extends CommandController
         $printer->display('Migrations to run:', 'white');
         $printer->newline(2);
 
-        $migrations = FileHelper::getFilesRecursive($path);
+        $migrations = array_reverse(FileHelper::getFilesRecursive($path));
 
         foreach ($migrations as $migration) {
             $printer->display('- ');
