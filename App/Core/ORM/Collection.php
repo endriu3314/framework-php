@@ -34,8 +34,7 @@ class Collection
 
     public function lastFilter(\Closure $callback): mixed
     {
-        // using array_reverse instead of reverse internal function so values don't override
-        foreach(array_reverse($this->items) as $key => $value) {
+        foreach($this->reverse()->get() as $key => $value) {
             if ($callback($value, $key)) {
                 return $value;
             }
@@ -205,6 +204,15 @@ class Collection
     {
         foreach ($values as $value) {
             $this->items[] = $value;
+        }
+
+        return $this;
+    }
+
+    public function unshift(...$values): Collection
+    {
+        foreach ($values as $value) {
+            array_unshift($this->items, $value);
         }
 
         return $this;
