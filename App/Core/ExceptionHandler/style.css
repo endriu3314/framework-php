@@ -2,8 +2,7 @@
 
 body {
   background-color: #E2E8F0;
-  //font-family: 'Cousine', monospace;
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Cousine', monospace;
 }
 
 .error-container {
@@ -133,4 +132,28 @@ body {
 @keyframes fadeEffect {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+
+pre {
+  display:block;
+  font-family: 'Source Code Pro', monospace;
+  background-color: #444;
+background-image: -webkit-linear-gradient(#444 50%, #505050 50%);
+background-image:    -moz-linear-gradient(#444 50%, #505050 50%);
+background-image:     -ms-linear-gradient(#444 50%, #505050 50%);
+background-image:      -o-linear-gradient(#444 50%, #505050 50%);
+background-image:         linear-gradient(#444 50%, #505050 50%);
+background-position: 0 1px;
+background-repeat: repeat;
+background-size: 48px 48px; /* background-size */
+border-radius: 5px;
+color: #f6f6f6;
+line-height: 24px;
+padding: 24px;
+}
+
+
+
+pre span {
+  color: red;
 }
