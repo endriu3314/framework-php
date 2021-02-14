@@ -34,7 +34,7 @@ class Collection
 
     public function lastFilter(\Closure $callback): mixed
     {
-        foreach($this->reverse()->get() as $key => $value) {
+        foreach ($this->reverse()->get() as $key => $value) {
             if ($callback($value, $key)) {
                 return $value;
             }
@@ -72,7 +72,7 @@ class Collection
         $keys = $this->getArgs($keys);
 
         foreach ($keys as $key) {
-            if (! array_key_exists($key, $this->items)) {
+            if (!array_key_exists($key, $this->items)) {
                 return false;
             }
         }
@@ -163,8 +163,18 @@ class Collection
 
     public function duplicates(): Collection
     {
-        //TODO: repair, this skips first item
-        return new Collection(array_diff_assoc($this->items, $this->unique()->get()));
+        $toReturn = new $this();
+
+        foreach ($this->items as $itemIndex => $item) {
+            foreach ($this->items as $copyIndex => $checkCopy) {
+                if ($item === $checkCopy && $itemIndex !== $copyIndex) {
+                    $toReturn->add($item);
+                    break;
+                }
+            }
+        }
+
+        return $toReturn;
     }
 
     public function sortByValueAsc(): Collection
