@@ -6,6 +6,6 @@
 
 ## Publicare fisiere
 
-```sh
+```shell
 php cli auth
 ```
