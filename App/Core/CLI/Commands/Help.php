@@ -11,8 +11,8 @@ class Help extends CommandController
     public $name = 'help';
     public $help = 'Display all commands';
 
-    private $customCommandsPath = 'App\Commands\\';
-    private $coreCommandsPath = 'App\Core\CLI\Commands\\';
+    private $customCommandsPath = './App/Commands/';
+    private $coreCommandsPath = './App/Core/CLI/Commands/';
 
     public function run($argv)
     {
@@ -44,7 +44,11 @@ class Help extends CommandController
     {
         foreach ($commands as $command => $path) {
             $className = StringHelper::removeExtension($command);
+
             $classPath = $path . $className;
+            $classPath = str_replace("/", "\\", $classPath);
+            $classPath = str_replace(".", "", $classPath);
+
             $commandClassObject = new $classPath($this->getApp());
 
             $commandName = $commandClassObject->name ?? $className;

@@ -1,3 +1,5 @@
+#!/usr/bin/env php
+
 <?php
 
 spl_autoload_register(function ($class) {
@@ -13,11 +15,21 @@ $cli = new App\Core\CLI\CLI();
 /**
  * Register CORE Commands
  */
-$commands = \App\Core\Helpers\FileHelper::getFiles('App/Core/CLI/Commands');
+$commands = \App\Core\Helpers\FileHelper::getFiles('./App/Core/CLI/Commands');
 
 foreach ($commands as $command) {
     $className = \App\Core\Helpers\StringHelper::removeExtension($command);
-    $classPath = 'App\Core\CLI\Commands\\'.$className;
+    $classPath = 'App\Core\CLI\Commands\\' . $className;
+    $commandClassObject = new $classPath($cli);
+
+    $commandName = $commandClassObject->name ?? $className;
+
+    $cli->registerController($commandName, $commandClassObject);
+}
+
+foreach ($commands as $command) {
+    $className = \App\Core\Helpers\StringHelper::removeExtension($command);
+    $classPath = 'App\Core\CLI\Commands\\' . $className;
     $commandClassObject = new $classPath($cli);
 
     $commandName = $commandClassObject->name ?? $className;
@@ -28,11 +40,11 @@ foreach ($commands as $command) {
 /**
  * Register custom commands
  */
-$commands = \App\Core\Helpers\FileHelper::getFiles('App/Commands');
+$commands = \App\Core\Helpers\FileHelper::getFiles('./App/Commands');
 
 foreach ($commands as $command) {
     $className = \App\Core\Helpers\StringHelper::removeExtension($command);
-    $classPath = 'App\Commands\\'.$className;
+    $classPath = 'App\Commands\\' . $className;
     $commandClassObject = new $classPath($cli);
 
     $commandName = $commandClassObject->name ?? $className;

@@ -16,7 +16,7 @@ Requirements:
 
 `docker-compose up --build`
 
-```sh
+```shell
 docker-compose exec app sh
 $ cp config.yml.example config.yml
 ```
