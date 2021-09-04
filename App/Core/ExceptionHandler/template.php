@@ -8,13 +8,22 @@
 
         use App\Core\Helpers\FileHelper;
 
-        include 'style.css' ?>
+        include 'style.css'
+        ?>
     </style>
 </head>
 
 <body>
     <div class="error-container">
         <div class="error-title-container">
+            <h5>
+                <b>
+                    <?php
+                    echo get_class($exception);
+                    echo '<br/>';
+                    echo 'CODE: ' . $exception->getCode() ?>
+                </b>
+            </h5>
             <h1>
                 <?php echo $exception->getMessage() ?>
             </h1>
