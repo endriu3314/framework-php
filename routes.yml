@@ -4,8 +4,3 @@ routes:
     method: GET
     controller: App\Http\Controllers\HomeController
     action: homeView
-  testORM:
-    url: /orm
-    method: GET
-    controller: App\Http\Controllers\TestORM
-    action: testView
