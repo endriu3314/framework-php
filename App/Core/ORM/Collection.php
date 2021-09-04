@@ -148,7 +148,12 @@ class Collection
 
     public function shuffle(): Collection
     {
-        return new Collection(shuffle($this->items));
+        $copyCollection = new Collection($this->items);
+        if (shuffle($copyCollection->items)) {
+            return new Collection($copyCollection->get());
+        }
+
+        return new Collection($this->items);
     }
 
     public function group(int $count): Collection
