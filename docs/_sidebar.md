@@ -16,7 +16,9 @@
 - [Auth](auth.md)
 - [Router](routes.md)
 - [Controller](controller.md)
-- [ORM/Model](model.md)
+- ORM
+    - [Model](model.md)
+    - [Collection](collection.md)
 - [Middleware](middleware.md)
 - [Schema/Migrations](schema.md)
 - [Curl Client](curl_client.md)
