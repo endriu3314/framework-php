@@ -2,9 +2,7 @@
 
 <?php
 
-spl_autoload_register(function ($class) {
-    include __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', '/', $class) . '.php';
-});
+require_once __DIR__.'/vendor/autoload.php';
 
 if (PHP_SAPI !== "cli") {
     exit;

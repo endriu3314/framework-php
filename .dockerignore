@@ -1,8 +1,11 @@
-.dockerignore
-.gitignore
+/.idea
+/.git
+/bin/.phpunit
+/vendor
+/var
+/docker/.cache
 *.md
-.git/
-.idea/
-.DS_Store/
+.DS_Store
 docker-compose.*
-nginx.conf
+.gitignore
+.dockerignore

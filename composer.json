@@ -1,0 +1,12 @@
+{
+    "name": "endriu3314/framework-php",
+    "description": "school project, no packages :cry:",
+    "type": "project",
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    }
+}

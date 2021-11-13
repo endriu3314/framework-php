@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker-compose --env-file=docker/.env.local up --build --remove-orphans "$@"

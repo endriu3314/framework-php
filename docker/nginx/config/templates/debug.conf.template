@@ -1,0 +1,13 @@
+server {
+    listen 81;
+    listen [::]:81;
+
+    root /var/www/html;
+
+    location ~ ^/(ping|status|phpinfo\.php)$ {
+        fastcgi_pass ${PHP_FPM_URL};
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $document_root;
+    }
+}

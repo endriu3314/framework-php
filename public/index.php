@@ -4,6 +4,8 @@ use App\Core\Application;
 use App\Core\Config;
 use App\Core\Router\Router;
 
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 define('TEMPLATES', ROOT . 'templates' . DIRECTORY_SEPARATOR);
 define('APP', ROOT . 'App' . DIRECTORY_SEPARATOR);
@@ -19,9 +21,6 @@ define('VIEW', HTTP . 'Views' . DIRECTORY_SEPARATOR);
 
 require CONFIG . 'app.php';
 
-spl_autoload_register(function ($class) {
-    include ROOT . str_replace('\\', '/', $class) . '.php';
-});
 
 function exception_handler($exception)
 {

@@ -1,7 +1,5 @@
 <?php
 
-include CORE . 'Config.php';
-
 $config = new App\Core\Config('../config.yml');
 $configData = $config->getData();
 
