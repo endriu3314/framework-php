@@ -77,3 +77,6 @@ fabric.properties
 
 # Project config
 config.yml
+
+# MacOS
+.DS_Store
