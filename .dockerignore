@@ -1,8 +1,0 @@
-.dockerignore
-.gitignore
-*.md
-.git/
-.idea/
-.DS_Store/
-docker-compose.*
-nginx.conf

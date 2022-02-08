@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Commands;
+
+use AndreiCroitoru\FrameworkPhp\CLI\CommandController;
+
+class #NAME# extends CommandController
+{
+    public $name = '';
+    public $help = '';
+
+    public function run($argv)
+    {
+
+    }
+}

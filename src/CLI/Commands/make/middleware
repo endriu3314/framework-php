@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use AndreiCroitoru\FrameworkPhp\Middleware;
+
+class #NAME# extends Middleware
+{
+    public function run()
+    {
+    }
+}

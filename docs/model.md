@@ -48,7 +48,7 @@ class User extends Model
 # `collections`
 
 Functia de select `all()` returneaza mai multe valori din baza de date.
-In loc sa intoarca inapoi un array returneaza o instanta de `App\Core\ORM\Collection`.
+In loc sa intoarca inapoi un array returneaza o instanta de `AndreiCroitoru\FrameworkPhp\ORM\Collection`.
 
 Se foloseste clasa `Collection` pentru a avea access la functii de filtrare si de manipulare a datelor precum `reverse()`
 

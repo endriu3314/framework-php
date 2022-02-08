@@ -280,21 +280,21 @@ var_dump($collect->get());
 
 // array (size=3)
 //   0 => 
-//     object(App\Core\ORM\Collection)[9]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[9]
 //       protected 'items' => 
 //         array (size=3)
 //           0 => int 1
 //           1 => int 2
 //           2 => int 3
 //   1 => 
-//     object(App\Core\ORM\Collection)[10]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[10]
 //       protected 'items' => 
 //         array (size=3)
 //           3 => int 4
 //           4 => int 5
 //           5 => int 6
 //   2 => 
-//     object(App\Core\ORM\Collection)[11]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[11]
 //       protected 'items' => 
 //         array (size=3)
 //           6 => int 7
@@ -309,31 +309,31 @@ var_dump($collect->get());
 
 // array (size=5)
 //   0 => 
-//     object(App\Core\ORM\Collection)[9]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[9]
 //       protected 'items' => 
 //         array (size=2)
 //           0 => int 1
 //           1 => int 2
 //   1 => 
-//     object(App\Core\ORM\Collection)[10]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[10]
 //       protected 'items' => 
 //         array (size=2)
 //           2 => int 3
 //           3 => int 4
 //   2 => 
-//     object(App\Core\ORM\Collection)[11]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[11]
 //       protected 'items' => 
 //         array (size=2)
 //           4 => int 5
 //           5 => int 6
 //   3 => 
-//     object(App\Core\ORM\Collection)[12]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[12]
 //       protected 'items' => 
 //         array (size=2)
 //           6 => int 7
 //           7 => int 8
 //   4 => 
-//     object(App\Core\ORM\Collection)[13]
+//     object(AndreiCroitoru\FrameworkPhp\ORM\Collection)[13]
 //       protected 'items' => 
 //         array (size=1)
 //           8 => int 9

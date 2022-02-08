@@ -8,7 +8,7 @@
 ## Utilizare
 
 ```php
-$files = \App\Core\Helpers\FileHelper::getFilesRecursive('./Commands');
+$files = \AndreiCroitoru\FrameworkPhp\Helpers\FileHelper::getFilesRecursive('./Commands');
 ```
 
 ## Functii
@@ -18,7 +18,7 @@ $files = \App\Core\Helpers\FileHelper::getFilesRecursive('./Commands');
 - `$path` - parametru de tip **string** cu calea folderului
 
 ```php
-$files = \App\Core\Helpers\FileHelper::getFiles('./Commands');
+$files = \AndreiCroitoru\FrameworkPhp\Helpers\FileHelper::getFiles('./Commands');
 ```
 
 **Raspuns**
@@ -43,24 +43,24 @@ array(4) {
 - `$path` - parametru de tip **string** cu calea folderului
 
 ```php
-$files = \App\Core\Helpers\FileHelper::getFilesRecursive('./Commands');
+$files = \AndreiCroitoru\FrameworkPhp\Helpers\FileHelper::getFilesRecursive('./Commands');
 ```
 
 **Raspuns**
 ```php
 array(28) {
   [0]=>
-  string(20) "App\Core\CLI\CLI.php"
+  string(20) "AndreiCroitoru\FrameworkPhp\CLI\CLI.php"
   [1]=>
-  string(26) "App\Core\CLI\CLIHelper.php"
+  string(26) "AndreiCroitoru\FrameworkPhp\CLI\CLIHelper.php"
   [2]=>
-  string(23) "App\Core\CLI\Colors.php"
+  string(23) "AndreiCroitoru\FrameworkPhp\CLI\Colors.php"
   [3]=>
-  string(34) "App\Core\CLI\CommandController.php"
+  string(34) "AndreiCroitoru\FrameworkPhp\CLI\CommandController.php"
   [4]=>
-  string(32) "App\Core\CLI\CommandRegistry.php"
+  string(32) "AndreiCroitoru\FrameworkPhp\CLI\CommandRegistry.php"
   [5]=>
-  string(57) "App\Core\CLI\Commands\auth\Controller\LoginController.php"
+  string(57) "AndreiCroitoru\FrameworkPhp\CLI\Commands\auth\Controller\LoginController.php"
   ...
 }
 ```

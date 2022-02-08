@@ -4,7 +4,7 @@
 
 - Se executa intre request si actiunea din controller
 - Se poate folosii la protejarea rutelor
-- Extinde clasa abstractizata `App\Core\Middleware`
+- Extinde clasa abstractizata `AndreiCroitoru\FrameworkPhp\Middleware`
 
 ---
 
@@ -22,7 +22,7 @@
 ```php
 namespace App\Http\Middleware;
 
-use App\Core\Middleware;
+use AndreiCroitoru\FrameworkPhp\Middleware;
 
 class TestMiddleware extends Middleware
 {

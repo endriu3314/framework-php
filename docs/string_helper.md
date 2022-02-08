@@ -10,7 +10,7 @@
 ## Utilizare
 
 ```php
-$className = \App\Core\Helpers\StringHelper::removeExtension($classFile);
+$className = \AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::removeExtension($classFile);
 ```
 
 ---
@@ -21,7 +21,7 @@ $className = \App\Core\Helpers\StringHelper::removeExtension($classFile);
 - `$string` - parametru de tip **string** reprezinta stringul de tip snake_case ce trebuie convertit
     
 ```php
-\App\Core\Helpers\StringHelper::toCamelCase('snake_case');
+\AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::toCamelCase('snake_case');
 ```   
 
 **Raspuns**
@@ -37,7 +37,7 @@ string(9) "snakeCase"
 - `$string` - parametru de tip **string** reprezinta numele fisierului cu extensie
     
 ```php
-\App\Core\Helpers\StringHelper::removeExtension('App.php');
+\AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::removeExtension('App.php');
 ```
 
 **Raspuns**
@@ -55,7 +55,7 @@ string(3) "App"
 - Returneaza stringul care exclude parametrul toRemove.
 
 ```php
-\App\Core\Helpers\StringHelper::removeLastOccurrence('App.php.class', '.');
+\AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::removeLastOccurrence('App.php.class', '.');
 ``` 
 
 **Raspuns**
@@ -71,7 +71,7 @@ string(12) "App.phpclass"
 - `$extension` - parametru de tip **string** reprezinta extensia fisierului
 
 ```php
-\App\Core\Helpers\StringHelper::getFileNameFromPath('App\Core\App.php.class', '.class');
+\AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::getFileNameFromPath('AndreiCroitoru\FrameworkPhp\App.php.class', '.class');
 ```
 
 **Raspuns**
@@ -80,7 +80,7 @@ string(7) "App.php"
 ```
 
 ```php
-\App\Core\Helpers\StringHelper::getFileNameFromPath('App\Core\App.php.class', '.php');
+\AndreiCroitoru\FrameworkPhp\Helpers\StringHelper::getFileNameFromPath('AndreiCroitoru\FrameworkPhp\App.php.class', '.php');
 ```
 
 **Raspuns**
