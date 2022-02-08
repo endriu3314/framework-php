@@ -116,7 +116,7 @@ abstract class Model extends Database
      */
     private function query(): array | bool
     {
-        $query = match($this->queryType) {
+        $query = match ($this->queryType) {
             QueryTypes::SELECT => QueryGenerator::generateSelectQuery(
                 tableName: $this->tableName,
                 dataToSelect: ReflectionHelper::getPublicProperties($this),
