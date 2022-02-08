@@ -19,6 +19,11 @@ class CommandRegistry
         $this->registry[$name] = $callable;
     }
 
+    public function getControllers(): array
+    {
+        return $this->controllers;
+    }
+
     public function getController(string $command)
     {
         return $this->controllers[$command] ?? null;

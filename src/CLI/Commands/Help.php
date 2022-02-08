@@ -3,8 +3,6 @@
 namespace AndreiCroitoru\FrameworkPhp\CLI\Commands;
 
 use AndreiCroitoru\FrameworkPhp\CLI\CommandController;
-use AndreiCroitoru\FrameworkPhp\Helpers\FileHelper;
-use AndreiCroitoru\FrameworkPhp\Helpers\StringHelper;
 
 class Help extends CommandController
 {
@@ -16,59 +14,33 @@ class Help extends CommandController
 
     public function run($argv)
     {
-        $customCommands = [];
-        $coreCommands = [];
-
-        foreach (FileHelper::getFiles($this->customCommandsPath) as $key => $value) {
-            $customCommands[$value] = $this->customCommandsPath;
-        }
-
-        foreach (FileHelper::getFiles($this->coreCommandsPath) as $key => $value) {
-            $coreCommands[$value] = $this->coreCommandsPath;
-        }
-
-        $commands = array_merge($customCommands, $coreCommands);
-
         $this->getApp()->getPrinter()->display('Available commands:', 'blue');
         $this->getApp()->getPrinter()->newline(2);
 
-        $this->displayCommands($commands);
+        foreach ($this->getApp()->getCommandRegistry()->getControllers() as $controller) {
+            $this->displayCommandInfo($controller);
+        }
     }
 
-    /**
-     * Display commands in terminal.
-     *
-     * @param array $commands - Commands array with "Name" => "Path"
-     */
-    private function displayCommands(array $commands): void
+    private function displayCommandInfo(CommandController $controller): void
     {
-        foreach ($commands as $command => $path) {
-            $className = StringHelper::removeExtension($command);
+        $commandName = $controller->name ?? get_class($controller);
+        $commandHelp = $controller->help ?? '';
+        $commandUsage = $controller->usage ?? '';
 
-            $classPath = $path . $className;
-            $classPath = str_replace("/", "\\", $classPath);
-            $classPath = str_replace(".", "", $classPath);
+        $this->getApp()->getPrinter()->display("• $commandName", 'yellow');
 
-            $commandClassObject = new $classPath($this->getApp());
-
-            $commandName = $commandClassObject->name ?? $className;
-            $commandHelp = $commandClassObject->help ?? '';
-            $commandUsage = $commandClassObject->usage ?? '';
-
-            $this->getApp()->getPrinter()->display("• {$commandName}", 'yellow');
-
-            if ($commandHelp !== '') {
-                $this->getApp()->getPrinter()->display(' - ', 'light_green');
-                $this->getApp()->getPrinter()->display($commandHelp, 'green');
-            }
-
-            if ($commandUsage !== '') {
-                $this->getApp()->getPrinter()->newline();
-                $this->getApp()->getPrinter()->display('Usage: ');
-                $this->getApp()->getPrinter()->display($commandUsage, 'yellow');
-            }
-
-            $this->getApp()->getPrinter()->newline();
+        if ($commandHelp !== '') {
+            $this->getApp()->getPrinter()->display(' - ', 'light_green');
+            $this->getApp()->getPrinter()->display($commandHelp, 'green');
         }
+
+        if ($commandUsage !== '') {
+            $this->getApp()->getPrinter()->newline();
+            $this->getApp()->getPrinter()->display('Usage: ');
+            $this->getApp()->getPrinter()->display($commandUsage, 'yellow');
+        }
+
+        $this->getApp()->getPrinter()->newline();
     }
 }
