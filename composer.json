@@ -1,0 +1,25 @@
+{
+    "name": "andreicroitoru/framework-php",
+    "type": "project",
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "vimeo/psalm": "^4.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "AndreiCroitoru\\FrameworkPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andrei Croitoru",
+            "email": "a.croitoru3@icloud.com"
+        }
+    ],
+    "require": {},
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    }
+}

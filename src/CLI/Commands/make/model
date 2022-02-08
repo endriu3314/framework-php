@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Http\Model;
+
+use AndreiCroitoru\FrameworkPhp\Model;
+
+class #NAME# extends Model
+{
+    private static $tableName = '';
+    private static $primaryKey = 'id';
+}

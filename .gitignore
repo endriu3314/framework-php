@@ -73,10 +73,12 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Other idea files not ignored
-.idea/
+../.idea/
 
 # Project config
 config.yml
 
 # MacOS
 .DS_Store
+
+/vendor/
