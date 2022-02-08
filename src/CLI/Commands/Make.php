@@ -48,7 +48,7 @@ class Make extends CommandController
         $type = $argv[2];
         $name = $argv[3];
 
-        $files = FileHelper::getFiles('App/Core/CLI/Commands/make');
+        $files = FileHelper::getFiles(__DIR__ . '/make');
 
         if (!in_array($type, $files, true)) {
             $printer->display('Type not found', 'red');
@@ -62,7 +62,7 @@ class Make extends CommandController
             return;
         }
 
-        $content = file_get_contents("App/Core/CLI/Commands/make/{$type}");
+        $content = file_get_contents(__DIR__ . '/make/' . $type);
         $content = str_replace('#NAME#', $name, $content);
 
         $prefix = '';
@@ -71,23 +71,27 @@ class Make extends CommandController
             $prefix = date('YmdHis') . "_";
         }
 
-        $file = "{$paths[$type]}{$prefix}{$name}.{$types[$type]}";
+        $file = "$paths[$type]$prefix$name.$types[$type]";
 
         if (file_exists($file)) {
             $printer->display('[✘] ', 'red');
-            $printer->display("{$file} already exists");
+            $printer->display("$file already exists");
 
             return;
         }
 
+        if (!is_dir($paths[$type])) {
+            mkdir($paths[$type]);
+        }
+
         if (!file_put_contents($file, $content, FILE_APPEND | LOCK_EX)) {
             $printer->display('[✘] ', 'red');
-            $printer->display("{$file} was not created");
+            $printer->display("$file was not created");
 
             return;
         }
 
         $printer->display('[✔] ', 'green');
-        $printer->display("{$file} was created");
+        $printer->display("$file was created");
     }
 }

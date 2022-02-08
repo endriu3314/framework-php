@@ -1,4 +1,6 @@
-<?php if (!DEBUG) return ?>
+<?php if (!DEBUG) {
+    return;
+} ?>
 <!DOCTYPE html>
 <html>
 
