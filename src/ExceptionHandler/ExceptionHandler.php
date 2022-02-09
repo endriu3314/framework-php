@@ -2,6 +2,8 @@
 
 namespace AndreiCroitoru\FrameworkPhp\ExceptionHandler;
 
+use AndreiCroitoru\FrameworkPhp\Helpers\FileHelper;
+
 class ExceptionHandler
 {
     /**
@@ -13,7 +15,7 @@ class ExceptionHandler
      */
     public static function getFileContentArrayFromPath(string $filePath): array
     {
-        $file = fopen($filePath, 'r');
+        $file = fopen($filePath, 'rb');
 
         $fileArray = [''];
 
@@ -74,5 +76,15 @@ class ExceptionHandler
             $style = $counter == $line ? 'background-color: #FC8181' : 'background-color: none';
             echo "<a style='{$style}'>{$fileContentArray[$counter]}</a>";
         }
+    }
+
+    public static function includeTemplate(\Exception $exception): void
+    {
+        include __DIR__ . '/template.php';
+    }
+
+    public static function includeDefault500(): void
+    {
+        include __DIR__ . '/500.php';
     }
 }
